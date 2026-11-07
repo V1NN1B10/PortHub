@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Início | Portfólio Fácil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="">
+  <!-- MENU: links à esquerda, logo no centro, usuário à direita.
+       Para adicionar uma página, copie uma linha <a> -->
+  <header class="topo">
+    <nav>
+      <a href="index.html">Início</a>
+      <a href="projetos.html">Meus projetos</a>
+      <a href="novo-projeto.html">Novo projeto</a>
+      <a href="portfolio.html">Meu portfólio</a>
+    </nav>
+    <a href="index.html" class="logo">Portfólio<i>fácil.</i></a>
+    <div id="area-usuario"></div>
+  </header>
+
+  <main>
+    <!-- HERO: título grande em fonte serifada -->
+    <section class="hero">
+      <p class="sobre">Gerador de portfólio para estudantes</p>
+      <h1>Seus projetos merecem<br>mais que uma <i>pasta perdida</i><br>no computador.</h1>
+      <div class="hero-rodape">
+        <p>Estudantes desenvolvem projetos, mas não conseguem apresentá-los de forma organizada. Aqui você cadastra cada projeto e gera um portfólio bonito em poucos cliques.</p>
+        <div class="botoes">
+          <a class="botao" href="cadastro.html">Criar meu portfólio →</a>
+          <a class="botao botao-contorno" href="portfolio.html">Ver exemplo</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAIXA ANDANDO: troque as palavras como quiser -->
+    <div class="letreiro" aria-hidden="true">
+      <div>HTML ✦ CSS ✦ JavaScript ✦ Figma ✦ Python ✦ React ✦ Banco de dados ✦ UX ✦ HTML ✦ CSS ✦ JavaScript ✦ Figma ✦ Python ✦ React ✦ Banco de dados ✦ UX ✦</div>
+    </div>
+
+    <!-- VITRINE EM MOSAICO (bento): coloque prints de projetos reais da turma -->
+    <section class="secao">
+      <div class="titulo-secao">
+        <h2>Uma vitrine<br>para o seu <i>trabalho</i></h2>
+        <p>Cada projeto vira um card com imagem, tecnologias, descrição e links.</p>
+      </div>
+      <div class="mosaico">
+        <div class="peca peca-grande"><div class="espaco-imagem ">📷 Print de um projeto<small>img/projeto1.jpg</small></div><span>Site · HTML, CSS</span></div>
+        <div class="peca"><div class="espaco-imagem ">📷 Print<small>img/projeto2.jpg</small></div><span>App · JavaScript</span></div>
+        <div class="peca"><div class="espaco-imagem ">📷 Print<small>img/projeto3.jpg</small></div><span>Design · Figma</span></div>
+        <div class="peca peca-larga"><div class="espaco-imagem ">📷 Print<small>img/projeto4.jpg</small></div><span>Dados · Python</span></div>
+      </div>
+    </section>
+
+    <!-- PASSOS: números grandes -->
+    <section class="secao secao-tinta">
+      <div class="titulo-secao">
+        <h2>Três passos.<br><i>Nenhuma</i> complicação.</h2>
+      </div>
+      <div class="passos">
+        <div><span>1</span><h3>Cadastre</h3><p>Nome do projeto, categoria, tecnologias, descrição e links do GitHub e do site.</p></div>
+        <div><span>2</span><h3>Organize</h3><p>Edite, exclua e filtre por categoria sempre que quiser.</p></div>
+        <div><span>3</span><h3>Gere</h3><p>Clique em "Meu portfólio" e pronto: uma página para mostrar ou salvar em PDF.</p></div>
+      </div>
+    </section>
+
+    <!-- CITAÇÃO: troque por uma frase que o grupo goste -->
+    <section class="secao citacao">
+      <blockquote class="trocar">"Coloque aqui uma frase que inspire quem está começando na tecnologia."</blockquote>
+      <cite class="trocar">Autor da frase</cite>
+    </section>
+
+    <!-- EQUIPE: passe o mouse no nome para ver a foto -->
+    <section class="secao">
+      <div class="titulo-secao">
+        <h2>Feito por</h2>
+        <p class="trocar">Uma frase sobre o grupo 3. Passe o mouse em cada nome.</p>
+      </div>
+      <ul class="lista-nomes">
+        <li><span class="trocar">Função</span><b>Vinicius Almeida Reis</b><div class="espaco-imagem foto-hover">📷 Foto</div></li>
+        <li><span class="trocar">Função</span><b>Joel Josue Nina Nina</b><div class="espaco-imagem foto-hover">📷 Foto</div></li>
+        <li><span class="trocar">Função</span><b>Kaiky Mateus Oliveira da Silva</b><div class="espaco-imagem foto-hover">📷 Foto</div></li>
+        <li><span class="trocar">Função</span><b>Felipe Enzo Souza Lopes</b><div class="espaco-imagem foto-hover">📷 Foto</div></li>
+        <li><span class="trocar">Função</span><b>Kauã José Cardoso dos Santos</b><div class="espaco-imagem foto-hover">📷 Foto</div></li>
+      </ul>
+    </section>
+
+  </main>
+  <footer>
+    <div class="rodape">
+      <p class="rodape-grande">Mostre o que<br>você <i>constrói.</i></p>
+      <p>Portfólio Fácil · Projeto Final · <span class="trocar">Grupo 3</span> · 2026</p>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

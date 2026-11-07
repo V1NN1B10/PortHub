@@ -1,0 +1,231 @@
+/* =========================================================
+   PORTFÓLIO FÁCIL
+   PARTE 1: CORES E FONTES. Mude aqui e o site inteiro muda!
+   ========================================================= */
+:root {
+  --primaria: #1f3dff;        /* azul elétrico: botões e destaques */
+  --destaque: #1f3dff;
+  --tinta: #141414;           /* preto das seções escuras */
+  --fundo: #f3efe7;           /* papel off-white */
+  --superficie: #fbf9f4;
+  --campo: #ffffff;
+  --texto: #141414;
+  --texto-no-botao: #ffffff;
+  --suave: #6d675e;
+  --borda: #d8d1c4;
+  --etiqueta: #e8e2d6;
+  --raio: 4px;
+  --raio-botao: 999px;
+  --fonte: 'Inter', Arial, sans-serif;
+  --fonte-titulo: 'Fraunces', Georgia, serif;   /* serifada = cara de revista */
+}
+
+/* =========================================================
+   PARTE 2: ESTRUTURA BÁSICA (formulários, mensagens, tabela...)
+   Você pode mexer, mas o visual principal está na PARTE 3.
+   ========================================================= */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--fonte);
+  background: var(--fundo);
+  color: var(--texto);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+main { flex: 1; }
+img { max-width: 100%; display: block; }
+a { color: var(--primaria); text-decoration: none; }
+h1, h2, h3 { font-family: var(--fonte-titulo); line-height: 1.15; }
+.container { width: min(1120px, 92%); margin: 0 auto; }
+
+/* Botões */
+.botao {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--primaria); color: var(--texto-no-botao);
+  border: 2px solid transparent; padding: 11px 22px;
+  border-radius: var(--raio-botao); font: 600 0.95rem var(--fonte);
+  cursor: pointer; transition: transform .15s, filter .15s;
+}
+.botao:hover { transform: translateY(-2px); filter: brightness(1.08); }
+.botao-claro { background: #fff; color: #111; }
+.botao-contorno { background: transparent; border-color: currentColor; color: inherit; }
+.botao-perigo { background: #e5484d; color: #fff; }
+.botao-pequeno { padding: 6px 12px; font-size: .8rem; }
+
+/* Espaço para imagem: troque a <div class="espaco-imagem"> por
+   <img src="img/sua-imagem.jpg" alt="descrição" class="imagem"> */
+.espaco-imagem {
+  border: 3px dashed var(--primaria);
+  background: repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(127,127,127,.08) 12px, rgba(127,127,127,.08) 24px);
+  border-radius: var(--raio);
+  min-height: 200px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 20px; color: var(--primaria); font-weight: 600; font-size: .9rem;
+}
+.espaco-imagem small { font-weight: 400; opacity: .8; }
+.imagem { width: 100%; height: 100%; object-fit: cover; border-radius: var(--raio); }
+
+/* Texto amarelo = o grupo deve trocar */
+.trocar { background: #fff3b0; color: #5c4a00; border-radius: 4px; padding: 0 4px; }
+
+/* Formulários */
+.caixa-form { width: min(520px, 100%); background: var(--superficie); padding: 34px; border-radius: var(--raio); }
+.caixa-form h1 { font-size: 1.7rem; margin-bottom: 4px; }
+.caixa-form > p { color: var(--suave); margin-bottom: 22px; }
+.pagina-form { display: flex; justify-content: center; padding: 50px 0; }
+.campo { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
+.campo label { font-weight: 600; font-size: .88rem; }
+input, select, textarea {
+  font: .95rem var(--fonte); padding: 11px 13px;
+  border: 1px solid var(--borda); border-radius: calc(var(--raio) / 1.6);
+  background: var(--campo); color: var(--texto);
+}
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--primaria); outline-offset: 1px; }
+textarea { min-height: 100px; resize: vertical; }
+.caixa-form .botao { width: 100%; margin-top: 6px; }
+.mensagem { padding: 10px 14px; border-radius: 10px; margin-bottom: 14px; display: none; }
+.mensagem.erro { display: block; background: #fdecec; color: #b42318; }
+.mensagem.sucesso { display: block; background: #e7f8ee; color: #067647; }
+
+/* Tela de login e cadastro */
+.auth { display: grid; grid-template-columns: 1fr; place-items: center; padding: 50px 4%; min-height: 70vh; }
+.auth-imagem { display: none; }
+
+/* Listagens */
+.cabecalho-pagina { padding: 44px 0 6px; display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; }
+.cabecalho-pagina p { color: var(--suave); }
+#filtros { display: flex; gap: 10px; flex-wrap: wrap; margin: 22px 0; }
+#filtros select, #filtros input { min-width: 170px; }
+#filtros input { flex: 1; }
+.info { font-size: .88rem; color: var(--suave); }
+.info strong { color: var(--texto); }
+.acoes { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: auto; padding-top: 10px; }
+.etiqueta { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .74rem; font-weight: 600; background: var(--etiqueta); margin: 0 4px 4px 0; }
+.vazio { text-align: center; padding: 60px 20px; color: var(--suave); grid-column: 1 / -1; }
+.registro { display: flex; flex-direction: column; gap: 6px; }
+.numero { font: 700 2.3rem var(--fonte-titulo); color: var(--primaria); }
+.barra { background: var(--etiqueta); border-radius: 999px; height: 12px; overflow: hidden; }
+.barra div { background: var(--destaque); height: 100%; border-radius: 999px; transition: width .5s; }
+.grade { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px; }
+
+/* Tabela */
+.tabela-rolagem { overflow-x: auto; padding-bottom: 50px; }
+.tabela { width: 100%; border-collapse: collapse; background: var(--superficie); border-radius: var(--raio); overflow: hidden; font-size: .92rem; }
+.tabela th, .tabela td { padding: 13px 14px; text-align: left; border-bottom: 1px solid var(--borda); }
+.tabela th { font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--suave); }
+
+/* Rodapé */
+footer { padding: 34px 0; font-size: .9rem; }
+
+/* =========================================================
+   PARTE 3: VISUAL DESTE SITE (estilo revista / editorial)
+   ========================================================= */
+h1, h2, h3 { font-weight: 400; letter-spacing: -.02em; }
+i { font-family: var(--fonte-titulo); font-style: italic; color: var(--primaria); }
+.sobre { text-transform: uppercase; letter-spacing: .18em; font-size: .72rem; font-weight: 600; color: var(--suave); }
+
+/* Menu: links | logo | usuário */
+.topo { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 18px 4%; border-bottom: 1px solid var(--texto); position: sticky; top: 0; background: var(--fundo); z-index: 20; }
+.topo nav { display: flex; gap: 18px; flex-wrap: wrap; }
+.topo nav a { color: var(--texto); font-size: .88rem; }
+.topo nav a.ativo, .topo nav a:hover { text-decoration: underline; text-underline-offset: 5px; }
+.logo { font: 1.7rem var(--fonte-titulo); color: var(--texto); }
+#area-usuario { justify-self: end; display: flex; gap: 10px; align-items: center; font-size: .85rem; }
+#area-usuario .botao-claro { background: var(--texto); color: var(--fundo); }
+.botao-contorno { color: var(--texto); }
+
+/* Hero */
+.hero { padding: 70px 4% 50px; }
+.hero h1 { font-size: clamp(2.6rem, 7vw, 6.4rem); line-height: 1; margin-top: 18px; }
+.hero-rodape { display: flex; justify-content: space-between; align-items: end; gap: 30px; margin-top: 46px; border-top: 1px solid var(--borda); padding-top: 24px; flex-wrap: wrap; }
+.hero-rodape p { max-width: 460px; color: var(--suave); }
+.botoes { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* Letreiro andando */
+.letreiro { background: var(--primaria); color: #fff; overflow: hidden; white-space: nowrap; padding: 14px 0; font: 1.4rem var(--fonte-titulo); }
+.letreiro div { display: inline-block; animation: andar 25s linear infinite; }
+@keyframes andar { to { transform: translateX(-50%); } }
+
+/* Seções */
+.secao { padding: 90px 4%; }
+.secao-tinta { background: var(--tinta); color: var(--fundo); }
+.titulo-secao { display: flex; justify-content: space-between; align-items: end; gap: 30px; margin-bottom: 40px; flex-wrap: wrap; }
+.titulo-secao h2 { font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1; }
+.titulo-secao p { max-width: 360px; color: var(--suave); }
+.mosaico { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 240px 240px; gap: 16px; }
+.peca { position: relative; }
+.peca .espaco-imagem { height: 100%; border-color: var(--texto); color: var(--texto); }
+.peca span { position: absolute; left: 12px; bottom: 12px; background: var(--fundo); padding: 4px 10px; font-size: .8rem; border: 1px solid var(--texto); }
+.peca-grande { grid-row: span 2; }
+.peca-larga { grid-column: span 2; }
+.passos { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid #444; }
+.passos div { padding: 30px 30px 0 0; }
+.passos span { font: 7rem var(--fonte-titulo); line-height: 1; color: var(--primaria); font-style: italic; }
+.passos h3 { font-size: 2rem; margin: 6px 0; }
+.passos p { color: #b5b0a7; }
+.citacao { text-align: center; }
+.citacao blockquote { font: clamp(1.6rem, 3.5vw, 2.8rem) var(--fonte-titulo); max-width: 900px; margin: 0 auto 16px; line-height: 1.2; }
+.lista-nomes { list-style: none; border-top: 1px solid var(--texto); }
+.lista-nomes li { display: flex; justify-content: space-between; align-items: center; padding: 22px 0; border-bottom: 1px solid var(--texto); position: relative; font: clamp(1.4rem, 3vw, 2.4rem) var(--fonte-titulo); }
+.lista-nomes li span { font: .8rem var(--fonte); order: 2; }
+.foto-hover { position: absolute; right: 20%; top: -60px; width: 160px; min-height: 180px; background-color: var(--fundo); opacity: 0; pointer-events: none; transition: opacity .2s, transform .3s; transform: rotate(-6deg) scale(.8); z-index: 5; font-size: .8rem; }
+.lista-nomes li:hover .foto-hover { opacity: 1; transform: rotate(-3deg) scale(1); }
+.lista-nomes li:hover b { color: var(--primaria); font-style: italic; }
+
+/* Lista de projetos: grade de cards com imagem */
+.cabecalho-pagina, #filtros, #lista { padding-left: 4%; padding-right: 4%; }
+.cabecalho-pagina h1 { font-size: 3.4rem; }
+#lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; padding-bottom: 60px; }
+.registro { background: var(--superficie); border: 1px solid var(--texto); padding: 0 0 18px; }
+.registro > *:not(.registro-imagem) { margin-left: 18px; margin-right: 18px; }
+.registro-imagem { width: 100%; height: 190px; object-fit: cover; border-bottom: 1px solid var(--texto); border-radius: 0; min-height: 0; margin-bottom: 10px; }
+.registro h3 { font-size: 1.6rem; }
+.etiqueta { border-radius: 0; background: var(--etiqueta); font-weight: 500; }
+.caixa-form { border: 1px solid var(--texto); }
+.auth { border-bottom: 1px solid var(--borda); }
+
+/* Página do portfólio gerado */
+.ferramentas { display: flex; gap: 10px; justify-content: flex-end; align-items: center; padding: 14px 4%; background: var(--etiqueta); font-size: .85rem; flex-wrap: wrap; }
+.ferramentas span { margin-right: auto; color: var(--suave); }
+.perfil-form { margin: 30px auto; }
+.portfolio { width: min(1000px, 92%); margin: 0 auto; padding: 60px 0; }
+.portfolio-cabecalho { display: grid; grid-template-columns: 180px 1fr; gap: 36px; align-items: center; padding-bottom: 40px; border-bottom: 1px solid var(--texto); }
+.foto-perfil { width: 180px; height: 180px; min-height: 180px; border-radius: 50%; }
+.portfolio-cabecalho h1 { font-size: clamp(2.4rem, 5vw, 4rem); margin: 6px 0 12px; }
+.portfolio-cabecalho p { color: var(--suave); max-width: 560px; }
+.contato { margin-top: 10px; color: var(--primaria) !important; font-weight: 600; }
+.portfolio-numeros { display: flex; gap: 50px; padding: 26px 0; border-bottom: 1px solid var(--borda); }
+.portfolio-numeros b { font: 2.6rem var(--fonte-titulo); display: block; line-height: 1; }
+.portfolio-numeros span { font-size: .8rem; color: var(--suave); }
+.chips-filtro { display: flex; gap: 8px; margin: 26px 0; flex-wrap: wrap; }
+.chips-filtro button { font: .85rem var(--fonte); padding: 6px 16px; border: 1px solid var(--texto); background: transparent; border-radius: 999px; cursor: pointer; }
+.chips-filtro button.ativo { background: var(--texto); color: var(--fundo); }
+.portfolio-grade { display: grid; gap: 40px; }
+.projeto { display: grid; grid-template-columns: 1.1fr 1fr; gap: 34px; align-items: center; }
+.projeto:nth-child(even) .registro-imagem { order: 2; }
+.projeto .registro-imagem { height: 300px; border: 1px solid var(--texto); }
+.projeto h2 { font-size: 2.2rem; margin: 4px 0 10px; }
+.projeto-texto > p:not(.sobre) { color: var(--suave); margin-bottom: 12px; }
+.projeto-links { display: flex; gap: 18px; margin-top: 12px; font-weight: 600; }
+
+footer { background: var(--tinta); color: #b5b0a7; padding: 60px 4% 30px; }
+.rodape-grande { font: clamp(2.2rem, 6vw, 5rem) var(--fonte-titulo); color: var(--fundo); line-height: 1; margin-bottom: 30px; }
+
+/* Na hora de imprimir/salvar PDF, só o portfólio aparece */
+@media print {
+  .topo, footer, .ferramentas, .perfil-form, .chips-filtro { display: none !important; }
+  body { background: #fff; }
+  .projeto { break-inside: avoid; }
+}
+
+@media (max-width: 860px) {
+  .topo { grid-template-columns: 1fr; justify-items: center; gap: 10px; }
+  #area-usuario { justify-self: center; }
+  .mosaico { grid-template-columns: 1fr; grid-template-rows: none; }
+  .peca, .peca-grande, .peca-larga { grid-row: auto; grid-column: auto; height: 220px; }
+  .passos, .projeto, .portfolio-cabecalho { grid-template-columns: 1fr; }
+  .projeto:nth-child(even) .registro-imagem { order: 0; }
+}

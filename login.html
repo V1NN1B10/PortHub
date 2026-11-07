@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar | Portfólio Fácil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="">
+  <!-- MENU: links à esquerda, logo no centro, usuário à direita.
+       Para adicionar uma página, copie uma linha <a> -->
+  <header class="topo">
+    <nav>
+      <a href="index.html">Início</a>
+      <a href="projetos.html">Meus projetos</a>
+      <a href="novo-projeto.html">Novo projeto</a>
+      <a href="portfolio.html">Meu portfólio</a>
+    </nav>
+    <a href="index.html" class="logo">Portfólio<i>fácil.</i></a>
+    <div id="area-usuario"></div>
+  </header>
+
+  <main>
+    <section class="auth">
+      
+      <div class="caixa-form">
+        <h1>Entrar</h1>
+        <p>Acesse sua conta para continuar.</p>
+        <div id="mensagem" class="mensagem"></div>
+        <form id="form-login">
+          <div class="campo"><label for="email">E-mail</label><input type="email" id="email" required></div>
+          <div class="campo"><label for="senha">Senha</label><input type="password" id="senha" required></div>
+          <button class="botao" type="submit">Entrar</button>
+        </form>
+        <p style="margin-top:16px">Ainda não tem conta? <a href="cadastro.html">Cadastre-se</a></p>
+      </div>
+    </section>
+
+  </main>
+  <footer>
+    <div class="rodape">
+      <p class="rodape-grande">Mostre o que<br>você <i>constrói.</i></p>
+      <p>Portfólio Fácil · Projeto Final · <span class="trocar">Grupo 3</span> · 2026</p>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
