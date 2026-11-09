@@ -3,7 +3,7 @@
    PARTE 1: CORES E FONTES. Mude aqui e o site inteiro muda!
    ========================================================= */
 :root {
-  --primaria: #1f3dff;        /* azul elétrico: botões e destaques */
+  --primaria:slateblue;        /* azul elétrico: botões e destaques */
   --destaque: #1f3dff;
   --tinta: #141414;           /* preto das seções escuras */
   --fundo: #f3efe7;           /* papel off-white */
@@ -11,7 +11,7 @@
   --campo: #ffffff;
   --texto: #141414;
   --texto-no-botao: #ffffff;
-  --suave: #6d675e;
+  --suave: slateblue;
   --borda: #d8d1c4;
   --etiqueta: #e8e2d6;
   --raio: 4px;
@@ -44,13 +44,13 @@ h1, h2, h3 { font-family: var(--fonte-titulo); line-height: 1.15; }
 /* Botões */
 .botao {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  background: var(--primaria); color: var(--texto-no-botao);
+  background:slateblue  ;color: var(--texto-no-botao);
   border: 2px solid transparent; padding: 11px 22px;
   border-radius: var(--raio-botao); font: 600 0.95rem var(--fonte);
   cursor: pointer; transition: transform .15s, filter .15s;
 }
 .botao:hover { transform: translateY(-2px); filter: brightness(1.08); }
-.botao-claro { background: #fff; color: #111; }
+.botao-claro { background: #fff; color:slateblue; }
 .botao-contorno { background: transparent; border-color: currentColor; color: inherit; }
 .botao-perigo { background: #e5484d; color: #fff; }
 .botao-pequeno { padding: 6px 12px; font-size: .8rem; }
@@ -59,7 +59,7 @@ h1, h2, h3 { font-family: var(--fonte-titulo); line-height: 1.15; }
    <img src="img/sua-imagem.jpg" alt="descrição" class="imagem"> */
 .espaco-imagem {
   border: 3px dashed var(--primaria);
-  background: repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(127,127,127,.08) 12px, rgba(127,127,127,.08) 24px);
+  background: repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(148, 26, 26, 0.08) 12px, rgba(127,127,127,.08) 24px);
   border-radius: var(--raio);
   min-height: 200px;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -69,29 +69,95 @@ h1, h2, h3 { font-family: var(--fonte-titulo); line-height: 1.15; }
 .imagem { width: 100%; height: 100%; object-fit: cover; border-radius: var(--raio); }
 
 /* Texto amarelo = o grupo deve trocar */
-.trocar { background: #fff3b0; color: #5c4a00; border-radius: 4px; padding: 0 4px; }
+.trocar { background:rgba(105, 90, 205, 0.255); color: slateblue; border-radius: 10px; padding: 7px 7px; }
 
 /* Formulários */
-.caixa-form { width: min(520px, 100%); background: var(--superficie); padding: 34px; border-radius: var(--raio); }
-.caixa-form h1 { font-size: 1.7rem; margin-bottom: 4px; }
-.caixa-form > p { color: var(--suave); margin-bottom: 22px; }
-.pagina-form { display: flex; justify-content: center; padding: 50px 0; }
-.campo { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
-.campo label { font-weight: 600; font-size: .88rem; }
-input, select, textarea {
-  font: .95rem var(--fonte); padding: 11px 13px;
-  border: 1px solid var(--borda); border-radius: calc(var(--raio) / 1.6);
-  background: var(--campo); color: var(--texto);
+.caixa-form { 
+  display: flex;
+  flex-direction: column;
+  width: min(450px, 100%);
+  height: min(600px);
+  background: var(--superficie);
+  padding: 40px;
+  border-radius: var(--raio);
+  align-items: center;
+  border-radius: 20px;
+  justify-self: end;
+
+  .img{
+    margin-top: 30px;
+  }
 }
-input:focus, select:focus, textarea:focus { outline: 2px solid var(--primaria); outline-offset: 1px; }
-textarea { min-height: 100px; resize: vertical; }
-.caixa-form .botao { width: 100%; margin-top: 6px; }
+
+.caixa-form h1 {
+  font-size: 1.7rem;
+  margin-top: 15px;
+}
+.caixa-form > p { 
+  color:slateblue;
+  margin-bottom: 22px;
+  text-align: center;
+}
+.pagina-form {
+  display: flex;
+  justify-content: center;
+  padding: 50px 0;
+}
+.campo {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.campo label {
+  font-weight: 600;
+  font-size: .88rem;
+}
+.campo-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 0 10px;
+}
+
+.campo-input img {
+    width: 20px;
+}
+
+.campo-input input {
+    border: none;
+    outline: none;
+    flex: 1;
+}
+
+input {
+  border-radius: 10px;
+  padding: 10px 100px 10px 10px;  
+}
+
+.caixa-form .botao {
+  width: 100%;
+  margin-top: 6px;
+}
 .mensagem { padding: 10px 14px; border-radius: 10px; margin-bottom: 14px; display: none; }
 .mensagem.erro { display: block; background: #fdecec; color: #b42318; }
 .mensagem.sucesso { display: block; background: #e7f8ee; color: #067647; }
 
 /* Tela de login e cadastro */
-.auth { display: grid; grid-template-columns: 1fr; place-items: center; padding: 50px 4%; min-height: 70vh; }
+.auth { 
+  background-image:url("../img/herologin.png");
+  background-size: cover;
+  background-position: center 70%;
+  background-repeat: no-repeat;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  place-items: center;
+
+  padding: 50px 4%;
+  min-height: calc(100vh - 70px);
+}
 .auth-imagem { display: none; }
 
 /* Listagens */
@@ -130,7 +196,7 @@ i { font-family: var(--fonte-titulo); font-style: italic; color: var(--primaria)
 /* Menu: links | logo | usuário */
 .topo { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 18px 4%; border-bottom: 1px solid var(--texto); position: sticky; top: 0; background: var(--fundo); z-index: 20; }
 .topo nav { display: flex; gap: 18px; flex-wrap: wrap; }
-.topo nav a { color: var(--texto); font-size: .88rem; }
+.topo nav a { color:slateblue ; font-size: .88rem; transition: 0.3ms; }
 .topo nav a.ativo, .topo nav a:hover { text-decoration: underline; text-underline-offset: 5px; }
 .logo { font: 1.7rem var(--fonte-titulo); color: var(--texto); }
 #area-usuario { justify-self: end; display: flex; gap: 10px; align-items: center; font-size: .85rem; }

@@ -7,8 +7,8 @@
 - Vinicius Almeida Reis
 - Joel Josue Nina Nina
 - Kaiky Mateus Oliveira da Silva
-- Felipe Enzo Souza Lopes
-- Kauã José Cardoso dos Santos
+- Jaqueline Thomas
+- Aghata Ribeiro Silva
 
 ---
 
