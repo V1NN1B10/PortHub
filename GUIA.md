@@ -9,7 +9,7 @@
 - Kaiky Mateus Oliveira da Silva
 - Jaqueline Thomas
 - Aghata Ribeiro Silva
-
+- Marina Sousa Rocha
 ---
 
 ## 1. Como abrir o site
