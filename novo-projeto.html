@@ -7,18 +7,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="icon" href="./img/logo.png">
 </head>
 <body class="">
   <!-- MENU: links à esquerda, logo no centro, usuário à direita.
        Para adicionar uma página, copie uma linha <a> -->
   <header class="topo">
-    <nav>
+    <nav id="menu-principal" aria-label="Navegação principal">
       <a href="index.html">Início</a>
       <a href="projetos.html">Meus projetos</a>
       <a href="novo-projeto.html">Novo projeto</a>
       <a href="portfolio.html">Meu portfólio</a>
     </nav>
+    <button class="menu-toggle" type="button" aria-controls="menu-principal" aria-expanded="false" aria-label="Abrir menu">
+      <i class="fa-solid fa-bars" aria-hidden="true"></i>
+    </button>
     <a href="index.html" class="logo"><img src="./img/logocomnome.png" alt="logo"></a>
     <div id="area-usuario"></div>
   </header>

@@ -167,6 +167,16 @@ document.addEventListener('DOMContentLoaded', () => {
   mostrarUsuarioNoMenu();
   marcarMenuAtivo();
   mostrarRedesSociais();
+  const menuBotao = document.querySelector('.menu-toggle');
+  const cabecalho = document.querySelector('.topo');
+  if (menuBotao && cabecalho) {
+    menuBotao.addEventListener('click', () => {
+      const aberto = menuBotao.getAttribute('aria-expanded') === 'true';
+      menuBotao.setAttribute('aria-expanded', String(!aberto));
+      menuBotao.setAttribute('aria-label', aberto ? 'Abrir menu' : 'Fechar menu');
+      cabecalho.classList.toggle('menu-aberto', !aberto);
+    });
+  }
   const campoSenha = document.getElementById('senha');
   const botaoVisibilidadeSenha = document.getElementById('alternar-senha');
   if (campoSenha && botaoVisibilidadeSenha) {
