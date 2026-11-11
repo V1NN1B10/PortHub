@@ -49,29 +49,18 @@
               <div class="campo-input">
                 <img src="./img/mdi-light--lock (1).svg" alt="">
                 <input type="password" id="senha" placeholder="Sua senha" required>
+                <button class="senha-visibilidade" id="alternar-senha" type="button" aria-label="Mostrar senha" aria-pressed="false" title="Mostrar senha">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
               </div>
             </div>
             <div class="login-opcoes">
               <label><input type="checkbox" id="lembrar"> <span>Lembrar de mim</span></label>
-              <a href="#recuperar-senha" id="abrir-recuperacao">Esqueceu a senha?</a>
             </div>
             <div class="login-botoes">
               <button class="botao" type="submit">Entrar</button>
-              <div class="login-google">
-                <button id="google-signin-configuracao" class="google-signin-configuracao" type="button">
-                  <svg class="google-marca" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.05 5.05 0 0 1-2.2 3.31v2.77h3.57c2.09-1.92 3.27-4.75 3.27-8.09Z"/>
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.99 7.28-2.66l-3.57-2.77c-.99.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.15v2.84A11 11 0 0 0 12 23Z"/>
-                    <path fill="#FBBC05" d="M5.84 14.1A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.44.34-2.1V7.06H2.15A11 11 0 0 0 1 12c0 1.78.43 3.46 1.15 4.94l3.69-2.84Z"/>
-                    <path fill="#EA4335" d="M12 5.37c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 0 0-9.85 6.06l3.69 2.84C6.71 7.3 9.14 5.37 12 5.37Z"/>
-                  </svg>
-                  <span>Google</span>
-                </button>
-                <div id="google-signin" class="google-signin" hidden></div>
-              </div>
             </div>
           </form>
-          <p id="google-signin-aviso" class="google-signin-aviso" role="status" aria-live="polite"></p>
           <div class="login-cadastro">
             <p>Ainda não tem conta?</p>
             <a href="cadastro.html">Criar conta grátis</a>
@@ -114,7 +103,6 @@
 
   <script src="js/config.js"></script>
   <script src="js/auth.js"></script>
-  <script src="https://accounts.google.com/gsi/client" async defer onload="inicializarLoginGoogle()"></script>
 </body>
 
 </html>

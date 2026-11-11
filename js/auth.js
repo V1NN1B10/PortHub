@@ -23,6 +23,36 @@ async function requisicaoAuth(caminho, dados) {
   return resultado;
 }
 
+function gerarCodigoRecuperacao() {
+  if (!window.crypto?.getRandomValues) throw new Error('Este navegador não oferece geração segura de códigos.');
+  const valor = new Uint32Array(1);
+  window.crypto.getRandomValues(valor);
+  return String(100000 + (valor[0] % 900000));
+}
+
+async function enviarCodigoRecuperacao(email, codigo, validadeMinutos) {
+  const emailjs = CONFIG.emailjs || {};
+  if (!emailjs.serviceId || !emailjs.templateId || !emailjs.publicKey) {
+    throw new Error('O envio de e-mail ainda não foi configurado em js/config.js.');
+  }
+  const resposta = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      service_id: emailjs.serviceId,
+      template_id: emailjs.templateId,
+      user_id: emailjs.publicKey,
+      template_params: {
+        to_email: email,
+        verification_code: codigo,
+        app_name: 'PortHub',
+        expiration_minutes: validadeMinutos
+      }
+    })
+  });
+  if (!resposta.ok) throw new Error('O serviço de e-mail não aceitou o envio. Confira o template e as configurações.');
+}
+
 function pegarUsuarios() {
   return JSON.parse(localStorage.getItem(CHAVE_USUARIOS)) || [];
 }
@@ -113,63 +143,6 @@ function marcarMenuAtivo() {
   });
 }
 
-function decodificarGoogleCredential(credential) {
-  try {
-    const parte = credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-    const bytes = Uint8Array.from(atob(parte), caractere => caractere.charCodeAt(0));
-    return JSON.parse(new TextDecoder().decode(bytes));
-  } catch (erro) { return null; }
-}
-
-async function receberLoginGoogle(resposta) {
-  const msg = document.getElementById('mensagem');
-  try {
-    let usuario;
-    if (AUTH_API_ATIVA) {
-      const resultado = await requisicaoAuth('google', { credential: resposta.credential });
-      usuario = resultado.user;
-    } else {
-      const perfil = decodificarGoogleCredential(resposta.credential);
-      if (!perfil || perfil.aud !== CONFIG.auth.googleClientId || perfil.exp * 1000 < Date.now() || !perfil.email_verified) {
-        throw new Error('A resposta de login do Google não passou nas verificações básicas.');
-      }
-      usuario = { id: perfil.sub, nome: perfil.name, email: perfil.email, foto: perfil.picture, provider: 'google' };
-    }
-    localStorage.setItem(CHAVE_SESSAO, JSON.stringify(usuario));
-    window.location.href = CONFIG.paginaAposLogin;
-  } catch (erro) {
-    msg.className = 'mensagem erro';
-    msg.textContent = erro.message || 'Não foi possível entrar com o Google.';
-  }
-}
-
-// Chamado pelo evento onload da biblioteca oficial Google Identity Services.
-function inicializarLoginGoogle() {
-  const area = document.getElementById('google-signin');
-  const aviso = document.getElementById('google-signin-aviso');
-  const botaoConfiguracao = document.getElementById('google-signin-configuracao');
-  if (!area || area.dataset.inicializado) return;
-  const clientId = CONFIG.auth?.googleClientId;
-  if (!clientId) {
-    botaoConfiguracao.hidden = false;
-    aviso.textContent = 'Configure o Client ID do Google em js/config.js para ativar este login.';
-    return;
-  }
-  botaoConfiguracao.hidden = true;
-  if (!window.google?.accounts?.id) {
-    botaoConfiguracao.hidden = false;
-    aviso.textContent = 'Não foi possível carregar o login do Google. Atualize a página e tente novamente.';
-    return;
-  }
-  area.dataset.inicializado = 'true';
-  area.hidden = false;
-  aviso.textContent = '';
-  google.accounts.id.initialize({ client_id: clientId, callback: receberLoginGoogle });
-  google.accounts.id.renderButton(area, { theme: 'outline', size: 'large', shape: 'pill', text: 'continue_with', width: Math.floor(area.clientWidth || 170), locale: 'pt-BR' });
-}
-window.inicializarLoginGoogle = inicializarLoginGoogle;
-window.receberLoginGoogle = receberLoginGoogle;
-
 function mostrarRedesSociais() {
   const area = document.getElementById('redes-sociais');
   if (!area) return;
@@ -194,13 +167,17 @@ document.addEventListener('DOMContentLoaded', () => {
   mostrarUsuarioNoMenu();
   marcarMenuAtivo();
   mostrarRedesSociais();
-  const botaoGoogleConfiguracao = document.getElementById('google-signin-configuracao');
-  if (botaoGoogleConfiguracao) {
-    botaoGoogleConfiguracao.addEventListener('click', () => {
-      document.getElementById('google-signin-aviso').textContent = 'O login Google está pronto, mas precisa do Client ID OAuth para abrir a autenticação.';
+  const campoSenha = document.getElementById('senha');
+  const botaoVisibilidadeSenha = document.getElementById('alternar-senha');
+  if (campoSenha && botaoVisibilidadeSenha) {
+    botaoVisibilidadeSenha.addEventListener('click', () => {
+      const mostrar = campoSenha.type === 'password';
+      campoSenha.type = mostrar ? 'text' : 'password';
+      botaoVisibilidadeSenha.setAttribute('aria-pressed', String(mostrar));
+      botaoVisibilidadeSenha.setAttribute('aria-label', mostrar ? 'Ocultar senha' : 'Mostrar senha');
+      botaoVisibilidadeSenha.title = mostrar ? 'Ocultar senha' : 'Mostrar senha';
     });
   }
-
   // ----- Formulário de cadastro -----
   const formCadastro = document.getElementById('form-cadastro');
   if (formCadastro) {
@@ -267,11 +244,14 @@ document.addEventListener('DOMContentLoaded', () => {
       mostrarMensagem('');
       document.getElementById('recuperacao-instrucao').textContent = 'Informe o e-mail usado no cadastro para receber um código de verificação.';
     };
-    document.getElementById('abrir-recuperacao').addEventListener('click', evento => {
-      evento.preventDefault();
-      modalRecuperacao.hidden = false;
-      document.getElementById('email-recuperacao').focus();
-    });
+    const abrirRecuperacao = document.getElementById('abrir-recuperacao');
+    if (abrirRecuperacao) {
+      abrirRecuperacao.addEventListener('click', evento => {
+        evento.preventDefault();
+        modalRecuperacao.hidden = false;
+        document.getElementById('email-recuperacao').focus();
+      });
+    }
     document.getElementById('fechar-recuperacao').addEventListener('click', fechar);
     modalRecuperacao.addEventListener('click', evento => { if (evento.target === modalRecuperacao) fechar(); });
     document.addEventListener('keydown', evento => { if (evento.key === 'Escape' && !modalRecuperacao.hidden) fechar(); });
@@ -288,39 +268,32 @@ document.addEventListener('DOMContentLoaded', () => {
           await requisicaoAuth('forgot-password', { email });
           recuperacao = { email, modoApi: true };
         } else {
-          const emailjs = CONFIG.emailjs || {};
-          if (!emailjs.serviceId || !emailjs.templateId || !emailjs.publicKey) {
-            mostrarMensagem('O envio ainda não foi configurado. Configure o EmailJS em js/config.js.', 'erro');
-            return;
-          }
           const usuario = pegarUsuarios().find(u => u.email === email);
           if (!usuario) {
             mostrarMensagem('Se esse e-mail estiver cadastrado, você receberá um código.');
             return;
           }
-          codigo = String(Math.floor(100000 + Math.random() * 900000));
-          const resposta = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              service_id: emailjs.serviceId,
-              template_id: emailjs.templateId,
-              user_id: emailjs.publicKey,
-              template_params: { to_email: email, verification_code: codigo, app_name: 'PortHub' }
-            })
-          });
-          if (!resposta.ok) throw new Error('EmailJS recusou o envio');
-          recuperacao = { email, codigo, expiraEm: Date.now() + 10 * 60 * 1000, tentativas: 0 };
+          const politicaRecuperacao = CONFIG.recuperacaoSenha || {};
+          const validadeMinutos = politicaRecuperacao.validadeMinutos || 10;
+          codigo = gerarCodigoRecuperacao();
+          await enviarCodigoRecuperacao(email, codigo, validadeMinutos);
+          recuperacao = {
+            email,
+            codigo,
+            expiraEm: Date.now() + validadeMinutos * 60 * 1000,
+            tentativas: 0,
+            maxTentativas: politicaRecuperacao.maxTentativas || 5
+          };
         }
         formEmailRecuperacao.hidden = true;
         formCodigoRecuperacao.hidden = false;
         document.getElementById('recuperacao-instrucao').textContent = AUTH_API_ATIVA
           ? 'Se o e-mail estiver cadastrado, enviaremos um código. Digite-o abaixo para continuar.'
-          : 'Enviamos um código de 6 dígitos. Ele expira em 10 minutos.';
+          : `Enviamos um código de 6 dígitos. Ele expira em ${CONFIG.recuperacaoSenha?.validadeMinutos || 10} minutos.`;
         mostrarMensagem('Confira sua caixa de entrada e a pasta de spam.', 'sucesso');
         document.getElementById('codigo-recuperacao').focus();
       } catch (erro) {
-        mostrarMensagem('Não foi possível enviar o código. Confira a configuração do EmailJS e tente novamente.', 'erro');
+        mostrarMensagem(erro.message || 'Não foi possível enviar o código. Confira as configurações e tente novamente.', 'erro');
       } finally {
         botao.disabled = false;
         botao.textContent = 'Enviar código';
@@ -338,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (!recuperacao.modoApi && codigoDigitado !== recuperacao.codigo) {
         recuperacao.tentativas += 1;
-        if (recuperacao.tentativas >= 5) {
+        if (recuperacao.tentativas >= (recuperacao.maxTentativas || CONFIG.recuperacaoSenha?.maxTentativas || 5)) {
           recuperacao = null;
           mostrarMensagem('Limite de tentativas atingido. Feche e solicite um novo código.', 'erro');
         } else mostrarMensagem('Código inválido. Confira o e-mail e tente novamente.', 'erro');

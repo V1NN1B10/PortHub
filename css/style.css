@@ -433,6 +433,30 @@ a.rede-social:hover { background: rgba(255,255,255,.1); border-color: rgba(255,2
   width: 14px;
   height: 14px;
 }
+.pagina-login .login-cartao .campo-input .senha-visibilidade {
+  display: inline-flex;
+  flex: 0 0 30px;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #77727f;
+  cursor: pointer;
+}
+.pagina-login .login-cartao .campo-input .senha-visibilidade:hover { color: #7100ef; }
+.pagina-login .login-cartao .campo-input .senha-visibilidade svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 .pagina-login .login-cartao .campo-input input {
   min-width: 0;
   padding: 8px 8px;
@@ -499,31 +523,8 @@ a.rede-social:hover { background: rgba(255,255,255,.1); border-color: rgba(255,2
 .pagina-login .login-cartao .mensagem:not(.erro):not(.sucesso) {
   display: none;
 }
-.pagina-login .login-botoes { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 12px; margin-top: 10px; }
-.pagina-login .login-cartao .login-botoes > .botao { width: 100%; min-height: 40px; margin: 0; padding: 8px 12px; }
-.pagina-login .login-google { min-width: 0; width: 100%; }
-.pagina-login .google-signin[hidden] { display: none; }
-.pagina-login .google-signin { display: flex; justify-content: center; width: 100%; min-height: 40px; }
-.pagina-login .google-signin-configuracao[hidden] { display: none; }
-.pagina-login .google-signin-configuracao {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  width: 100%;
-  min-height: 40px;
-  margin: 0;
-  border: 1px solid #dadce0;
-  border-radius: 999px;
-  background: #fff;
-  color: #3c4043;
-  font: 500 .85rem var(--fonte);
-  cursor: pointer;
-}
-.pagina-login .google-signin-configuracao:hover { background: #f8faff; border-color: #c5d2e3; }
-.pagina-login .google-marca { display: block; width: 18px; height: 18px; flex: 0 0 18px; }
-.pagina-login .google-signin-aviso { min-height: 0; margin: 5px 0 0; color: #77727f; text-align: center; font-size: .68rem; }
-.pagina-login .login-cartao #google-signin-aviso:not(:empty) { display: block; }
+.pagina-login .login-botoes { display: flex; justify-content: center; margin-top: 10px; }
+.pagina-login .login-cartao .login-botoes > .botao { width: min(100%, 190px); min-height: 44px; margin: 0 auto; padding: 8px 20px; }
 .pagina-login .recuperacao-fundo[hidden],
 .pagina-login form[hidden] { display: none; }
 .pagina-login .recuperacao-fundo {

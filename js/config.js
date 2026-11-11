@@ -6,17 +6,20 @@
 
 const CONFIG = {
   "chave": "portfolioFacil",
-  // Crie um serviço e um template no EmailJS. O template usa to_email e verification_code.
+  // EmailJS: Service ID, Template ID e Public Key; o template usa to_email, verification_code, app_name e expiration_minutes.
   "emailjs": {
     "serviceId": "",
     "templateId": "",
     "publicKey": ""
   },
+  "recuperacaoSenha": {
+    "validadeMinutos": 10,
+    "maxTentativas": 5
+  },
   // "local" mantém o modo de demonstração. "api" usa a API descrita em docs/API-FUTURA.md.
   "auth": {
     "mode": "local",
-    "apiBaseUrl": "",
-    "googleClientId": ""
+    "apiBaseUrl": ""
   },
   "redesSociais": {
     "instagramUrl": "",

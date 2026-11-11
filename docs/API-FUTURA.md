@@ -11,7 +11,6 @@ Todas as respostas devem ser JSON. A sessão deve ser criada em cookie `HttpOnly
 | `POST` | `/auth/register` | `{ nome, email, senha }` | Validar e-mail, aplicar hash forte à senha e criar usuário. |
 | `POST` | `/auth/login` | `{ email, senha }` | Verificar credenciais e criar sessão segura. |
 | `POST` | `/auth/logout` | `{}` | Invalidar a sessão atual no servidor. |
-| `POST` | `/auth/google` | `{ credential }` | Validar assinatura, emissor, público (`aud`) e expiração do token Google; localizar ou criar usuário. |
 | `POST` | `/auth/forgot-password` | `{ email }` | Responder de forma genérica, criar código/token de uso único com validade curta e enviar o código por e-mail. |
 | `POST` | `/auth/reset-password` | `{ email, code, novaSenha }` | Validar e consumir o código, aplicar hash da senha e invalidar sessões antigas. |
 
@@ -21,7 +20,7 @@ O envio de código deve acontecer no servidor. EmailJS fica disponível somente 
 
 ## Modelo de dados inicial
 
-- `users`: `id`, `name`, `email` (único), `password_hash` (opcional para contas Google), `created_at`, `updated_at`.
+- `users`: `id`, `name`, `email` (único), `password_hash` (nulo para métodos sem senha), `created_at`, `updated_at`.
 - `auth_identities`: `id`, `user_id`, `provider`, `provider_subject` (único por provedor), `created_at`.
 - `password_reset_tokens`: `id`, `user_id`, `token_hash`, `expires_at`, `used_at`, `created_at`. Armazene apenas o hash do código/token.
 - `projects`: `id`, `user_id`, campos definidos por `CONFIG.campos`, `created_at`, `updated_at`.
@@ -40,12 +39,12 @@ O envio de código deve acontecer no servidor. EmailJS fica disponível somente 
 
 O servidor deve derivar o dono (`user_id`) da sessão autenticada, nunca aceitar como confiável o autor enviado pelo navegador. Aplicar validação de entrada, controle de acesso por registro, limites de requisição e proteção contra CSRF quando a sessão usar cookies.
 
-## Google Identity Services
-
-Cadastre um OAuth Client ID do tipo aplicação Web e inclua as origens autorizadas de desenvolvimento/publicação. O botão oficial da Google Identity Services aparece depois de preencher `CONFIG.auth.googleClientId`. No modo local a interface aceita o retorno assinado para demonstrar o fluxo, com verificações básicas de público, validade e e-mail. Essa validação local não substitui a verificação de assinatura no servidor; para produção, configure o modo `api` e implemente `/auth/google` usando uma biblioteca oficial de validação de ID tokens.
-
 ## Configurar e-mail e redes
 
-- `CONFIG.emailjs.serviceId`, `templateId` e `publicKey`: configuração de demonstração; o template precisa dos campos `to_email` e `verification_code`.
+- No painel do EmailJS, conecte um serviço de e-mail e crie um template para recuperação de senha.
+- No destinatário do template, use `{{to_email}}`. No assunto, use algo como `Código de recuperação do {{app_name}}`; no corpo, inclua `{{verification_code}}` e informe que o código expira em `{{expiration_minutes}}` minutos.
+- Copie o Service ID do serviço, o Template ID do template e a Public Key da conta para `CONFIG.emailjs.serviceId`, `templateId` e `publicKey` em `js/config.js`. O navegador envia esses valores à API REST oficial do EmailJS junto com `template_params`.
+- Configure no EmailJS a lista de origens/domínios permitidos para aceitar apenas o domínio de publicação e o endereço de desenvolvimento que você usa. Não coloque a Private Key no JavaScript.
+- `CONFIG.recuperacaoSenha.validadeMinutos` e `maxTentativas` controlam a validade e o limite de erros no modo local. No modo API, a API deve impor os mesmos limites no servidor.
 - `CONFIG.redesSociais.instagramUrl` e `tiktokUrl`: URLs completas dos perfis.
 - `CONFIG.redesSociais.whatsappNumber`: número internacional com código do país, apenas dígitos (ex.: `5511999999999`). A interface gera o link `wa.me`.
