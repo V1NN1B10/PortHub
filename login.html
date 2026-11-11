@@ -13,7 +13,7 @@
   <link rel="icon" href="./img/Captura de tela 2026-11-08 100857.png">
 </head>
 
-<body class="">
+<body class="pagina-login">
   <!-- MENU: links à esquerda, logo no centro, usuário à direita.
        Para adicionar uma página, copie uma linha <a> -->
   <header class="topo">
@@ -28,37 +28,39 @@
   </header>
 
   <main>
-    <section class="auth">
-
-      <div class="caixa-form">
-        <img src="./img/Captura de tela 2026-11-08 100857.png" alt="img">
-        <h1>Bem-vindo!</h1>
-        <p>Acesse sua conta para continuar criando seu portfólio.</p>
-        <div id="mensagem" class="mensagem"></div>
-        <form id="form-login">
-
-          <div class="campo">
-            <label for="email">E-mail</label>
-
-            <div class="campo-input">
-              <img src="./img/mdi-light--email.svg" alt="">
-              <input type="email" id="email" placeholder="Digite seu E-mail" required>
+    <section class="auth login-auth">
+      <div class="login-conteudo">
+        <div class="login-identidade">
+          <span class="login-icone" aria-hidden="true"></span>
+          <h1>Entrar no PortHub</h1>
+        </div>
+        <div class="caixa-form login-cartao">
+          <div id="mensagem" class="mensagem"></div>
+          <form id="form-login">
+            <div class="campo campo-login">
+              <label for="email">E-mail</label>
+              <div class="campo-input">
+                <img src="./img/mdi-light--email.svg" alt="">
+                <input type="email" id="email" placeholder="Seu e-mail" required>
+              </div>
             </div>
-
-          </div>
-
-          <div class="campo">
-            <label for="senha">Senha</label>
-            <div class="campo-input">
-              <img src="./img/mdi-light--lock (1).svg" alt="">
-              <input type="password" id="senha" placeholder="Digite a sua senha" required>
+            <div class="campo campo-login">
+              <label for="senha">Senha</label>
+              <div class="campo-input">
+                <img src="./img/mdi-light--lock (1).svg" alt="">
+                <input type="password" id="senha" placeholder="Sua senha" required>
+              </div>
             </div>
+            <div class="login-opcoes">
+              <label><input type="checkbox" id="lembrar"> <span>Lembrar de mim</span></label>
+            </div>
+            <button class="botao" type="submit">Entrar</button>
+          </form>
+          <div class="login-cadastro">
+            <p>Ainda não tem conta?</p>
+            <a href="cadastro.html">Criar conta grátis</a>
           </div>
-
-          <button class="botao" type="submit">Entrar</button>
-
-        </form>
-        <p style="margin-top:16px">Ainda não tem conta? <a href="cadastro.html">Cadastre-se</a></p>
+        </div>
       </div>
     </section>
 
