@@ -283,6 +283,17 @@ i { font-family: var(--fonte-titulo); font-style: italic; color: var(--primaria)
 
 footer { background: var(--tinta); color: #b5b0a7; padding: 60px 4% 30px; }
 .rodape-grande { font: clamp(2.2rem, 6vw, 5rem) var(--fonte-titulo); color: var(--fundo); line-height: 1; margin-bottom: 30px; }
+.rodape { width: min(1120px, 100%); margin: 0 auto; }
+.redes-sociais { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 22px 0 28px; }
+.rede-social { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 7px 14px; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; color: #f4f1fb; font-size: .82rem; transition: background .18s ease, border-color .18s ease; }
+a.rede-social:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.55); }
+.rede-social svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.rede-social svg path { fill: currentColor; stroke: none; }
+.rede-social svg .ponto { fill: currentColor; stroke: none; }
+.rede-social-vazia { color: #a7a1b3; border-style: dashed; }
+.pagina-login footer { padding-top: 26px; padding-bottom: 22px; }
+.pagina-login footer .rodape-grande { margin-bottom: 12px; font-size: clamp(1.7rem, 4vw, 2.4rem); }
+.pagina-login footer .redes-sociais { margin: 12px 0; }
 
 /* Na hora de imprimir/salvar PDF, só o portfólio aparece */
 @media print {
@@ -299,3 +310,642 @@ footer { background: var(--tinta); color: #b5b0a7; padding: 60px 4% 30px; }
   .passos, .projeto, .portfolio-cabecalho { grid-template-columns: 1fr; }
   .projeto:nth-child(even) .registro-imagem { order: 0; }
 }
+
+/* Login PortHub: estilos limitados a login.html */
+.pagina-login {
+  background: #f4f5f9;
+  color: #29243a;
+}
+.pagina-login .topo {
+  display: none;
+}
+.pagina-login main {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+}
+.pagina-login .login-auth {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  flex: 1;
+  min-height: 100vh;
+  padding: 48px 20px;
+  background: #f4f5f9;
+  border: 0;
+}
+.pagina-login .login-auth::before {
+  position: fixed;
+  z-index: -1;
+  inset: 0 0 auto;
+  height: 67vh;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(125deg, #7400f5 0%, #4b1495 47%, #211937 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 25%, 0 100%);
+}
+.pagina-login .login-auth::after {
+  position: absolute;
+  z-index: -1;
+  right: -105px;
+  bottom: -250px;
+  width: 455px;
+  height: 455px;
+  pointer-events: none;
+  content: "";
+  border-radius: 50%;
+  background: #16b5a5;
+}
+.pagina-login .login-conteudo {
+  width: min(100%, 460px);
+  margin: auto;
+}
+.pagina-login .login-identidade {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 22px;
+  color: #fff;
+}
+.pagina-login .login-identidade h1 {
+  margin-top: 12px;
+  font: 600 1.25rem/1.3 var(--fonte);
+  letter-spacing: 0;
+}
+.pagina-login .login-icone {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+.pagina-login .login-icone::before {
+  position: absolute;
+  top: 15px;
+  left: 24px;
+  width: 16px;
+  height: 16px;
+  content: "";
+  border-radius: 50%;
+  background: #fff;
+}
+.pagina-login .login-icone::after {
+  position: absolute;
+  bottom: 12px;
+  left: 17px;
+  width: 30px;
+  height: 17px;
+  content: "";
+  border-radius: 18px 18px 5px 5px;
+  background: #fff;
+}
+.pagina-login .login-cartao {
+  width: 100%;
+  height: auto;
+  min-height: 284px;
+  padding: 32px;
+  justify-self: auto;
+  border: 0;
+  border-radius: 58px;
+  background: #fff;
+  box-shadow: 0 18px 32px rgba(30, 24, 55, .2);
+}
+.pagina-login .login-cartao form {
+  width: 100%;
+}
+.pagina-login .campo-login {
+  position: relative;
+  margin-bottom: 15px;
+}
+.pagina-login .campo-login > label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+.pagina-login .login-cartao .campo-input {
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid #ddd9e8;
+  border-radius: 22px;
+}
+.pagina-login .login-cartao .campo-input img {
+  width: 14px;
+  height: 14px;
+}
+.pagina-login .login-cartao .campo-input .senha-visibilidade {
+  display: inline-flex;
+  flex: 0 0 30px;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #77727f;
+  cursor: pointer;
+}
+.pagina-login .login-cartao .campo-input .senha-visibilidade:hover { color: #7100ef; }
+.pagina-login .login-cartao .campo-input .senha-visibilidade svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pagina-login .login-cartao .campo-input input {
+  min-width: 0;
+  padding: 8px 8px;
+  color: #363142;
+  background: transparent;
+  font: 400 .78rem var(--fonte);
+}
+.pagina-login .login-cartao .campo-input input::placeholder {
+  color: #77727f;
+}
+.pagina-login .login-opcoes {
+  margin: 0 2px 17px;
+  color: #686372;
+  font-size: .7rem;
+}
+.pagina-login .login-opcoes label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+.pagina-login .login-opcoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.pagina-login .login-opcoes a {
+  color: #7100ef;
+  text-decoration: none;
+}
+.pagina-login .login-opcoes a:hover { text-decoration: underline; }
+.pagina-login .login-opcoes input {
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  padding: 0;
+  accent-color: #16b5a5;
+}
+.pagina-login .login-cartao .botao {
+  display: flex;
+  width: 112px;
+  margin: 0 auto;
+  padding: 8px 20px;
+  border: 0;
+  background: #7100ef;
+  font-size: .82rem;
+}
+.pagina-login .login-cadastro {
+  margin-top: 12px;
+  text-align: center;
+  font-size: .72rem;
+}
+.pagina-login .login-cadastro p {
+  margin-bottom: 5px;
+  color: #77727f;
+}
+.pagina-login .login-cadastro a {
+  display: inline-block;
+  padding: 2px 14px;
+  border: 1px solid #16a998;
+  border-radius: 16px;
+  color: #383345;
+}
+.pagina-login .login-cartao .mensagem:not(.erro):not(.sucesso) {
+  display: none;
+}
+.pagina-login .login-botoes { display: flex; justify-content: center; margin-top: 10px; }
+.pagina-login .login-cartao .login-botoes > .botao { width: min(100%, 190px); min-height: 44px; margin: 0 auto; padding: 8px 20px; }
+.pagina-login .recuperacao-fundo[hidden],
+.pagina-login form[hidden] { display: none; }
+.pagina-login .recuperacao-fundo {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(25, 20, 40, .62);
+}
+.pagina-login .recuperacao-cartao {
+  position: relative;
+  width: min(100%, 420px);
+  padding: 32px;
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: 0 18px 48px rgba(18, 10, 40, .3);
+}
+.pagina-login .recuperacao-cartao h2 { margin: 0 30px 8px 0; font-size: 1.25rem; }
+.pagina-login .recuperacao-cartao p { color: #686372; font-size: .85rem; line-height: 1.5; }
+.pagina-login .recuperacao-fechar {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  border: 0;
+  background: transparent;
+  color: #686372;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+.pagina-login .recuperacao-cartao form { display: grid; gap: 9px; margin-top: 18px; }
+.pagina-login .recuperacao-cartao form label { color: #514b5e; font-size: .8rem; }
+.pagina-login .recuperacao-cartao form input {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid #ddd9e8;
+  border-radius: 12px;
+  color: #363142;
+  font: 400 .9rem var(--fonte);
+}
+.pagina-login .recuperacao-cartao form .botao { width: 100%; margin-top: 8px; }
+.pagina-login .recuperacao-cartao .mensagem:empty { display: none; }
+@media (max-width: 480px) {
+  .pagina-login .login-auth {
+    padding: 36px 18px;
+  }
+  .pagina-login .login-cartao {
+    min-height: 270px;
+    padding: 26px 22px;
+    border-radius: 42px;
+  }
+  .pagina-login .login-auth::after {
+    right: -220px;
+    bottom: -270px;
+  }
+}
+
+/* Cadastro usa a mesma identidade da tela de login */
+.pagina-cadastro {
+  background: #f4f5f9;
+  color: #29243a;
+}
+.pagina-cadastro .topo,
+.pagina-cadastro footer {
+  display: none;
+}
+.pagina-cadastro main {
+  min-height: 100vh;
+  display: flex;
+}
+.pagina-cadastro .login-auth {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  flex: 1;
+  min-height: 100vh;
+  padding: 42px 20px;
+  background: #f4f5f9;
+  border: 0;
+}
+.pagina-cadastro .login-auth::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0 0 auto;
+  height: 70%;
+  content: "";
+  background: linear-gradient(125deg, #7400f5 0%, #4b1495 47%, #211937 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 25%, 0 100%);
+}
+.pagina-cadastro .login-auth::after {
+  position: absolute;
+  z-index: -1;
+  right: -105px;
+  bottom: -250px;
+  width: 455px;
+  height: 455px;
+  content: "";
+  border-radius: 50%;
+  background: #16b5a5;
+}
+.pagina-cadastro .cadastro-conteudo {
+  width: min(100%, 460px);
+}
+.pagina-cadastro .login-identidade {
+  margin-bottom: 18px;
+}
+.pagina-cadastro .login-identidade h1 {
+  font-size: 1.2rem;
+  text-align: center;
+}
+.pagina-cadastro .cadastro-cartao {
+  min-height: 0;
+  padding: 28px 34px;
+  border-radius: 42px;
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+.pagina-cadastro .cadastro-cartao:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 38px rgba(30, 24, 55, .24);
+}
+.pagina-cadastro .cadastro-intro {
+  margin-bottom: 14px;
+  color: #77727f;
+  text-align: center;
+  font-size: .84rem;
+}
+.pagina-cadastro .cadastro-cartao form {
+  width: 100%;
+}
+.pagina-cadastro .cadastro-campo {
+  margin-bottom: 11px;
+  gap: 5px;
+}
+.pagina-cadastro .cadastro-campo label {
+  color: #4e4959;
+  font-size: .76rem;
+  font-weight: 500;
+}
+.pagina-cadastro .cadastro-campo input {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 13px;
+  border: 1px solid #ddd9e8;
+  border-radius: 18px;
+  outline: none;
+  color: #363142;
+  background: #fff;
+  font: 400 .82rem var(--fonte);
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.pagina-cadastro .cadastro-campo input::placeholder {
+  color: #9994a1;
+}
+.pagina-cadastro .cadastro-campo input:focus {
+  border-color: #7a22e8;
+  background: #fdfbff;
+  box-shadow: 0 0 0 3px rgba(122, 34, 232, .12);
+}
+.pagina-cadastro .cadastro-cartao .botao {
+  display: flex;
+  width: 100%;
+  margin-top: 5px;
+  padding: 10px 18px;
+  border: 0;
+  background: #7100ef;
+  font-size: .86rem;
+}
+.pagina-cadastro .login-cadastro {
+  margin-top: 14px;
+}
+.pagina-cadastro .login-cadastro a {
+  transition: color .18s ease, background .18s ease;
+}
+.pagina-cadastro .login-cadastro a:hover {
+  color: #fff;
+  background: #16a998;
+}
+.pagina-login .login-cartao,
+.pagina-login .login-cadastro a {
+  transition: transform .22s ease, box-shadow .22s ease, color .18s ease, background .18s ease;
+}
+.pagina-login .login-cartao:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 38px rgba(30, 24, 55, .24);
+}
+.pagina-login .login-cadastro a:hover {
+  color: #fff;
+  background: #16a998;
+}
+.pagina-login .login-cartao .campo-input:focus-within {
+  border-color: #7a22e8;
+  box-shadow: 0 0 0 3px rgba(122, 34, 232, .12);
+}
+.pagina-login .login-cartao .botao:hover,
+.pagina-cadastro .cadastro-cartao .botao:hover {
+  background: #5f00ca;
+  box-shadow: 0 6px 14px rgba(113, 0, 239, .22);
+}
+.pagina-login .login-cartao .botao:active,
+.pagina-cadastro .cadastro-cartao .botao:active {
+  transform: translateY(1px);
+}
+@media (max-width: 480px) {
+  .pagina-cadastro .login-auth {
+    padding: 30px 18px;
+  }
+  .pagina-cadastro .cadastro-cartao {
+    padding: 24px 22px;
+    border-radius: 34px;
+  }
+  .pagina-cadastro .login-auth::after {
+    right: -220px;
+    bottom: -270px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pagina-login *,
+  .pagina-cadastro * {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* Ajustes finais de alinhamento e responsividade para as telas de acesso */
+.pagina-login .login-auth,
+.pagina-cadastro .login-auth {
+  overflow: visible;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+.pagina-login .login-auth { overflow: hidden; min-height: 100vh; min-height: 100svh; }
+.pagina-cadastro .login-auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(28px, 5vh, 52px) 18px;
+}
+.pagina-cadastro .login-auth::before,
+.pagina-cadastro .login-auth::after {
+  position: fixed;
+  pointer-events: none;
+}
+.pagina-cadastro .login-conteudo {
+  width: min(100%, 460px);
+  margin: auto;
+}
+.pagina-cadastro .login-identidade {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 0 20px;
+  color: #fff;
+}
+.pagina-cadastro .login-identidade h1 {
+  margin-top: 12px;
+  font: 600 clamp(1.08rem, 4vw, 1.25rem)/1.3 var(--fonte);
+  letter-spacing: 0;
+}
+.pagina-cadastro .login-icone {
+  position: relative;
+  flex: 0 0 62px;
+  width: 62px;
+  height: 62px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+.pagina-cadastro .login-icone::before {
+  position: absolute;
+  top: 13px;
+  left: 21px;
+  width: 16px;
+  height: 16px;
+  content: "";
+  border-radius: 50%;
+  background: #fff;
+}
+.pagina-cadastro .login-icone::after {
+  position: absolute;
+  bottom: 10px;
+  left: 14px;
+  width: 30px;
+  height: 17px;
+  content: "";
+  border-radius: 18px 18px 5px 5px;
+  background: #fff;
+}
+.pagina-cadastro .cadastro-cartao {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  padding: clamp(22px, 5vw, 34px);
+  border-radius: clamp(28px, 8vw, 42px);
+  box-shadow: 0 18px 32px rgba(30, 24, 55, .2);
+}
+.pagina-cadastro .cadastro-intro {
+  margin: 0 0 18px;
+  color: #77727f;
+  text-align: center;
+  font-size: .88rem;
+}
+.pagina-cadastro #form-cadastro {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+.pagina-cadastro .cadastro-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+}
+.pagina-cadastro .cadastro-campo label {
+  color: #4e4959;
+  font-size: .8rem;
+  line-height: 1.3;
+  font-weight: 600;
+}
+.pagina-cadastro .cadastro-campo input {
+  display: block;
+  width: 100%;
+  height: 46px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid #ddd9e8;
+  border-radius: 16px;
+  outline: none;
+  color: #363142;
+  background: #fff;
+  font: 400 16px var(--fonte);
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.pagina-cadastro .cadastro-cartao .botao {
+  width: 100%;
+  min-height: 46px;
+  margin: 3px 0 0;
+  padding: 10px 18px;
+  font-size: .9rem;
+}
+.pagina-cadastro .login-cadastro {
+  margin-top: 18px;
+  text-align: center;
+}
+.pagina-cadastro .login-cadastro p {
+  margin-bottom: 7px;
+  color: #77727f;
+  font-size: .8rem;
+}
+.pagina-cadastro .login-cadastro a {
+  min-height: 34px;
+  padding: 4px 18px;
+}
+.pagina-login .login-auth::before,
+.pagina-login .login-auth::after {
+  pointer-events: none;
+}
+.pagina-login .login-cartao .campo-input {
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+.pagina-login .login-cartao .campo-input:focus-within {
+  border-color: #7a22e8;
+  box-shadow: 0 0 0 3px rgba(122, 34, 232, .12);
+}
+.pagina-login .login-cartao input {
+  font-size: 16px;
+}
+.pagina-login .login-cartao .botao {
+  min-height: 44px;
+}
+.pagina-login a:focus-visible,
+.pagina-cadastro a:focus-visible,
+.pagina-login button:focus-visible,
+.pagina-cadastro button:focus-visible,
+.pagina-login input:focus-visible,
+.pagina-cadastro input:focus-visible {
+  outline: 3px solid rgba(22, 181, 165, .55);
+  outline-offset: 3px;
+}
+@media (max-width: 600px) {
+  .pagina-login .login-auth {
+    padding: 30px 18px;
+  }
+  .pagina-login .login-conteudo {
+    width: min(100%, 390px);
+  }
+  .pagina-login .login-identidade {
+    margin-bottom: 18px;
+  }
+  .pagina-login .login-icone {
+    transform: scale(.9);
+  }
+  .pagina-login .login-cartao {
+    padding: 26px 22px;
+    border-radius: 38px;
+  }
+  .pagina-login .login-auth::after,
+  .pagina-cadastro .login-auth::after {
+    right: -190px;
+    bottom: -230px;
+    width: 340px;
+    height: 340px;
+  }
+}
+@media (max-width: 360px) {
+  .pagina-cadastro .login-auth,
+  .pagina-login .login-auth {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+  .pagina-cadastro .cadastro-cartao,
+  .pagina-login .login-cartao {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+}
+@media (max-width: 480px) {
+  footer { padding: 38px 6% 24px; }
+  .redes-sociais { gap: 8px; }
+  .rede-social { min-height: 40px; padding: 6px 11px; font-size: .76rem; }
+}
+

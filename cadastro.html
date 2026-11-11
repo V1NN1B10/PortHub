@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="./img/logo.png">
 </head>
-<body class="">
+<body class="pagina-cadastro">
   <!-- MENU: links à esquerda, logo no centro, usuário à direita.
        Para adicionar uma página, copie uma linha <a> -->
   <header class="topo">
@@ -24,20 +24,27 @@
   </header>
 
   <main>
-    <section class="auth">
-      
-      <div class="caixa-form">
-        <h1>Criar conta</h1>
-        <p>É rapidinho e gratuito.</p>
-        <div id="mensagem" class="mensagem"></div>
-        <form id="form-cadastro">
-          <div class="campo"><label for="nome">Nome completo</label><input type="text" id="nome" required></div>
-          <div class="campo"><label for="email">E-mail</label><input type="email" id="email" required></div>
-          <div class="campo"><label for="senha">Senha</label><input type="password" id="senha" minlength="6" required></div>
-          <div class="campo"><label for="confirmar">Confirmar senha</label><input type="password" id="confirmar" required></div>
-          <button class="botao" type="submit">Cadastrar</button>
-        </form>
-        <p style="margin-top:16px">Já tem conta? <a href="login.html">Entrar</a></p>
+    <section class="auth login-auth">
+      <div class="login-conteudo cadastro-conteudo">
+        <div class="login-identidade">
+          <span class="login-icone" aria-hidden="true"></span>
+          <h1>Criar sua conta no PortHub</h1>
+        </div>
+        <div class="caixa-form login-cartao cadastro-cartao">
+          <p class="cadastro-intro">É rapidinho e gratuito.</p>
+          <div id="mensagem" class="mensagem"></div>
+          <form id="form-cadastro">
+            <div class="campo cadastro-campo"><label for="nome">Nome completo</label><input type="text" id="nome" placeholder="Seu nome completo" required></div>
+            <div class="campo cadastro-campo"><label for="email">E-mail</label><input type="email" id="email" placeholder="Seu e-mail" required></div>
+            <div class="campo cadastro-campo"><label for="senha">Senha</label><input type="password" id="senha" minlength="6" placeholder="Mínimo de 6 caracteres" required></div>
+            <div class="campo cadastro-campo"><label for="confirmar">Confirmar senha</label><input type="password" id="confirmar" placeholder="Digite a senha novamente" required></div>
+            <button class="botao" type="submit">Criar conta grátis</button>
+          </form>
+          <div class="login-cadastro">
+            <p>Já tem conta?</p>
+            <a href="login.html">Entrar</a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -45,6 +52,7 @@
   <footer>
     <div class="rodape">
       <p class="rodape-grande">Mostre o que<br>você <i>constrói.</i></p>
+      <div id="redes-sociais" class="redes-sociais" aria-label="Redes sociais PortHub"></div>
       <p>Portfólio Fácil · Projeto Final · <span class="trocar">Grupo 3</span> · 2026</p>
     </div>
   </footer>

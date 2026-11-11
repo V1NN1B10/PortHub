@@ -6,6 +6,26 @@
 
 const CONFIG = {
   "chave": "portfolioFacil",
+  // EmailJS: Service ID, Template ID e Public Key; o template usa to_email, verification_code, app_name e expiration_minutes.
+  "emailjs": {
+    "serviceId": "",
+    "templateId": "",
+    "publicKey": ""
+  },
+  "recuperacaoSenha": {
+    "validadeMinutos": 10,
+    "maxTentativas": 5
+  },
+  // "local" mantém o modo de demonstração. "api" usa a API descrita em docs/API-FUTURA.md.
+  "auth": {
+    "mode": "local",
+    "apiBaseUrl": ""
+  },
+  "redesSociais": {
+    "instagramUrl": "",
+    "tiktokUrl": "",
+    "whatsappNumber": ""
+  },
   "paginaAposLogin": "projetos.html",
   "modoLista": "grade",
   "permitirEditar": true,
