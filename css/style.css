@@ -318,8 +318,8 @@ a.rede-social:hover { background: rgba(255,255,255,.1); border-color: rgba(255,2
   display: none;
 }
 .pagina-login main {
-  min-height: calc(100vh - 180px);
-  min-height: calc(100svh - 180px);
+  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
 }
 .pagina-login .login-auth {
@@ -756,7 +756,7 @@ a.rede-social:hover { background: rgba(255,255,255,.1); border-color: rgba(255,2
   min-height: 100vh;
   min-height: 100svh;
 }
-.pagina-login .login-auth { overflow: hidden; min-height: calc(100vh - 180px); min-height: calc(100svh - 180px); }
+.pagina-login .login-auth { overflow: hidden; min-height: 100vh; min-height: 100svh; }
 .pagina-cadastro .login-auth {
   display: flex;
   align-items: center;
@@ -945,5 +945,4 @@ a.rede-social:hover { background: rgba(255,255,255,.1); border-color: rgba(255,2
   footer { padding: 38px 6% 24px; }
   .redes-sociais { gap: 8px; }
   .rede-social { min-height: 40px; padding: 6px 11px; font-size: .76rem; }
-  .pagina-login .login-auth { min-height: calc(100svh - 170px); }
 }
