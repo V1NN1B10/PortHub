@@ -281,6 +281,17 @@ i { font-family: var(--fonte-titulo); font-style: italic; color: var(--primaria)
 
 footer { background: var(--tinta); color: #b5b0a7; padding: 60px 4% 30px; }
 .rodape-grande { font: clamp(2.2rem, 6vw, 5rem) var(--fonte-titulo); color: var(--fundo); line-height: 1; margin-bottom: 30px; }
+.rodape { width: min(1120px, 100%); margin: 0 auto; }
+.redes-sociais { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 22px 0 28px; }
+.rede-social { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 7px 14px; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; color: #f4f1fb; font-size: .82rem; transition: background .18s ease, border-color .18s ease; }
+a.rede-social:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.55); }
+.rede-social svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.rede-social svg path { fill: currentColor; stroke: none; }
+.rede-social svg .ponto { fill: currentColor; stroke: none; }
+.rede-social-vazia { color: #a7a1b3; border-style: dashed; }
+.pagina-login footer { padding-top: 26px; padding-bottom: 22px; }
+.pagina-login footer .rodape-grande { margin-bottom: 12px; font-size: clamp(1.7rem, 4vw, 2.4rem); }
+.pagina-login footer .redes-sociais { margin: 12px 0; }
 
 /* Na hora de imprimir/salvar PDF, só o portfólio aparece */
 @media print {
@@ -303,12 +314,12 @@ footer { background: var(--tinta); color: #b5b0a7; padding: 60px 4% 30px; }
   background: #f4f5f9;
   color: #29243a;
 }
-.pagina-login .topo,
-.pagina-login footer {
+.pagina-login .topo {
   display: none;
 }
 .pagina-login main {
-  min-height: 100vh;
+  min-height: calc(100vh - 180px);
+  min-height: calc(100svh - 180px);
   display: flex;
 }
 .pagina-login .login-auth {
@@ -332,7 +343,7 @@ footer { background: var(--tinta); color: #b5b0a7; padding: 60px 4% 30px; }
   clip-path: polygon(0 0, 100% 0, 100% 25%, 0 100%);
 }
 .pagina-login .login-auth::after {
-  position: fixed;
+  position: absolute;
   z-index: -1;
   right: -105px;
   bottom: -250px;
@@ -344,7 +355,7 @@ footer { background: var(--tinta); color: #b5b0a7; padding: 60px 4% 30px; }
   background: #16b5a5;
 }
 .pagina-login .login-conteudo {
-  width: min(100%, 420px);
+  width: min(100%, 460px);
   margin: auto;
 }
 .pagina-login .login-identidade {
@@ -390,7 +401,7 @@ footer { background: var(--tinta); color: #b5b0a7; padding: 60px 4% 30px; }
   width: 100%;
   height: auto;
   min-height: 284px;
-  padding: 28px;
+  padding: 32px;
   justify-self: auto;
   border: 0;
   border-radius: 58px;
@@ -402,7 +413,7 @@ footer { background: var(--tinta); color: #b5b0a7; padding: 60px 4% 30px; }
 }
 .pagina-login .campo-login {
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 .pagina-login .campo-login > label {
   position: absolute;
@@ -413,7 +424,7 @@ footer { background: var(--tinta); color: #b5b0a7; padding: 60px 4% 30px; }
   white-space: nowrap;
 }
 .pagina-login .login-cartao .campo-input {
-  height: 38px;
+  height: 44px;
   padding: 0 12px;
   border: 1px solid #ddd9e8;
   border-radius: 22px;
@@ -433,7 +444,7 @@ footer { background: var(--tinta); color: #b5b0a7; padding: 60px 4% 30px; }
   color: #77727f;
 }
 .pagina-login .login-opcoes {
-  margin: -2px 2px 12px;
+  margin: 0 2px 17px;
   color: #686372;
   font-size: .7rem;
 }
@@ -443,6 +454,16 @@ footer { background: var(--tinta); color: #b5b0a7; padding: 60px 4% 30px; }
   gap: 5px;
   cursor: pointer;
 }
+.pagina-login .login-opcoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.pagina-login .login-opcoes a {
+  color: #7100ef;
+  text-decoration: none;
+}
+.pagina-login .login-opcoes a:hover { text-decoration: underline; }
 .pagina-login .login-opcoes input {
   width: 13px;
   height: 13px;
@@ -478,6 +499,74 @@ footer { background: var(--tinta); color: #b5b0a7; padding: 60px 4% 30px; }
 .pagina-login .login-cartao .mensagem:not(.erro):not(.sucesso) {
   display: none;
 }
+.pagina-login .login-botoes { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 12px; margin-top: 10px; }
+.pagina-login .login-cartao .login-botoes > .botao { width: 100%; min-height: 40px; margin: 0; padding: 8px 12px; }
+.pagina-login .login-google { min-width: 0; width: 100%; }
+.pagina-login .google-signin[hidden] { display: none; }
+.pagina-login .google-signin { display: flex; justify-content: center; width: 100%; min-height: 40px; }
+.pagina-login .google-signin-configuracao[hidden] { display: none; }
+.pagina-login .google-signin-configuracao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 40px;
+  margin: 0;
+  border: 1px solid #dadce0;
+  border-radius: 999px;
+  background: #fff;
+  color: #3c4043;
+  font: 500 .85rem var(--fonte);
+  cursor: pointer;
+}
+.pagina-login .google-signin-configuracao:hover { background: #f8faff; border-color: #c5d2e3; }
+.pagina-login .google-marca { display: block; width: 18px; height: 18px; flex: 0 0 18px; }
+.pagina-login .google-signin-aviso { min-height: 0; margin: 5px 0 0; color: #77727f; text-align: center; font-size: .68rem; }
+.pagina-login .login-cartao #google-signin-aviso:not(:empty) { display: block; }
+.pagina-login .recuperacao-fundo[hidden],
+.pagina-login form[hidden] { display: none; }
+.pagina-login .recuperacao-fundo {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(25, 20, 40, .62);
+}
+.pagina-login .recuperacao-cartao {
+  position: relative;
+  width: min(100%, 420px);
+  padding: 32px;
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: 0 18px 48px rgba(18, 10, 40, .3);
+}
+.pagina-login .recuperacao-cartao h2 { margin: 0 30px 8px 0; font-size: 1.25rem; }
+.pagina-login .recuperacao-cartao p { color: #686372; font-size: .85rem; line-height: 1.5; }
+.pagina-login .recuperacao-fechar {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  border: 0;
+  background: transparent;
+  color: #686372;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+.pagina-login .recuperacao-cartao form { display: grid; gap: 9px; margin-top: 18px; }
+.pagina-login .recuperacao-cartao form label { color: #514b5e; font-size: .8rem; }
+.pagina-login .recuperacao-cartao form input {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid #ddd9e8;
+  border-radius: 12px;
+  color: #363142;
+  font: 400 .9rem var(--fonte);
+}
+.pagina-login .recuperacao-cartao form .botao { width: 100%; margin-top: 8px; }
+.pagina-login .recuperacao-cartao .mensagem:empty { display: none; }
 @media (max-width: 480px) {
   .pagina-login .login-auth {
     padding: 36px 18px;
@@ -666,6 +755,7 @@ footer { background: var(--tinta); color: #b5b0a7; padding: 60px 4% 30px; }
   min-height: 100vh;
   min-height: 100svh;
 }
+.pagina-login .login-auth { overflow: hidden; min-height: calc(100vh - 180px); min-height: calc(100svh - 180px); }
 .pagina-cadastro .login-auth {
   display: flex;
   align-items: center;
@@ -849,4 +939,10 @@ footer { background: var(--tinta); color: #b5b0a7; padding: 60px 4% 30px; }
     padding-right: 18px;
     padding-left: 18px;
   }
+}
+@media (max-width: 480px) {
+  footer { padding: 38px 6% 24px; }
+  .redes-sociais { gap: 8px; }
+  .rede-social { min-height: 40px; padding: 6px 11px; font-size: .76rem; }
+  .pagina-login .login-auth { min-height: calc(100svh - 170px); }
 }
