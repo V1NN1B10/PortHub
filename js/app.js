@@ -13,6 +13,18 @@ function salvarRegistros(lista) {
   localStorage.setItem(CHAVE_REGISTROS, JSON.stringify(lista));
 }
 
+// Evita que texto digitado no formulário quebre o HTML da página
+function esc(texto) {
+  return String(texto == null ? '' : texto)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+// Só aceita links que começam com http:// ou https://
+function linkSeguro(url) {
+  return /^https?:\/\//i.test(url || '');
+}
+
 function adicionarRegistro(dados) {
   const lista = pegarRegistros();
   dados.id = Date.now();
@@ -160,14 +172,14 @@ function etiquetasDoCampo(r, id) {
   const campo = acharCampo(id);
   if (!r[id]) return '';
   const valores = campo && campo.separarPorVirgula ? r[id].split(',') : [r[id]];
-  return valores.map(v => `<span class="etiqueta">${v.trim()}</span>`).join('');
+  return valores.map(v => `<span class="etiqueta">${esc(v.trim())}</span>`).join('');
 }
 
 function imagemDoRegistro(r) {
   if (!CONFIG.campoImagem) return '';
   return r[CONFIG.campoImagem]
-    ? `<img class="registro-imagem" src="${r[CONFIG.campoImagem]}" alt="${r[CONFIG.campoTitulo]}">`
-    : `<div class="registro-imagem espaco-imagem">📷 sem imagem</div>`;
+    ? `<img class="registro-imagem" src="${esc(r[CONFIG.campoImagem])}" alt="${esc(r[CONFIG.campoTitulo])}">`
+    : `<div class="registro-imagem sem-imagem" aria-hidden="true"></div>`;
 }
 
 function botaoExcluir(r) {
@@ -179,19 +191,19 @@ function cardRegistro(r) {
   const etiquetas = CONFIG.camposEtiqueta.map(c => etiquetasDoCampo(r, c)).join('');
   const detalhes = CONFIG.camposDetalhe.map(id => {
     const campo = acharCampo(id);
-    let valor = r[id];
-    if (campo.tipo === 'date') valor = formatarData(valor);
-    if (campo.tipo === 'url' && valor) valor = `<a href="${valor}" target="_blank">abrir link</a>`;
+    let valor = esc(r[id]);
+    if (campo.tipo === 'date') valor = formatarData(r[id]);
+    if (campo.tipo === 'url' && linkSeguro(r[id])) valor = `<a href="${valor}" target="_blank" rel="noopener">abrir link</a>`;
     return valor ? `<div class="info"><strong>${campo.rotulo}:</strong> ${valor}</div>` : '';
   }).join('');
   const destaque = CONFIG.campoDestaque ? r[CONFIG.campoDestaque] : '';
 
-  return `<article class="registro" data-destaque="${destaque}">
+  return `<article class="registro" data-destaque="${esc(destaque)}">
     ${imagemDoRegistro(r)}
     <div class="registro-topo">${etiquetas}</div>
-    <h3>${r[CONFIG.campoTitulo]}</h3>
+    <h3>${esc(r[CONFIG.campoTitulo])}</h3>
     ${detalhes}
-    <div class="info autor">Por ${r.autor} em ${formatarData(r.criadoEm)}</div>
+    <div class="info autor">Por ${esc(r.autor)} em ${formatarData(r.criadoEm)}</div>
     <div class="acoes">${seletorStatus(r)} ${botaoEditar(r)} ${botaoExcluir(r)}</div>
   </article>`;
 }

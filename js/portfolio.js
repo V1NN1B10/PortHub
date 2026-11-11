@@ -41,13 +41,13 @@ function montarProjetos() {
     <section class="projeto">
       ${imagemDoRegistro(p)}
       <div class="projeto-texto">
-        <p class="sobre">${p.categoria}</p>
-        <h2>${p.titulo}</h2>
-        <p>${p.descricao || ''}</p>
+        <p class="sobre">${esc(p.categoria)}</p>
+        <h2>${esc(p.titulo)}</h2>
+        <p>${esc(p.descricao)}</p>
         <div>${etiquetasDoCampo(p, 'tecnologias')}</div>
         <div class="projeto-links">
-          ${p.repositorio ? `<a href="${p.repositorio}" target="_blank">Código ↗</a>` : ''}
-          ${p.demo ? `<a href="${p.demo}" target="_blank">Ver online ↗</a>` : ''}
+          ${linkSeguro(p.repositorio) ? `<a href="${esc(p.repositorio)}" target="_blank" rel="noopener">Código ↗</a>` : ''}
+          ${linkSeguro(p.demo) ? `<a href="${esc(p.demo)}" target="_blank" rel="noopener">Ver online ↗</a>` : ''}
         </div>
       </div>
     </section>`).join('')

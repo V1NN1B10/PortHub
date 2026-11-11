@@ -2,9 +2,11 @@
    PORTFÓLIO FÁCIL
    PARTE 1: CORES E FONTES. Mude aqui e o site inteiro muda!
    ========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Junge&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
 :root {
-  --primaria:slateblue;        /* azul elétrico: botões e destaques */
-  --destaque: #1E293B;
+  --primaria:slateblue;       
+  --destaque: #14B8A6;
   --tinta: #141414;           /* preto das seções escuras */
   --fundo: #f3efe7;           /* papel off-white */
   --superficie: #fbf9f4;
@@ -12,7 +14,7 @@
   --texto: #141414;
   --neutro: #4d4d4d;
   --texto-no-botao: #ffffff;
-  --suave: slateblue;
+  --suave: var(--primaria);
   --borda: #d8d1c4;
   --etiqueta: #e8e2d6;
   --raio: 4px;
@@ -45,13 +47,13 @@ h1, h2, h3 { font-family: var(--fonte-titulo); line-height: 1.15; }
 /* Botões */
 .botao {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  background:slateblue  ;color: var(--texto-no-botao);
+  background: var(--primaria); color: var(--texto-no-botao);
   border: 2px solid transparent; padding: 11px 22px;
   border-radius: var(--raio-botao); font: 600 0.95rem var(--fonte);
   cursor: pointer; transition: transform .15s, filter .15s;
 }
 .botao:hover { transform: translateY(-2px); filter: brightness(1.08); }
-.botao-claro { background: #fff; color:slateblue; }
+.botao-claro { background: #fff; color: var(--primaria); }
 .botao-contorno { background: transparent; border-color: currentColor; color: inherit; }
 .botao-perigo { background: #e5484d; color: #fff; }
 .botao-pequeno { padding: 6px 12px; font-size: .8rem; }
@@ -59,7 +61,7 @@ h1, h2, h3 { font-family: var(--fonte-titulo); line-height: 1.15; }
 /* Espaço para imagem: troque a <div class="espaco-imagem"> por
    <img src="img/sua-imagem.jpg" alt="descrição" class="imagem"> */
 .espaco-imagem {
-  border: 3px dashed var(--primaria);
+  border: 2px dashed var(--primaria);
   background: repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(148, 26, 26, 0.08) 12px, rgba(127,127,127,.08) 24px);
   border-radius: var(--raio);
   min-height: 200px;
@@ -70,32 +72,30 @@ h1, h2, h3 { font-family: var(--fonte-titulo); line-height: 1.15; }
 .imagem { width: 100%; height: 100%; object-fit: cover; border-radius: var(--raio); }
 
 /* Texto amarelo = o grupo deve trocar */
-.trocar { background:rgba(105, 90, 205, 0.255); color: slateblue; border-radius: 10px; padding: 7px 7px; }
+.trocar { background:rgba(105, 90, 205, 0.255); color: var(--primaria); border-radius: 10px; padding: 7px 7px; }
 
 /* Formulários */
 .caixa-form { 
   display: flex;
   flex-direction: column;
   width: min(450px, 100%);
-  height: min(600px);
+  min-height: 600px;
   background: var(--superficie);
   padding: 40px;
   border-radius: var(--raio);
   align-items: center;
   border-radius: 20px;
   justify-self: end;
-
-  .img{
-    margin-top: 30px;
-  }
 }
+
+.caixa-form form { width: 100%; }
 
 .caixa-form h1 {
   font-size: 1.7rem;
   margin-top: 15px;
 }
 .caixa-form > p { 
-  color:slateblue;
+  color: var(--primaria);
   margin-bottom: 22px;
   text-align: center;
 }
@@ -132,10 +132,11 @@ h1, h2, h3 { font-family: var(--fonte-titulo); line-height: 1.15; }
     flex: 1;
 }
 
-input {
-  border-radius: 10px;
-  padding: 10px 100px 10px 10px;  
-}
+input, select, textarea { font: inherit; border-radius: 10px; padding: 10px; }
+.campo > input, .campo > select, .campo > textarea,
+#filtros select, #filtros input { border: 1px solid var(--borda); background: var(--campo); color: var(--texto); }
+.campo > input, .campo > select, .campo > textarea { width: 100%; }
+.campo > textarea { min-height: 96px; resize: vertical; }
 
 .caixa-form .botao {
   width: 100%;
@@ -197,7 +198,7 @@ i { font-family: var(--fonte-titulo); font-style: italic; color: var(--primaria)
 /* Menu: links | logo | usuário */
 .topo { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 10px 4%; border-bottom: 1px solid var(--texto); position: sticky; top: 0; background: var(--fundo); z-index: 20; }
 .topo nav { display: flex; gap: 18px; flex-wrap: wrap; }
-.topo nav a { color:var(--neutro) ; font-size: .88rem; transition: 0.3ms; }
+.topo nav a { color:var(--neutro) ; font-size: .88rem; transition: .3s; }
 .topo nav a.ativo, .topo nav a:hover { text-decoration: underline; text-underline-offset: 5px; }
 .logo img { height: 40px; width: auto; display: block;}
 #area-usuario { justify-self: end; display: flex; gap: 10px; align-items: center; font-size: .85rem; }
@@ -206,14 +207,14 @@ i { font-family: var(--fonte-titulo); font-style: italic; color: var(--primaria)
 .botao-contorno { color: var(--texto); }
 
 /* Hero */
-.hero { padding: 70px 4% 50px; }
-.hero h1 { font-size: clamp(2.6rem, 7vw, 6.4rem); line-height: 1; margin-top: 18px; }
+.hero { padding: 50px 4% 50px; }
+.hero h1 { font-size: clamp(2.6rem, 7vw, 6.4rem); line-height: 1; margin-top: 18px; font-family: Arial, Helvetica, sans-serif; }
 .hero-rodape { display: flex; justify-content: space-between; align-items: end; gap: 30px; margin-top: 46px; border-top: 1px solid var(--borda); padding-top: 24px; flex-wrap: wrap; }
 .hero p { max-width: 460px; color: var(--neutro); }
 .botoes { display: flex; gap: 12px; flex-wrap: wrap; }
 
 /* Letreiro andando */
-.letreiro { background: var(--primaria); color: #fff; overflow: hidden; white-space: nowrap; padding: 14px 0; font: 1.4rem var(--fonte-titulo); }
+.letreiro { background: var(--destaque); color: #fff; overflow: hidden; white-space: nowrap; padding: 14px 0; font: 1.4rem var(--fonte-titulo); }
 .letreiro div { display: inline-block; animation: andar 25s linear infinite; }
 @keyframes andar { to { transform: translateX(-50%); } }
 
@@ -222,7 +223,7 @@ i { font-family: var(--fonte-titulo); font-style: italic; color: var(--primaria)
 .secao-tinta { background: var(--tinta); color: var(--fundo); }
 .titulo-secao { display: flex; justify-content: space-between; align-items: end; gap: 30px; margin-bottom: 40px; flex-wrap: wrap; }
 .titulo-secao h2 { font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1; }
-.titulo-secao p { max-width: 360px; color: var(--suave); }
+.titulo-secao p { max-width: 360px; color: var(--neutro); }
 .mosaico { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 240px 240px; gap: 16px; }
 .peca { position: relative; }
 .peca .espaco-imagem { height: 100%; border-color: var(--texto); color: var(--texto); }
@@ -231,10 +232,10 @@ i { font-family: var(--fonte-titulo); font-style: italic; color: var(--primaria)
 .peca-larga { grid-column: span 2; }
 .passos { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid #444; }
 .passos div { padding: 30px 30px 0 0; }
-.passos span { font: 7rem var(--fonte-titulo); line-height: 1; color: var(--primaria); font-style: italic; }
+.passos span { font: 7rem var(--fonte-titulo); line-height: 1; color: var(--destaque); font-style: italic; }
 .passos h3 { font-size: 2rem; margin: 6px 0; }
 .passos p { color: #b5b0a7; }
-.citacao { text-align: center; }
+.citacao { text-align: center; margin-bottom: 50px;}
 .citacao blockquote { font: clamp(1.6rem, 3.5vw, 2.8rem) var(--fonte-titulo); max-width: 900px; margin: 0 auto 16px; line-height: 1.2; }
 .lista-nomes { list-style: none; border-top: 1px solid var(--texto); }
 .lista-nomes li { display: flex; justify-content: space-between; align-items: center; padding: 22px 0; border-bottom: 1px solid var(--texto); position: relative; font: clamp(1.4rem, 3vw, 2.4rem) var(--fonte-titulo); }
@@ -250,6 +251,7 @@ i { font-family: var(--fonte-titulo); font-style: italic; color: var(--primaria)
 .registro { background: var(--superficie); border: 1px solid var(--texto); padding: 0 0 18px; }
 .registro > *:not(.registro-imagem) { margin-left: 18px; margin-right: 18px; }
 .registro-imagem { width: 100%; height: 190px; object-fit: cover; border-bottom: 1px solid var(--texto); border-radius: 0; min-height: 0; margin-bottom: 10px; }
+.registro-imagem.sem-imagem { background: var(--etiqueta); }
 .registro h3 { font-size: 1.6rem; }
 .etiqueta { border-radius: 0; background: var(--etiqueta); font-weight: 500; }
 .caixa-form { border: 1px solid var(--texto); }
