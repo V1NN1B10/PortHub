@@ -32,8 +32,8 @@
     areaProjetos.innerHTML = projetos.map(projeto => {
       const imagem = String(projeto[CONFIG.campoImagem] || '').trim();
       const foto = imagem && !/^\s*(javascript|vbscript):/i.test(imagem)
-        ? `<img class="projeto-cliente-foto" src="${escapar(imagem)}" alt="Imagem do projeto ${escapar(projeto[CONFIG.campoTitulo])}">`
-        : '<div class="projeto-cliente-foto projeto-cliente-placeholder" aria-label="Projeto sem imagem">▧</div>';
+        ? `<img class="projeto-cliente-foto" src="${escapar(imagem)}" alt="Imagem do projeto ${escapar(projeto[CONFIG.campoTitulo])}" data-capa-categoria="${escapar(projeto.categoria || 'Projeto')}" data-capa-titulo="${escapar(projeto[CONFIG.campoTitulo] || 'Seu projeto')}">`
+        : `<div class="projeto-cliente-foto projeto-cliente-placeholder" data-categoria="${escapar(projeto.categoria || 'Projeto')}" role="img" aria-label="Capa visual para ${escapar(projeto[CONFIG.campoTitulo] || 'projeto')}"><span>${escapar(projeto.categoria || 'Projeto')}</span><strong>${escapar(projeto[CONFIG.campoTitulo] || 'Seu projeto')}</strong><i></i></div>`;
       const tags = Array.isArray(projeto.tecnologias)
         ? projeto.tecnologias.join(', ')
         : String(projeto.tecnologias || '');
@@ -51,6 +51,23 @@
         </div>
       </article>`;
     }).join('');
+
+    areaProjetos.querySelectorAll('img[data-capa-titulo]').forEach(imagem => {
+      imagem.addEventListener('error', () => {
+        const capa = document.createElement('div');
+        capa.className = 'projeto-cliente-foto projeto-cliente-placeholder';
+        capa.dataset.categoria = imagem.dataset.capaCategoria || 'Projeto';
+        capa.setAttribute('role', 'img');
+        capa.setAttribute('aria-label', `Capa visual para ${imagem.dataset.capaTitulo || 'projeto'}`);
+        const categoria = document.createElement('span');
+        categoria.textContent = imagem.dataset.capaCategoria || 'Projeto';
+        const titulo = document.createElement('strong');
+        titulo.textContent = imagem.dataset.capaTitulo || 'Seu projeto';
+        const detalhe = document.createElement('i');
+        capa.append(categoria, titulo, detalhe);
+        imagem.replaceWith(capa);
+      }, { once: true });
+    });
   }
 
   function modeloAtual() {
@@ -78,6 +95,7 @@
       if (modelosValidos.includes(modelo)) {
         localStorage.setItem(CHAVE_MODELO, modelo);
         atualizarModelos();
+        window.dispatchEvent(new CustomEvent('porthub:modelo-alterado'));
       }
       return;
     }

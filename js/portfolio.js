@@ -6,9 +6,13 @@ let categoriaAtiva = '';
 function aplicarModeloEscolhido() {
   const modelo = localStorage.getItem(CHAVE_MODELO);
   const portfolio = document.querySelector('.portfolio');
-  if (!portfolio) return;
-  ['aurora', 'lume', 'noite'].forEach(nome => portfolio.classList.remove(`modelo-${nome}`));
-  portfolio.classList.add(`modelo-${['aurora', 'lume', 'noite'].includes(modelo) ? modelo : 'aurora'}`);
+  const valido = ['aurora', 'lume', 'noite'].includes(modelo) ? modelo : 'aurora';
+  if (portfolio) {
+    ['aurora', 'lume', 'noite'].forEach(nome => portfolio.classList.remove(`modelo-${nome}`));
+    portfolio.classList.add(`modelo-${valido}`);
+  }
+  const seletor = document.getElementById('modelo-portfolio');
+  if (seletor) seletor.value = valido;
 }
 
 function pegarPerfil() {
@@ -19,10 +23,20 @@ function pegarPerfil() {
     bio: 'Escreva aqui um pouco sobre você, o que gosta de criar e o que está aprendendo.',
     contato: usuario.email || 'seu-email@exemplo.com',
     hardSkills: '',
+    softSkills: '',
     foto: '',
     github: '',
     linkedin: '',
+    website: '',
+    localizacao: '',
+    objetivo: '',
   };
+}
+
+function normalizarUrlPerfil(url) {
+  const valor = String(url || '').trim();
+  if (!valor || /^https?:\/\//i.test(valor) || /^[a-z][a-z0-9+.-]*:/i.test(valor)) return valor;
+  return /^[\w.-]+\.[a-z]{2,}(?::\d+)?(?:[/?#].*)?$/i.test(valor) ? `https://${valor}` : valor;
 }
 
 function montarPerfil() {
@@ -31,8 +45,17 @@ function montarPerfil() {
   document.getElementById('pf-cargo').textContent = p.cargo;
   document.getElementById('pf-bio').textContent = p.bio;
   document.getElementById('pf-contato').textContent = p.contato;
+  const localizacao = document.getElementById('pf-localizacao');
+  localizacao.textContent = p.localizacao ? `⌖ ${p.localizacao}` : '';
+  localizacao.hidden = !p.localizacao;
+  const objetivo = document.getElementById('pf-objetivo');
+  const objetivoBloco = document.getElementById('pf-objetivo-bloco');
+  objetivo.textContent = p.objetivo || '';
+  objetivoBloco.hidden = !p.objetivo;
   const foto = document.getElementById('pf-foto');
   const fotoVazia = document.getElementById('pf-foto-vazio');
+  const iniciais = String(p.nome || 'Seu Nome').trim().split(/\s+/).filter(Boolean).slice(0, 2).map(parte => parte[0]).join('').toUpperCase() || 'SN';
+  fotoVazia.textContent = iniciais;
   const fotoSrc = String(p.foto || '').trim();
   if (fotoSrc && !/^\s*(javascript|vbscript):/i.test(fotoSrc) && !/^\s*data:(?!image\/)/i.test(fotoSrc)) {
     foto.src = fotoSrc;
@@ -47,9 +70,14 @@ function montarPerfil() {
   document.getElementById('pf-hard-skills').innerHTML = habilidades.length
     ? habilidades.map(item => `<span class="etiqueta">${esc(item)}</span>`).join('')
     : '<span class="portfolio-sem-skills">Adicione suas habilidades ao editar o perfil.</span>';
+  const softSkills = String(p.softSkills || '').split(',').map(item => item.trim()).filter(Boolean);
+  document.getElementById('pf-soft-skills').innerHTML = softSkills
+    .map(item => `<span class="etiqueta">${esc(item)}</span>`).join('');
+  document.getElementById('pf-soft-bloco').hidden = softSkills.length === 0;
   const redes = [
-    { nome: 'GitHub', url: p.github },
-    { nome: 'LinkedIn', url: p.linkedin },
+    { nome: 'GitHub', url: normalizarUrlPerfil(p.github) },
+    { nome: 'LinkedIn', url: normalizarUrlPerfil(p.linkedin) },
+    { nome: 'Site pessoal', url: normalizarUrlPerfil(p.website) },
   ].filter(item => linkSeguro(item.url));
   document.getElementById('pf-redes').innerHTML = redes
     .map(item => `<a href="${esc(item.url)}" target="_blank" rel="noopener">${item.nome}</a>`).join('');
@@ -115,7 +143,8 @@ function montarProjetos() {
     `<button class="${c === categoriaAtiva ? 'ativo' : ''}" onclick="categoriaAtiva='${c}'; montarProjetos()">${c || 'Todos'}</button>`
   ).join('');
 
-  document.getElementById('pf-projetos').innerHTML = projetos.length ? projetos.map(p => `
+  const areaProjetos = document.getElementById('pf-projetos');
+  areaProjetos.innerHTML = projetos.length ? projetos.map(p => `
     <section class="projeto" data-portfolio-id="${esc(p.id)}">
       ${imagemDoRegistro(p)}
       <div class="projeto-texto">
@@ -130,12 +159,37 @@ function montarProjetos() {
       </div>
     </section>`).join('')
     : '<p class="vazio">Nenhum projeto ainda. <a href="novo-projeto.html">Cadastre o primeiro!</a></p>';
+
+  areaProjetos.querySelectorAll('img.registro-imagem').forEach(imagem => {
+    imagem.addEventListener('error', () => {
+      const projeto = imagem.closest('.projeto');
+      const categoria = projeto?.querySelector('.sobre')?.textContent || 'Projeto';
+      const titulo = projeto?.querySelector('h2')?.textContent || 'Seu projeto';
+      const capa = document.createElement('div');
+      capa.className = 'registro-imagem sem-imagem portfolio-capa-default';
+      capa.dataset.categoria = categoria;
+      capa.setAttribute('role', 'img');
+      capa.setAttribute('aria-label', `Capa visual para ${titulo}`);
+      const rotulo = document.createElement('span');
+      rotulo.textContent = categoria;
+      const nome = document.createElement('strong');
+      nome.textContent = titulo;
+      const detalhe = document.createElement('i');
+      capa.append(rotulo, nome, detalhe);
+      imagem.replaceWith(capa);
+    }, { once: true });
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   aplicarModeloEscolhido();
   montarPerfil();
   montarProjetos();
+
+  document.getElementById('modelo-portfolio')?.addEventListener('change', evento => {
+    localStorage.setItem(CHAVE_MODELO, evento.target.value);
+    aplicarModeloEscolhido();
+  });
 
   const form = document.getElementById('form-perfil');
   document.getElementById('editar-perfil').addEventListener('click', () => {
@@ -145,6 +199,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('p-bio').value = p.bio;
     document.getElementById('p-contato').value = p.contato;
     document.getElementById('p-hard-skills').value = p.hardSkills || '';
+    document.getElementById('p-soft-skills').value = p.softSkills || '';
+    document.getElementById('p-localizacao').value = p.localizacao || '';
+    document.getElementById('p-website').value = p.website || '';
+    document.getElementById('p-objetivo').value = p.objetivo || '';
     document.getElementById('p-foto').value = p.foto || '';
     document.getElementById('p-github').value = p.github || '';
     document.getElementById('p-linkedin').value = p.linkedin || '';
@@ -158,6 +216,10 @@ document.addEventListener('DOMContentLoaded', () => {
       bio: document.getElementById('p-bio').value,
       contato: document.getElementById('p-contato').value,
       hardSkills: document.getElementById('p-hard-skills').value,
+      softSkills: document.getElementById('p-soft-skills').value,
+      localizacao: document.getElementById('p-localizacao').value,
+      website: document.getElementById('p-website').value,
+      objetivo: document.getElementById('p-objetivo').value,
       foto: document.getElementById('p-foto').value,
       github: document.getElementById('p-github').value,
       linkedin: document.getElementById('p-linkedin').value,

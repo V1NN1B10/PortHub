@@ -44,13 +44,23 @@
           <form class="montar-perfil-form">
             <div class="montar-perfil-grade">
               <div class="campo"><label for="novo-nome">Nome completo</label><input id="novo-nome" data-perfil="nome" placeholder="Seu nome"></div>
-              <div class="campo"><label for="novo-github">GitHub</label><input id="novo-github" data-perfil="github" placeholder="github.com/seuusuario"></div>
+              <div class="campo"><label for="novo-github">GitHub</label><input id="novo-github" data-perfil="github" placeholder="https://github.com/seuusuario"></div>
               <div class="campo"><label for="novo-cargo">Título profissional</label><input id="novo-cargo" data-perfil="cargo" placeholder="Estudante de tecnologia"></div>
-              <div class="campo"><label for="novo-linkedin">LinkedIn</label><input id="novo-linkedin" data-perfil="linkedin" placeholder="linkedin.com/in/seuusuario"></div>
+              <div class="campo"><label for="novo-linkedin">LinkedIn</label><input id="novo-linkedin" data-perfil="linkedin" placeholder="https://linkedin.com/in/seuusuario"></div>
               <div class="campo"><label for="novo-bio">Sobre você</label><textarea id="novo-bio" data-perfil="bio" placeholder="Conte um pouco sobre você e o que gosta de criar."></textarea></div>
               <div class="campo"><label for="novo-contato">E-mail de contato</label><input id="novo-contato" data-perfil="contato" type="email" placeholder="voce@email.com"><button class="botao montar-avancar" type="submit">Continuar para projetos →</button></div>
             </div>
             <div class="campo montar-skills"><label for="novo-skills">Hard skills (separe por vírgula)</label><input id="novo-skills" data-perfil="hardSkills" placeholder="HTML, CSS, JavaScript"></div>
+            <div class="montar-perfil-adicional">
+              <p class="montar-perfil-adicional-titulo">Deixe seu perfil mais completo</p>
+              <div class="montar-perfil-grade">
+                <div class="campo"><label for="novo-localizacao">Cidade ou região</label><input id="novo-localizacao" data-perfil="localizacao" placeholder="Ex.: São Paulo, SP"></div>
+                <div class="campo"><label for="novo-website">Site pessoal</label><input id="novo-website" data-perfil="website" placeholder="https://seusite.com"></div>
+                <div class="campo"><label for="novo-foto">Foto de perfil (link)</label><input id="novo-foto" data-perfil="foto" placeholder="https://.../minha-foto.jpg"></div>
+                <div class="campo"><label for="novo-soft-skills">Soft skills (separe por vírgula)</label><input id="novo-soft-skills" data-perfil="softSkills" placeholder="Comunicação, colaboração"></div>
+                <div class="campo montar-campo-largo"><label for="novo-objetivo">O que você busca na sua próxima oportunidade?</label><textarea id="novo-objetivo" data-perfil="objetivo" placeholder="Ex.: estágio em desenvolvimento front-end, projetos de UX ou oportunidades para aprender com uma equipe."></textarea></div>
+              </div>
+            </div>
           </form>
         </div>
         <div class="montar-painel" data-painel="2" hidden>
@@ -64,10 +74,33 @@
         </div>
         <div class="montar-painel" data-painel="3" hidden>
           <div class="montar-modelo-resumo"><span class="montar-modelo-icone">✦</span><div><p>Seu modelo atual</p><h2 data-modelo-atual>Aurora</h2></div></div>
-          <div class="montar-passo-acoes"><a class="botao botao-contorno" href="index.html#modelos">Trocar modelo</a><a class="botao" href="portfolio.html">Visualizar meu portfólio →</a></div>
-          <p class="montar-ajuda">Na visualização, você pode editar seu perfil e salvar o portfólio em PDF.</p>
+          <div class="montar-passo-acoes"><a class="botao botao-contorno" href="portfolio.html">Abrir visualização completa</a><a class="botao" href="novo-projeto.html?etapa=2">Adicionar outro projeto</a></div>
+          <p class="montar-ajuda">Troque o modelo na prévia ao lado. Seu perfil e seus projetos continuam salvos.</p>
         </div>
       </div>
+      <aside class="montar-preview-aside" aria-label="Prévia ao vivo do portfólio">
+        <div class="montar-preview-cabecalho">
+          <div><span class="montar-preview-selo"><i></i> Prévia ao vivo</span><h3>Seu portfólio tomando forma</h3><p>Veja as alterações enquanto preenche.</p></div>
+        </div>
+        <div class="montar-escolha-modelo" role="group" aria-label="Escolha o design do portfólio">
+          <button type="button" data-modelo="aurora" data-escolher-modelo="aurora" aria-pressed="true"><i class="swatch-aurora"></i><span>Aurora</span></button>
+          <button type="button" data-modelo="lume" data-escolher-modelo="lume" aria-pressed="false"><i class="swatch-lume"></i><span>Lume</span></button>
+          <button type="button" data-modelo="noite" data-escolher-modelo="noite" aria-pressed="false"><i class="swatch-noite"></i><span>Noite</span></button>
+        </div>
+        <article class="portfolio montar-preview-site modelo-aurora" data-preview-portfolio>
+          <header class="portfolio-cabecalho">
+            <div class="portfolio-foto-wrap"><img class="imagem foto-perfil" data-preview-foto alt="Foto de perfil" hidden><div class="montar-preview-avatar" data-preview-iniciais>SN</div></div>
+            <div class="montar-preview-identidade"><p class="sobre" data-preview-cargo>Seu título profissional</p><h1 data-preview-nome>Seu Nome</h1><p class="portfolio-localizacao" data-preview-localizacao>Adicione sua cidade ou região</p><p data-preview-bio>Uma apresentação curta sobre você, suas ideias e o que gosta de construir.</p><p class="contato" data-preview-contato>voce@email.com</p><div class="portfolio-redes" data-preview-redes></div></div>
+          </header>
+          <section class="portfolio-objetivo" data-preview-objetivo-bloco><span>PRÓXIMO PASSO</span><p data-preview-objetivo>Conte que tipo de oportunidade você está buscando.</p></section>
+          <section class="portfolio-hard-skills"><h2>Hard skills</h2><div data-preview-hard-skills><span class="etiqueta">Suas tecnologias</span></div></section>
+          <section class="portfolio-soft-skills" data-preview-soft-bloco><h2>Também sou bom em</h2><div data-preview-soft-skills></div></section>
+          <div class="portfolio-numeros" data-preview-numeros></div>
+          <div class="montar-preview-titulo-projetos"><h2>Projetos</h2><span data-preview-projeto-count>Adicione seu primeiro</span></div>
+          <div class="montar-preview-filtros" data-preview-filtros></div>
+          <div class="portfolio-grade" data-preview-projetos></div>
+        </article>
+      </aside>
     </section>
   </main>
   <footer>

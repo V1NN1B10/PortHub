@@ -58,6 +58,54 @@ function acharCampo(id) {
   return CONFIG.campos.find(c => c.id === id);
 }
 
+function comprimirImagemPortfolio(arquivo) {
+  return new Promise((resolve, reject) => {
+    if (!arquivo.type.startsWith('image/')) {
+      reject(new Error('Escolha um arquivo de imagem.'));
+      return;
+    }
+    if (arquivo.size > 12 * 1024 * 1024) {
+      reject(new Error('A imagem precisa ter menos de 12 MB.'));
+      return;
+    }
+
+    const url = URL.createObjectURL(arquivo);
+    const imagem = new Image();
+    imagem.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('Não foi possível abrir esta imagem.'));
+    };
+    imagem.onload = () => {
+      const limite = 1400;
+      const escala = Math.min(1, limite / Math.max(imagem.width, imagem.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(imagem.width * escala));
+      canvas.height = Math.max(1, Math.round(imagem.height * escala));
+      const contexto = canvas.getContext('2d');
+      if (!contexto) {
+        URL.revokeObjectURL(url);
+        reject(new Error('Este navegador não conseguiu preparar a imagem.'));
+        return;
+      }
+      contexto.fillStyle = '#ffffff';
+      contexto.fillRect(0, 0, canvas.width, canvas.height);
+      contexto.drawImage(imagem, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(url);
+      canvas.toBlob(blob => {
+        if (!blob) {
+          reject(new Error('Não foi possível preparar esta imagem.'));
+          return;
+        }
+        const leitor = new FileReader();
+        leitor.onload = () => resolve(leitor.result);
+        leitor.onerror = () => reject(new Error('Não foi possível carregar esta imagem.'));
+        leitor.readAsDataURL(blob);
+      }, 'image/jpeg', .82);
+    };
+    imagem.src = url;
+  });
+}
+
 // ---------- Monta o formulário automaticamente ----------
 function montarFormulario() {
   const form = document.getElementById('form-registro');
@@ -74,13 +122,47 @@ function montarFormulario() {
       </select>`;
     } else if (c.tipo === 'textarea') {
       entrada = `<textarea id="${c.id}" placeholder="${c.dica || ''}" ${obrig}></textarea>`;
+    } else if (form.dataset.wizardForm === 'true' && c.id === CONFIG.campoImagem) {
+      entrada = `<input type="${c.tipo}" id="${c.id}" placeholder="Link de imagem ou envie uma captura" ${obrig} ${c.extra || ''}>
+        <input class="montar-input-arquivo" type="file" id="${c.id}-arquivo" accept="image/*" data-imagem-upload>
+        <label class="montar-upload-imagem" for="${c.id}-arquivo"><span>＋</span><b>Enviar imagem do projeto</b><small data-imagem-nome>JPG, PNG ou WebP · otimizada para a prévia</small></label>`;
     } else {
       entrada = `<input type="${c.tipo}" id="${c.id}" placeholder="${c.dica || ''}" ${obrig} ${c.extra || ''}>`;
     }
-    html += `<div class="campo"><label for="${c.id}">${c.rotulo}</label>${entrada}</div>`;
+    const rotulo = form.dataset.wizardForm === 'true' && c.id === CONFIG.campoImagem
+      ? 'Imagem de capa (opcional)'
+      : c.rotulo;
+    html += `<div class="campo"><label for="${c.id}">${rotulo}</label>${entrada}</div>`;
   });
   html += `<button class="botao" type="submit">Salvar</button>`;
   form.innerHTML = html;
+
+  const uploadImagem = form.querySelector('[data-imagem-upload]');
+  if (uploadImagem) {
+    uploadImagem.addEventListener('change', async () => {
+      const arquivo = uploadImagem.files && uploadImagem.files[0];
+      if (!arquivo) return;
+      const msg = document.getElementById('mensagem');
+      const nome = form.querySelector('[data-imagem-nome]');
+      try {
+        if (nome) nome.textContent = 'Preparando imagem...';
+        const imagem = await comprimirImagemPortfolio(arquivo);
+        const campoImagem = document.getElementById(CONFIG.campoImagem);
+        campoImagem.value = imagem;
+        campoImagem.dispatchEvent(new Event('input', { bubbles: true }));
+        if (nome) nome.textContent = `${arquivo.name} · pronta para a prévia`;
+        uploadImagem.value = '';
+        if (msg) msg.className = 'mensagem';
+      } catch (erro) {
+        if (nome) nome.textContent = 'JPG, PNG ou WebP · otimizada para a prévia';
+        uploadImagem.value = '';
+        if (msg) {
+          msg.className = 'mensagem erro';
+          msg.textContent = erro.message || 'Não foi possível usar esta imagem.';
+        }
+      }
+    });
+  }
 
   // MODO EDIÇÃO: se a página abrir com ?editar=123, carrega o registro no formulário
   const idEditar = Number(new URLSearchParams(location.search).get('editar'));
@@ -90,6 +172,7 @@ function montarFormulario() {
     const titulo = document.querySelector('.caixa-form h1, .montar-projetos-topo h2');
     if (titulo) titulo.textContent = 'Editar projeto';
   }
+  window.dispatchEvent(new CustomEvent('porthub:projeto-form-pronto'));
 
   form.addEventListener('submit', evento => {
     evento.preventDefault();
@@ -108,6 +191,8 @@ function montarFormulario() {
     msg.className = 'mensagem sucesso';
     msg.textContent = emEdicao ? 'Alterações salvas!' : 'Registro salvo com sucesso!';
     form.reset();
+    const nomeImagem = form.querySelector('[data-imagem-nome]');
+    if (nomeImagem) nomeImagem.textContent = 'JPG, PNG ou WebP · até 12 MB';
     if (form.dataset.wizardForm === 'true') {
       if (emEdicao) {
         window.location.href = `${CONFIG.paginaNovo}?etapa=2`;
@@ -187,7 +272,7 @@ function imagemDoRegistro(r) {
   if (!CONFIG.campoImagem) return '';
   return r[CONFIG.campoImagem]
     ? `<img class="registro-imagem" src="${esc(r[CONFIG.campoImagem])}" alt="${esc(r[CONFIG.campoTitulo])}">`
-    : `<div class="registro-imagem sem-imagem" aria-hidden="true"></div>`;
+    : `<div class="registro-imagem sem-imagem portfolio-capa-default" data-categoria="${esc(r.categoria || 'Projeto')}" aria-label="Capa visual para ${esc(r[CONFIG.campoTitulo] || 'projeto')}" role="img"><span>${esc(r.categoria || 'Projeto')}</span><strong>${esc(r[CONFIG.campoTitulo] || 'Seu projeto')}</strong><i></i></div>`;
 }
 
 function botaoExcluir(r) {

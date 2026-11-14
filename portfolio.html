@@ -31,6 +31,12 @@
     <!-- Barra de ferramentas: some na hora de imprimir -->
     <div class="ferramentas">
       <span>Esta é a visualização do seu portfólio.</span>
+      <label class="sr-only" for="modelo-portfolio">Modelo visual</label>
+      <select id="modelo-portfolio" aria-label="Escolher modelo visual">
+        <option value="aurora">Modelo Aurora</option>
+        <option value="lume">Modelo Lume</option>
+        <option value="noite">Modelo Noite</option>
+      </select>
       <button class="botao botao-contorno botao-pequeno" id="editar-perfil">Editar perfil</button>
       <button class="botao botao-contorno botao-pequeno" id="baixar-portfolio-html" type="button">Baixar HTML</button>
       <button class="botao botao-pequeno" onclick="imprimirPortfolioCompleto()">Salvar em PDF / Imprimir</button>
@@ -43,9 +49,13 @@
       <div class="campo"><label for="p-bio">Sobre você</label><textarea id="p-bio"></textarea></div>
       <div class="campo"><label for="p-contato">Contato (e-mail, LinkedIn ou GitHub)</label><input id="p-contato"></div>
       <div class="campo"><label for="p-hard-skills">Hard skills (separe por vírgula)</label><input id="p-hard-skills"></div>
+      <div class="campo"><label for="p-soft-skills">Soft skills (separe por vírgula)</label><input id="p-soft-skills" placeholder="Comunicação, colaboração"></div>
+      <div class="campo"><label for="p-localizacao">Cidade ou região</label><input id="p-localizacao" placeholder="Ex.: São Paulo, SP"></div>
+      <div class="campo"><label for="p-website">Site pessoal</label><input id="p-website" placeholder="https://seusite.com"></div>
+      <div class="campo"><label for="p-objetivo">O que você busca na sua próxima oportunidade?</label><textarea id="p-objetivo"></textarea></div>
       <div class="campo"><label for="p-foto">Foto de perfil (URL ou caminho)</label><input id="p-foto"></div>
-      <div class="campo"><label for="p-github">GitHub</label><input id="p-github" type="url"></div>
-      <div class="campo"><label for="p-linkedin">LinkedIn</label><input id="p-linkedin" type="url"></div>
+      <div class="campo"><label for="p-github">GitHub</label><input id="p-github" placeholder="https://github.com/seuusuario"></div>
+      <div class="campo"><label for="p-linkedin">LinkedIn</label><input id="p-linkedin" placeholder="https://linkedin.com/in/seuusuario"></div>
       <button class="botao" type="submit">Salvar perfil</button>
     </form>
 
@@ -54,11 +64,12 @@
       <header class="portfolio-cabecalho">
         <div class="portfolio-foto-wrap">
           <img class="imagem foto-perfil" id="pf-foto" alt="Foto de perfil" hidden>
-          <div class="espaco-imagem foto-perfil" id="pf-foto-vazio">📷 Sua foto</div>
+          <div class="portfolio-avatar-placeholder" id="pf-foto-vazio" aria-hidden="true">SN</div>
         </div>
         <div>
           <p class="sobre" id="pf-cargo"></p>
           <h1 id="pf-nome"></h1>
+          <p class="portfolio-localizacao" id="pf-localizacao" hidden></p>
           <p id="pf-bio"></p>
           <p class="contato" id="pf-contato"></p>
           <div class="portfolio-redes" id="pf-redes"></div>
@@ -69,7 +80,16 @@
         <h2>Hard skills</h2>
         <div id="pf-hard-skills"></div>
       </section>
+      <section class="portfolio-objetivo" id="pf-objetivo-bloco" hidden>
+        <span>PRÓXIMO PASSO</span>
+        <p id="pf-objetivo"></p>
+      </section>
+      <section class="portfolio-soft-skills" id="pf-soft-bloco" hidden>
+        <h2>Soft skills</h2>
+        <div id="pf-soft-skills"></div>
+      </section>
       <div class="portfolio-numeros" id="pf-numeros"></div>
+      <h2 class="portfolio-projetos-titulo">Projetos</h2>
       <div class="chips-filtro" id="pf-filtros"></div>
       <div class="portfolio-grade" id="pf-projetos"></div>
     </article>
