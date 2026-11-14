@@ -1,5 +1,5 @@
 // =========================================================
-// REGISTROS: cadastrar, listar, filtrar, alterar status e excluir
+// Registros: cadastrar, listar, filtrar, atualizar status e excluir.
 // Os campos de cada registro ficam em js/config.js
 // =========================================================
 
@@ -13,16 +13,19 @@ function salvarRegistros(lista) {
   localStorage.setItem(CHAVE_REGISTROS, JSON.stringify(lista));
 }
 
-// Evita que texto digitado no formulário quebre o HTML da página
-function esc(texto) {
+// Impede que o texto digitado no formulário seja interpretado como HTML.
+function escaparHtml(texto) {
   return String(texto == null ? '' : texto)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
-// Só aceita links que começam com http:// ou https://
-function linkSeguro(url) {
-  return /^https?:\/\//i.test(url || '');
+// Só aceita endereços que começam com http:// ou https://.
+function linkSeguro(endereco) {
+  return /^https?:\/\//i.test(endereco || '');
 }
 
 function adicionarRegistro(dados) {
@@ -36,7 +39,7 @@ function adicionarRegistro(dados) {
 
 function alterarCampo(id, campo, valor) {
   const lista = pegarRegistros();
-  const registro = lista.find(r => r.id === id);
+  const registro = lista.find((item) => item.id === id);
   if (registro) registro[campo] = valor;
   salvarRegistros(lista);
   montarLista();
@@ -44,7 +47,7 @@ function alterarCampo(id, campo, valor) {
 
 function excluirRegistro(id) {
   if (!confirm('Tem certeza que quer excluir?')) return;
-  salvarRegistros(pegarRegistros().filter(r => r.id !== id));
+  salvarRegistros(pegarRegistros().filter((registro) => registro.id !== id));
   montarLista();
 }
 
@@ -55,13 +58,18 @@ function formatarData(iso) {
 }
 
 function acharCampo(id) {
-  return CONFIG.campos.find(c => c.id === id);
+  return CONFIG.campos.find((campo) => campo.id === id);
 }
 
-function comprimirImagemPortfolio(arquivo, limitePersonalizado = 1400, qualidade = .82) {
+function comprimirImagemPortfolio(arquivo, limitePersonalizado = 1400, qualidade = 0.82) {
   return new Promise((resolve, reject) => {
     const extensaoImagem = /\.(png|jpe?g|gif|webp|bmp|avif)$/i.test(arquivo.name || '');
-    if (!String(arquivo.type || '').toLowerCase().startsWith('image/') && !extensaoImagem) {
+    if (
+      !String(arquivo.type || '')
+        .toLowerCase()
+        .startsWith('image/') &&
+      !extensaoImagem
+    ) {
       reject(new Error('Escolha um arquivo de imagem.'));
       return;
     }
@@ -70,10 +78,10 @@ function comprimirImagemPortfolio(arquivo, limitePersonalizado = 1400, qualidade
       return;
     }
 
-    const url = URL.createObjectURL(arquivo);
+    const enderecoTemporario = URL.createObjectURL(arquivo);
     const imagem = new Image();
     imagem.onerror = () => {
-      URL.revokeObjectURL(url);
+      URL.revokeObjectURL(enderecoTemporario);
       reject(new Error('Não foi possível abrir esta imagem.'));
     };
     imagem.onload = () => {
@@ -84,26 +92,30 @@ function comprimirImagemPortfolio(arquivo, limitePersonalizado = 1400, qualidade
       canvas.height = Math.max(1, Math.round(imagem.height * escala));
       const contexto = canvas.getContext('2d');
       if (!contexto) {
-        URL.revokeObjectURL(url);
+        URL.revokeObjectURL(enderecoTemporario);
         reject(new Error('Este navegador não conseguiu preparar a imagem.'));
         return;
       }
       contexto.fillStyle = '#ffffff';
       contexto.fillRect(0, 0, canvas.width, canvas.height);
       contexto.drawImage(imagem, 0, 0, canvas.width, canvas.height);
-      URL.revokeObjectURL(url);
-      canvas.toBlob(blob => {
-        if (!blob) {
-          reject(new Error('Não foi possível preparar esta imagem.'));
-          return;
-        }
-        const leitor = new FileReader();
-        leitor.onload = () => resolve(leitor.result);
-        leitor.onerror = () => reject(new Error('Não foi possível carregar esta imagem.'));
-        leitor.readAsDataURL(blob);
-      }, 'image/jpeg', qualidade);
+      URL.revokeObjectURL(enderecoTemporario);
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) {
+            reject(new Error('Não foi possível preparar esta imagem.'));
+            return;
+          }
+          const leitor = new FileReader();
+          leitor.onload = () => resolve(leitor.result);
+          leitor.onerror = () => reject(new Error('Não foi possível carregar esta imagem.'));
+          leitor.readAsDataURL(blob);
+        },
+        'image/jpeg',
+        qualidade,
+      );
     };
-    imagem.src = url;
+    imagem.src = enderecoTemporario;
   });
 }
 
@@ -112,31 +124,54 @@ function montarFormulario() {
   const form = document.getElementById('form-registro');
   if (!form) return;
 
-  let html = '';
-  CONFIG.campos.forEach(c => {
-    const obrig = c.obrigatorio ? 'required' : '';
+  let marcacaoHtml = '';
+  CONFIG.campos.forEach((campo) => {
+    const atributoObrigatorio = campo.obrigatorio ? 'required' : '';
     let entrada = '';
-    if (c.tipo === 'select') {
-      entrada = `<select id="${c.id}" ${obrig}>
+    if (campo.tipo === 'select') {
+      entrada = `<select id="${campo.id}" ${atributoObrigatorio}>
         <option value="">Selecione...</option>
-        ${c.opcoes.map(o => `<option>${o}</option>`).join('')}
+        ${campo.opcoes.map((opcao) => `<option>${opcao}</option>`).join('')}
       </select>`;
-    } else if (c.tipo === 'textarea') {
-      entrada = `<textarea id="${c.id}" placeholder="${c.dica || ''}" ${obrig}></textarea>`;
-    } else if (form.dataset.wizardForm === 'true' && c.id === CONFIG.campoImagem) {
-      entrada = `<input type="${c.tipo}" id="${c.id}" placeholder="Link de imagem ou envie uma captura" ${obrig} ${c.extra || ''}>
-        <input class="montar-input-arquivo" type="file" id="${c.id}-arquivo" accept="image/*" data-imagem-upload>
-        <label class="montar-upload-imagem" for="${c.id}-arquivo"><span>＋</span><b>Enviar imagem do projeto</b><small data-imagem-nome>JPG, PNG ou WebP · otimizada para a prévia</small></label>`;
+    } else if (campo.tipo === 'textarea') {
+      entrada = `<textarea id="${campo.id}" placeholder="${campo.dica || ''}" ${atributoObrigatorio}></textarea>`;
+    } else if (form.dataset.wizardForm === 'true' && campo.id === CONFIG.campoImagem) {
+      entrada = `<input
+          type="${campo.tipo}"
+          id="${campo.id}"
+          placeholder="Link de imagem ou envie uma captura"
+          ${atributoObrigatorio}
+          ${campo.extra || ''}
+        >
+        <input
+          class="montar-input-arquivo"
+          type="file"
+          id="${campo.id}-arquivo"
+          accept="image/*"
+          data-imagem-upload
+        >
+        <label class="montar-upload-imagem" for="${campo.id}-arquivo">
+          <span>＋</span>
+          <b>Enviar imagem do projeto</b>
+          <small data-imagem-nome>JPG, PNG ou WebP · otimizada para a prévia</small>
+        </label>`;
     } else {
-      entrada = `<input type="${c.tipo}" id="${c.id}" placeholder="${c.dica || ''}" ${obrig} ${c.extra || ''}>`;
+      entrada = `<input
+        type="${campo.tipo}"
+        id="${campo.id}"
+        placeholder="${campo.dica || ''}"
+        ${atributoObrigatorio}
+        ${campo.extra || ''}
+      >`;
     }
-    const rotulo = form.dataset.wizardForm === 'true' && c.id === CONFIG.campoImagem
-      ? 'Imagem de capa (opcional)'
-      : c.rotulo;
-    html += `<div class="campo"><label for="${c.id}">${rotulo}</label>${entrada}</div>`;
+    const rotulo =
+      form.dataset.wizardForm === 'true' && campo.id === CONFIG.campoImagem
+        ? 'Imagem de capa (opcional)'
+        : campo.rotulo;
+    marcacaoHtml += `<div class="campo"><label for="${campo.id}">${rotulo}</label>${entrada}</div>`;
   });
-  html += `<button class="botao" type="submit">Salvar</button>`;
-  form.innerHTML = html;
+  marcacaoHtml += `<button class="botao" type="submit">Salvar</button>`;
+  form.innerHTML = marcacaoHtml;
 
   const uploadImagem = form.querySelector('[data-imagem-upload]');
   if (uploadImagem) {
@@ -165,37 +200,44 @@ function montarFormulario() {
     });
   }
 
-  // MODO EDIÇÃO: se a página abrir com ?editar=123, carrega o registro no formulário
-  const idEditar = Number(new URLSearchParams(location.search).get('editar'));
-  const emEdicao = pegarRegistros().find(r => r.id === idEditar);
-  if (emEdicao) {
-    CONFIG.campos.forEach(c => (document.getElementById(c.id).value = emEdicao[c.id] || ''));
+  // Se a página abrir com ?editar=123, carrega o registro correspondente no formulário.
+  const idParaEditar = Number(new URLSearchParams(location.search).get('editar'));
+  const registroEmEdicao = pegarRegistros().find((registro) => registro.id === idParaEditar);
+  if (registroEmEdicao) {
+    CONFIG.campos.forEach(
+      (campo) => (document.getElementById(campo.id).value = registroEmEdicao[campo.id] || ''),
+    );
     const titulo = document.querySelector('.caixa-form h1, .montar-projetos-topo h2');
     if (titulo) titulo.textContent = 'Editar projeto';
   }
   window.dispatchEvent(new CustomEvent('porthub:projeto-form-pronto'));
 
-  form.addEventListener('submit', evento => {
+  form.addEventListener('submit', (evento) => {
     evento.preventDefault();
-    const dados = {};
-    CONFIG.campos.forEach(c => (dados[c.id] = document.getElementById(c.id).value));
-    if (emEdicao) {
-      // atualiza o registro que já existe
+    const dadosDoFormulario = {};
+    CONFIG.campos.forEach(
+      (campo) => (dadosDoFormulario[campo.id] = document.getElementById(campo.id).value),
+    );
+    if (registroEmEdicao) {
+      // Atualiza o registro existente.
       const lista = pegarRegistros();
-      Object.assign(lista.find(r => r.id === idEditar), dados);
+      Object.assign(
+        lista.find((registro) => registro.id === idParaEditar),
+        dadosDoFormulario,
+      );
       salvarRegistros(lista);
     } else {
-      if (CONFIG.campoStatus) dados[CONFIG.campoStatus] = CONFIG.statusOpcoes[0];
-      adicionarRegistro(dados);
+      if (CONFIG.campoStatus) dadosDoFormulario[CONFIG.campoStatus] = CONFIG.statusOpcoes[0];
+      adicionarRegistro(dadosDoFormulario);
     }
     const msg = document.getElementById('mensagem');
     msg.className = 'mensagem sucesso';
-    msg.textContent = emEdicao ? 'Alterações salvas!' : 'Registro salvo com sucesso!';
+    msg.textContent = registroEmEdicao ? 'Alterações salvas!' : 'Registro salvo com sucesso!';
     form.reset();
     const nomeImagem = form.querySelector('[data-imagem-nome]');
     if (nomeImagem) nomeImagem.textContent = 'JPG, PNG ou WebP · até 12 MB';
     if (form.dataset.wizardForm === 'true') {
-      if (emEdicao) {
+      if (registroEmEdicao) {
         window.location.href = `${CONFIG.paginaNovo}?etapa=2`;
       } else {
         window.dispatchEvent(new CustomEvent('porthub:projeto-salvo'));
@@ -214,7 +256,12 @@ function montarFormularioProjetoRapido() {
   const campoCategoria = acharCampo('categoria');
   const seletorCategoria = form.querySelector('[data-campo-rapido="categoria"]');
   if (seletorCategoria && campoCategoria?.opcoes) {
-    seletorCategoria.innerHTML = `<option value="">Selecione uma categoria</option>${campoCategoria.opcoes.map(opcao => `<option value="${esc(opcao)}">${esc(opcao)}</option>`).join('')}`;
+    seletorCategoria.innerHTML = `
+      <option value="">Selecione uma categoria</option>
+      ${campoCategoria.opcoes
+        .map((opcao) => `<option value="${escaparHtml(opcao)}">${escaparHtml(opcao)}</option>`)
+        .join('')}
+    `;
   }
 
   const campoTecnologias = form.querySelector('[data-campo-rapido="tecnologias"]');
@@ -227,19 +274,32 @@ function montarFormularioProjetoRapido() {
   const capaTitulo = form.querySelector('[data-capa-rapida-titulo]');
   const mensagem = form.querySelector('[data-mensagem-rapida]');
 
-  function desenharSkills() {
+  function desenharHabilidades() {
     if (!areaTecnologias) return;
-    const skills = String(campoTecnologias?.value || '').split(',').map(item => item.trim()).filter(Boolean);
-    areaTecnologias.innerHTML = skills.length
-      ? skills.map((skill, indice) => `<span class="tecnologia-chip tecnologia-cor-${indice % 3}">${esc(skill)}</span>`).join('')
-      : '<span class="skills-rapidas-dica">As skills aparecem como etiquetas coloridas.</span>';
+    const habilidades = String(campoTecnologias?.value || '')
+      .split(',')
+      .map((habilidade) => habilidade.trim())
+      .filter(Boolean);
+    areaTecnologias.innerHTML = habilidades.length
+      ? habilidades
+          .map(
+            (habilidade, indice) =>
+              `<span class="tecnologia-chip tecnologia-cor-${indice % 3}">${escaparHtml(habilidade)}</span>`,
+          )
+          .join('')
+      : '<span class="skills-rapidas-dica">As habilidades aparecem como etiquetas coloridas.</span>';
   }
 
   function desenharCapa() {
     if (!imagemPreview || !campoImagem) return;
     const origem = String(campoImagem.value || '').trim();
-    const permitida = origem && !/^(javascript|vbscript):/i.test(origem) && !/^\/\//.test(origem)
-      && (!/^[a-z][a-z0-9+.-]*:/i.test(origem) || /^https?:\/\//i.test(origem) || /^data:image\/(png|jpeg|jpg|gif|webp);base64,/i.test(origem));
+    const permitida =
+      origem &&
+      !/^(javascript|vbscript):/i.test(origem) &&
+      !/^\/\//.test(origem) &&
+      (!/^[a-z][a-z0-9+.-]*:/i.test(origem) ||
+        /^https?:\/\//i.test(origem) ||
+        /^data:image\/(png|jpeg|jpg|gif|webp);base64,/i.test(origem));
     if (permitida) {
       imagemPreview.src = origem;
       imagemPreview.hidden = false;
@@ -256,11 +316,11 @@ function montarFormularioProjetoRapido() {
     if (capaTitulo) capaTitulo.textContent = campoTitulo?.value.trim() || 'Seu projeto';
   }
 
-  campoTecnologias?.addEventListener('input', desenharSkills);
+  campoTecnologias?.addEventListener('input', desenharHabilidades);
   campoTitulo?.addEventListener('input', desenharCapa);
   campoImagem?.addEventListener('input', desenharCapa);
   form.querySelector('[data-campo-rapido="categoria"]')?.addEventListener('change', desenharCapa);
-  desenharSkills();
+  desenharHabilidades();
   desenharCapa();
 
   arquivoImagem?.addEventListener('change', async () => {
@@ -283,10 +343,10 @@ function montarFormularioProjetoRapido() {
     }
   });
 
-  form.addEventListener('submit', evento => {
+  form.addEventListener('submit', (evento) => {
     evento.preventDefault();
     const dados = {};
-    CONFIG.campos.forEach(campo => {
+    CONFIG.campos.forEach((campo) => {
       const entrada = form.querySelector(`[data-campo-rapido="${campo.id}"]`);
       dados[campo.id] = entrada ? entrada.value.trim() : '';
     });
@@ -300,7 +360,7 @@ function montarFormularioProjetoRapido() {
     }
     const nomeImagem = form.querySelector('[data-imagem-rapida-nome]');
     if (nomeImagem) nomeImagem.textContent = 'JPG, PNG ou WebP · até 12 MB';
-    desenharSkills();
+    desenharHabilidades();
     desenharCapa();
   });
 }
@@ -309,134 +369,186 @@ function montarFormularioProjetoRapido() {
 function montarFiltros() {
   const area = document.getElementById('filtros');
   if (!area) return;
-  let html = `<input type="search" id="busca" placeholder="Buscar...">`;
-  CONFIG.filtros.forEach(idCampo => {
+  let marcacaoHtml = `<input type="search" id="busca" placeholder="Buscar...">`;
+  CONFIG.filtros.forEach((idCampo) => {
     const campo = acharCampo(idCampo);
     const ehStatus = idCampo === CONFIG.campoStatus;
     // se o campo não tiver opções fixas, usa os valores já cadastrados
     const opcoes = ehStatus
       ? CONFIG.statusOpcoes
-      : campo.opcoes || [...new Set(pegarRegistros().map(r => r[idCampo]).filter(Boolean))].sort();
+      : campo.opcoes ||
+        [
+          ...new Set(
+            pegarRegistros()
+              .map((registro) => registro[idCampo])
+              .filter(Boolean),
+          ),
+        ].sort();
     const rotulo = ehStatus ? CONFIG.rotuloStatus : campo.rotulo;
-    html += `<select data-filtro="${idCampo}">
+    marcacaoHtml += `<select data-filtro="${idCampo}">
       <option value="">${rotulo}: todos</option>
-      ${opcoes.map(o => `<option>${o}</option>`).join('')}
+      ${opcoes.map((opcao) => `<option>${opcao}</option>`).join('')}
     </select>`;
   });
-  area.innerHTML = html;
-  area.querySelectorAll('select, input').forEach(el => el.addEventListener('input', montarLista));
+  area.innerHTML = marcacaoHtml;
+  area
+    .querySelectorAll('select, input')
+    .forEach((campo) => campo.addEventListener('input', montarLista));
 
-  // permite abrir a página já filtrada: ocorrencias.html?categoria=Lixo
+  // Permite abrir a lista já filtrada, por exemplo: projetos.html?categoria=Site
   const parametros = new URLSearchParams(location.search);
-  area.querySelectorAll('[data-filtro]').forEach(sel => {
-    const valor = parametros.get(sel.dataset.filtro);
-    if (valor) sel.value = valor;
+  area.querySelectorAll('[data-filtro]').forEach((campo) => {
+    const valor = parametros.get(campo.dataset.filtro);
+    if (valor) campo.value = valor;
   });
 }
 
 // ---------- Aplica filtros e busca ----------
 function registrosFiltrados() {
   let lista = pegarRegistros();
-  document.querySelectorAll('[data-filtro]').forEach(sel => {
-    if (sel.value) lista = lista.filter(r => r[sel.dataset.filtro] === sel.value);
+  document.querySelectorAll('[data-filtro]').forEach((campo) => {
+    if (campo.value)
+      lista = lista.filter((registro) => registro[campo.dataset.filtro] === campo.value);
   });
   const busca = document.getElementById('busca');
   if (busca && busca.value) {
     const termo = busca.value.toLowerCase();
-    lista = lista.filter(r => JSON.stringify(r).toLowerCase().includes(termo));
+    lista = lista.filter((registro) => JSON.stringify(registro).toLowerCase().includes(termo));
   }
-  return lista.sort((a, b) => b.id - a.id); // mais novos primeiro
+  return lista.sort((registroA, registroB) => registroB.id - registroA.id);
 }
 
-function seletorStatus(r) {
+function seletorStatus(registro) {
   if (!CONFIG.campoStatus) return '';
-  return `<select class="seletor-status" onchange="alterarCampo(${r.id}, '${CONFIG.campoStatus}', this.value)">
-    ${CONFIG.statusOpcoes.map(s => `<option ${s === r[CONFIG.campoStatus] ? 'selected' : ''}>${s}</option>`).join('')}
+  return `<select
+    class="seletor-status"
+    onchange="alterarCampo(${registro.id}, '${CONFIG.campoStatus}', this.value)"
+  >
+    ${CONFIG.statusOpcoes
+      .map(
+        (status) =>
+          `<option ${status === registro[CONFIG.campoStatus] ? 'selected' : ''}>${status}</option>`,
+      )
+      .join('')}
   </select>`;
 }
 
-function botaoEditar(r) {
+function botaoEditar(registro) {
   if (!CONFIG.permitirEditar) return '';
-  return `<a class="botao botao-contorno botao-pequeno" href="${CONFIG.paginaNovo}?editar=${r.id}">Editar</a>`;
+  return `<a class="botao botao-contorno botao-pequeno" href="${CONFIG.paginaNovo}?editar=${registro.id}">Editar</a>`;
 }
 
-// Campos com "separarPorVirgula": "HTML, CSS, JS" vira três etiquetas
-function etiquetasDoCampo(r, id) {
+// Divide campos marcados para separação por vírgula em etiquetas individuais.
+function etiquetasDoCampo(registro, id) {
   const campo = acharCampo(id);
-  if (!r[id]) return '';
-  const valores = campo && campo.separarPorVirgula ? r[id].split(',') : [r[id]];
-  return valores.map((v, indice) => {
-    const cor = id === 'tecnologias' ? ` tecnologia-cor-${indice % 3}` : '';
-    return `<span class="etiqueta${cor}">${esc(v.trim())}</span>`;
-  }).join('');
+  if (!registro[id]) return '';
+  const valores = campo && campo.separarPorVirgula ? registro[id].split(',') : [registro[id]];
+  return valores
+    .map((valor, indice) => {
+      const cor = id === 'tecnologias' ? ` tecnologia-cor-${indice % 3}` : '';
+      return `<span class="etiqueta${cor}">${escaparHtml(valor.trim())}</span>`;
+    })
+    .join('');
 }
 
-function imagemDoRegistro(r) {
+function imagemDoRegistro(registro) {
   if (!CONFIG.campoImagem) return '';
-  return r[CONFIG.campoImagem]
-    ? `<img class="registro-imagem" src="${esc(r[CONFIG.campoImagem])}" alt="${esc(r[CONFIG.campoTitulo])}">`
-    : `<div class="registro-imagem sem-imagem portfolio-capa-default" data-categoria="${esc(r.categoria || 'Projeto')}" aria-label="Capa visual para ${esc(r[CONFIG.campoTitulo] || 'projeto')}" role="img"><span>${esc(r.categoria || 'Projeto')}</span><strong>${esc(r[CONFIG.campoTitulo] || 'Seu projeto')}</strong><i></i></div>`;
+  return registro[CONFIG.campoImagem]
+    ? `<img class="registro-imagem" src="${escaparHtml(registro[CONFIG.campoImagem])}" alt="${escaparHtml(registro[CONFIG.campoTitulo])}">`
+    : `<div
+        class="registro-imagem sem-imagem portfolio-capa-default"
+        data-categoria="${escaparHtml(registro.categoria || 'Projeto')}"
+        aria-label="Capa visual para ${escaparHtml(registro[CONFIG.campoTitulo] || 'projeto')}"
+        role="img"
+      >
+        <span>${escaparHtml(registro.categoria || 'Projeto')}</span>
+        <strong>${escaparHtml(registro[CONFIG.campoTitulo] || 'Seu projeto')}</strong>
+        <i></i>
+      </div>`;
 }
 
-function botaoExcluir(r) {
-  return `<button class="botao botao-perigo botao-pequeno" onclick="excluirRegistro(${r.id})">Excluir</button>`;
+function botaoExcluir(registro) {
+  return `<button class="botao botao-perigo botao-pequeno" onclick="excluirRegistro(${registro.id})">Excluir</button>`;
 }
 
-// ---------- Um card de registro ----------
-function cardRegistro(r) {
-  const etiquetas = CONFIG.camposEtiqueta.map(c => etiquetasDoCampo(r, c)).join('');
-  const detalhes = CONFIG.camposDetalhe.map(id => {
-    const campo = acharCampo(id);
-    let valor = esc(r[id]);
-    if (campo.tipo === 'date') valor = formatarData(r[id]);
-    if (campo.tipo === 'url' && linkSeguro(r[id])) valor = `<a href="${valor}" target="_blank" rel="noopener">abrir link</a>`;
-    return valor ? `<div class="info"><strong>${campo.rotulo}:</strong> ${valor}</div>` : '';
-  }).join('');
-  const destaque = CONFIG.campoDestaque ? r[CONFIG.campoDestaque] : '';
+// ---------- Um cartão de registro ----------
+function cartaoRegistro(registro) {
+  const etiquetas = CONFIG.camposEtiqueta
+    .map((campo) => etiquetasDoCampo(registro, campo))
+    .join('');
+  const detalhes = CONFIG.camposDetalhe
+    .map((id) => {
+      const campo = acharCampo(id);
+      let valor = escaparHtml(registro[id]);
+      if (campo.tipo === 'date') valor = formatarData(registro[id]);
+      if (campo.tipo === 'url' && linkSeguro(registro[id]))
+        valor = `<a href="${valor}" target="_blank" rel="noopener">abrir link</a>`;
+      return valor ? `<div class="info"><strong>${campo.rotulo}:</strong> ${valor}</div>` : '';
+    })
+    .join('');
+  const destaque = CONFIG.campoDestaque ? registro[CONFIG.campoDestaque] : '';
 
-  return `<article class="registro" data-destaque="${esc(destaque)}">
-    ${imagemDoRegistro(r)}
+  return `<article class="registro" data-destaque="${escaparHtml(destaque)}">
+    ${imagemDoRegistro(registro)}
     <div class="registro-topo">${etiquetas}</div>
-    <h3>${esc(r[CONFIG.campoTitulo])}</h3>
+    <h3>${escaparHtml(registro[CONFIG.campoTitulo])}</h3>
     ${detalhes}
-    <div class="info autor">Por ${esc(r.autor)} em ${formatarData(r.criadoEm)}</div>
-    <div class="acoes">${seletorStatus(r)} ${botaoEditar(r)} ${botaoExcluir(r)}</div>
+    <div class="info autor">Por ${escaparHtml(registro.autor)} em ${formatarData(registro.criadoEm)}</div>
+    <div class="acoes">${seletorStatus(registro)} ${botaoEditar(registro)} ${botaoExcluir(registro)}</div>
   </article>`;
 }
 
 // ---------- Modos de exibição (escolhidos em CONFIG.modoLista) ----------
 function listaEmTabela(lista) {
-  const colunas = [CONFIG.campoTitulo, ...CONFIG.camposEtiqueta, ...CONFIG.camposDetalhe.filter(c => acharCampo(c).tipo !== 'textarea')];
+  const colunas = [
+    CONFIG.campoTitulo,
+    ...CONFIG.camposEtiqueta,
+    ...CONFIG.camposDetalhe.filter((idCampo) => acharCampo(idCampo).tipo !== 'textarea'),
+  ];
   return `<div class="tabela-rolagem"><table class="tabela">
     <thead><tr>
-      ${colunas.map(c => `<th>${acharCampo(c).rotulo}</th>`).join('')}
+      ${colunas.map((idCampo) => `<th>${acharCampo(idCampo).rotulo}</th>`).join('')}
       ${CONFIG.campoStatus ? `<th>${CONFIG.rotuloStatus}</th>` : ''}<th></th>
     </tr></thead>
     <tbody>
-      ${lista.map(r => `<tr>
-        ${colunas.map(c => {
-          let v = r[c] || '-';
-          if (acharCampo(c).tipo === 'date') v = formatarData(r[c]);
-          if (acharCampo(c).tipo === 'url' && r[c]) v = `<a href="${r[c]}" target="_blank">abrir</a>`;
-          return `<td>${v}</td>`;
-        }).join('')}
-        ${CONFIG.campoStatus ? `<td>${seletorStatus(r)}</td>` : ''}
-        <td>${botaoEditar(r)} ${botaoExcluir(r)}</td>
-      </tr>`).join('')}
+      ${lista
+        .map(
+          (registro) => `<tr>
+        ${colunas
+          .map((idCampo) => {
+            let valor = registro[idCampo] || '-';
+            if (acharCampo(idCampo).tipo === 'date') valor = formatarData(registro[idCampo]);
+            if (acharCampo(idCampo).tipo === 'url' && registro[idCampo])
+              valor = `<a href="${registro[idCampo]}" target="_blank">abrir</a>`;
+            return `<td>${valor}</td>`;
+          })
+          .join('')}
+        ${CONFIG.campoStatus ? `<td>${seletorStatus(registro)}</td>` : ''}
+        <td>${botaoEditar(registro)} ${botaoExcluir(registro)}</td>
+      </tr>`,
+        )
+        .join('')}
     </tbody>
   </table></div>`;
 }
 
 function listaPorDia(lista) {
-  const dias = [...new Set(lista.map(r => r[CONFIG.campoDia]))].sort().reverse();
-  return dias.map(dia => {
-    const doDia = lista.filter(r => r[CONFIG.campoDia] === dia);
-    const soma = CONFIG.campoSoma ? doDia.reduce((s, r) => s + Number(r[CONFIG.campoSoma]), 0) : doDia.length;
-    return `<section class="grupo-dia">
+  const dias = [...new Set(lista.map((registro) => registro[CONFIG.campoDia]))].sort().reverse();
+  return dias
+    .map((dia) => {
+      const projetosDoDia = lista.filter((registro) => registro[CONFIG.campoDia] === dia);
+      const soma = CONFIG.campoSoma
+        ? projetosDoDia.reduce(
+            (somaParcial, registro) => somaParcial + Number(registro[CONFIG.campoSoma]),
+            0,
+          )
+        : projetosDoDia.length;
+      return `<section class="grupo-dia">
       <h2>${formatarData(dia)} <span>${soma} ${CONFIG.unidadeSoma || 'registros'}</span></h2>
-      <div class="lista-dia">${doDia.map(cardRegistro).join('')}</div>
+      <div class="lista-dia">${projetosDoDia.map(cartaoRegistro).join('')}</div>
     </section>`;
-  }).join('');
+    })
+    .join('');
 }
 
 // ---------- Monta a lista ----------
@@ -456,18 +568,26 @@ function cartaoPortfolioConcluido() {
   const modelo = modelos[conclusao.modelo] || modelos.aurora;
   const layout = layouts[conclusao.layout] || layouts.profissional;
   const nome = String(perfil.nome || '').trim();
-  const card = document.createElement('article');
-  card.className = 'registro portfolio-projeto-finalizado';
-  card.id = 'portfolio-concluido';
+  const cartao = document.createElement('article');
+  cartao.className = 'registro portfolio-projeto-finalizado';
+  cartao.id = 'portfolio-concluido';
 
   const capa = document.createElement('div');
   capa.className = 'portfolio-projeto-finalizado-capa';
   const foto = String(perfil.foto || '').trim();
-  const fotoPermitida = /^https?:\/\//i.test(foto)
-    || /^data:image\/(png|jpeg|jpg|gif|webp);base64,/i.test(foto)
-    || (foto && !/^[a-z][a-z0-9+.-]*:/i.test(foto) && !/^\/\//.test(foto));
+  const fotoPermitida =
+    /^https?:\/\//i.test(foto) ||
+    /^data:image\/(png|jpeg|jpg|gif|webp);base64,/i.test(foto) ||
+    (foto && !/^[a-z][a-z0-9+.-]*:/i.test(foto) && !/^\/\//.test(foto));
   const avatar = () => {
-    const iniciais = nome.split(/\s+/).filter(Boolean).slice(0, 2).map(parte => parte[0]).join('').toUpperCase() || 'PH';
+    const iniciais =
+      nome
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((parte) => parte[0])
+        .join('')
+        .toUpperCase() || 'PH';
     const bloco = document.createElement('span');
     bloco.className = 'portfolio-projeto-finalizado-avatar';
     bloco.textContent = iniciais;
@@ -492,27 +612,34 @@ function cartaoPortfolioConcluido() {
   titulo.textContent = nome ? `Portfólio de ${nome}` : 'Meu portfólio';
   const resumo = document.createElement('p');
   resumo.textContent = `${perfil.cargo || 'Perfil profissional'} · Formato ${layout} · Paleta ${modelo}`;
-  const data = document.createElement('small');
+  const dataFinalizacao = document.createElement('small');
   const instante = new Date(conclusao.finalizadoEm || '');
-  data.textContent = Number.isNaN(instante.getTime()) ? 'Salvo no seu PortHub' : `Finalizado em ${instante.toLocaleDateString('pt-BR')}`;
+  dataFinalizacao.textContent = Number.isNaN(instante.getTime())
+    ? 'Salvo no seu PortHub'
+    : `Finalizado em ${instante.toLocaleDateString('pt-BR')}`;
   const acoes = document.createElement('div');
   acoes.className = 'portfolio-projeto-finalizado-acoes';
-  acoes.innerHTML = '<a class="botao" href="portfolio.html">Ver portfólio</a><a class="botao botao-contorno" href="novo-projeto.html?etapa=3">Editar</a>';
+  acoes.innerHTML =
+    '<a class="botao" href="portfolio.html">Ver portfólio</a><a class="botao botao-contorno" href="novo-projeto.html?etapa=3">Editar</a>';
   const excluir = document.createElement('button');
   excluir.type = 'button';
   excluir.className = 'botao botao-perigo';
   excluir.textContent = 'Excluir';
   excluir.addEventListener('click', () => {
-    const confirmou = window.confirm('Excluir o portfólio salvo? O perfil e o modelo serão removidos, mas os projetos cadastrados serão mantidos.');
+    const confirmou = window.confirm(
+      'Excluir o portfólio salvo? O perfil e o modelo serão removidos, mas os projetos cadastrados serão mantidos.',
+    );
     if (!confirmou) return;
-    ['_concluido', '_perfil', '_modelo', '_layout'].forEach(sufixo => localStorage.removeItem(`${CONFIG.chave}${sufixo}`));
+    ['_concluido', '_perfil', '_modelo', '_layout'].forEach((sufixo) =>
+      localStorage.removeItem(`${CONFIG.chave}${sufixo}`),
+    );
     window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
     montarLista();
   });
   acoes.appendChild(excluir);
-  conteudo.append(selo, titulo, resumo, data, acoes);
-  card.append(capa, conteudo);
-  return card;
+  conteudo.append(selo, titulo, resumo, dataFinalizacao, acoes);
+  cartao.append(capa, conteudo);
+  return cartao;
 }
 
 function montarLista() {
@@ -522,15 +649,19 @@ function montarLista() {
   const portfolioConcluido = cartaoPortfolioConcluido();
 
   if (lista.length === 0) {
-    area.innerHTML = portfolioConcluido ? '' : `<div class="vazio">Nada por aqui ainda. <a href="${CONFIG.paginaNovo}">Cadastre o primeiro!</a></div>`;
+    area.innerHTML = portfolioConcluido
+      ? ''
+      : `<div class="vazio">Nada por aqui ainda. <a href="${CONFIG.paginaNovo}">Cadastre o primeiro!</a></div>`;
   } else if (CONFIG.modoLista === 'tabela') area.innerHTML = listaEmTabela(lista);
   else if (CONFIG.modoLista === 'dias') area.innerHTML = listaPorDia(lista);
-  else area.innerHTML = lista.map(cardRegistro).join('');
+  else area.innerHTML = lista.map(cartaoRegistro).join('');
 
   if (portfolioConcluido) {
     area.prepend(portfolioConcluido);
     if (window.location.hash === '#portfolio-concluido') {
-      requestAnimationFrame(() => portfolioConcluido.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+      requestAnimationFrame(() =>
+        portfolioConcluido.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+      );
     }
   }
 }

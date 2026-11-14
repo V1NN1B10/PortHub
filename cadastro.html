@@ -1,87 +1,129 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro | Portfólio Fácil</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link rel="icon" href="./img/logo.png">
-</head>
-<body class="pagina-cadastro">
-  <!-- MENU: links à esquerda, logo no centro, usuário à direita.
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro | Portfólio Fácil</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;1,400&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="icon" href="./img/logo.png" />
+  </head>
+  <body class="pagina-cadastro">
+    <!-- MENU: links à esquerda, logo no centro, usuário à direita.
        Para adicionar uma página, copie uma linha <a> -->
-  <header class="topo">
-    <nav id="menu-principal" aria-label="Navegação principal">
-      <a href="index.html">Início</a>
-      <a href="projetos.html">Meus projetos</a>
-      <a href="novo-projeto.html">Novo projeto</a>
-      <a href="portfolio.html">Meu portfólio</a>
-    </nav>
-    <button class="menu-toggle" type="button" aria-controls="menu-principal" aria-expanded="false" aria-label="Abrir menu">
-      <i class="fa-solid fa-bars" aria-hidden="true"></i>
-    </button>
-    <a href="index.html" class="logo"><img src="./img/logocomnome.png" alt="logo"></a>
-    <div id="area-usuario"></div>
-  </header>
+    <header class="topo">
+      <nav id="menu-principal" aria-label="Navegação principal">
+        <a href="index.html">Início</a>
+        <a href="projetos.html">Meus projetos</a>
+        <a href="novo-projeto.html">Novo projeto</a>
+        <a href="portfolio.html">Meu portfólio</a>
+      </nav>
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-controls="menu-principal"
+        aria-expanded="false"
+        aria-label="Abrir menu"
+      >
+        <i class="fa-solid fa-bars" aria-hidden="true"></i>
+      </button>
+      <a href="index.html" class="logo"><img src="./img/logocomnome.png" alt="logo" /></a>
+      <div id="area-usuario"></div>
+    </header>
 
-  <main>
-    <section class="auth login-auth">
-      <div class="login-conteudo cadastro-conteudo">
-        <div class="login-identidade">
-          <span class="login-icone" aria-hidden="true"></span>
-          <h1>Criar sua conta no PortHub</h1>
-        </div>
-        <div class="caixa-form login-cartao cadastro-cartao">
-          <p class="cadastro-intro">É rapidinho e gratuito.</p>
-          <div id="mensagem" class="mensagem"></div>
-          <form id="form-cadastro">
-            <div class="campo cadastro-campo"><label for="nome">Nome completo</label><input type="text" id="nome" placeholder="Seu nome completo" required></div>
-            <div class="campo cadastro-campo"><label for="email">E-mail</label><input type="email" id="email" placeholder="Seu e-mail" required></div>
-            <div class="campo cadastro-campo"><label for="senha">Senha</label><input type="password" id="senha" minlength="6" placeholder="Mínimo de 6 caracteres" required></div>
-            <div class="campo cadastro-campo"><label for="confirmar">Confirmar senha</label><input type="password" id="confirmar" placeholder="Digite a senha novamente" required></div>
-            <button class="botao" type="submit">Criar conta grátis</button>
-          </form>
-          <div class="login-cadastro">
-            <p>Já tem conta?</p>
-            <a href="login.html">Entrar</a>
+    <main>
+      <section class="auth login-auth">
+        <div class="login-conteudo cadastro-conteudo">
+          <div class="login-identidade">
+            <span class="login-icone" aria-hidden="true"></span>
+            <h1>Criar sua conta no PortHub</h1>
+          </div>
+          <div class="caixa-form login-cartao cadastro-cartao">
+            <p class="cadastro-intro">É rapidinho e gratuito.</p>
+            <div id="mensagem" class="mensagem"></div>
+            <form id="form-cadastro">
+              <div class="campo cadastro-campo">
+                <label for="nome">Nome completo</label
+                ><input type="text" id="nome" placeholder="Seu nome completo" required />
+              </div>
+              <div class="campo cadastro-campo">
+                <label for="email">E-mail</label
+                ><input type="email" id="email" placeholder="Seu e-mail" required />
+              </div>
+              <div class="campo cadastro-campo">
+                <label for="senha">Senha</label
+                ><input
+                  type="password"
+                  id="senha"
+                  minlength="6"
+                  placeholder="Mínimo de 6 caracteres"
+                  required
+                />
+              </div>
+              <div class="campo cadastro-campo">
+                <label for="confirmar">Confirmar senha</label
+                ><input
+                  type="password"
+                  id="confirmar"
+                  placeholder="Digite a senha novamente"
+                  required
+                />
+              </div>
+              <button class="botao" type="submit">Criar conta grátis</button>
+            </form>
+            <div class="login-cadastro">
+              <p>Já tem conta?</p>
+              <a href="login.html">Entrar</a>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-
-  </main>
-  <footer class="rodape-site">
-    <div class="rodape">
-      <div class="rodape-grade">
-        <div class="rodape-apresentacao">
-          <a class="rodape-marca" href="index.html" aria-label="PortHub — início"><img src="./img/logo.png" alt=""><span>Port<b>Hub</b></span></a>
-          <p>Organize seus projetos, construa seu portfólio e conecte-se a novas oportunidades.</p>
-          <div id="redes-sociais" class="redes-sociais rodape-redes" aria-label="Canais de comunicação"></div>
+      </section>
+    </main>
+    <footer class="rodape-site">
+      <div class="rodape">
+        <div class="rodape-grade">
+          <div class="rodape-apresentacao">
+            <a class="rodape-marca" href="index.html" aria-label="PortHub — início"
+              ><img src="./img/logo.png" alt="" /><span>Port<b>Hub</b></span></a
+            >
+            <p>
+              Organize seus projetos, construa seu portfólio e conecte-se a novas oportunidades.
+            </p>
+            <div
+              id="redes-sociais"
+              class="redes-sociais rodape-redes"
+              aria-label="Canais de comunicação"
+            ></div>
+          </div>
+          <nav class="rodape-coluna" aria-label="Navegação no rodapé">
+            <h2>Navegação</h2>
+            <a href="index.html">Início</a>
+            <a href="index.html#como-funciona">Como funciona</a>
+            <a href="index.html#meu-espaco">Modelos</a>
+            <a href="index.html#sobre-nos">Sobre nós</a>
+          </nav>
+          <div class="rodape-coluna">
+            <h2>Comece</h2>
+            <a href="projetos.html#adicionar-projeto">Cadastrar projetos</a>
+            <a href="novo-projeto.html">Gerar portfólio</a>
+          </div>
         </div>
-        <nav class="rodape-coluna" aria-label="Navegação no rodapé">
-          <h2>Navegação</h2>
-          <a href="index.html">Início</a>
-          <a href="index.html#como-funciona">Como funciona</a>
-          <a href="index.html#meu-espaco">Modelos</a>
-          <a href="index.html#sobre-nos">Sobre nós</a>
-        </nav>
-        <div class="rodape-coluna">
-          <h2>Comece</h2>
-          <a href="projetos.html#adicionar-projeto">Cadastrar projetos</a>
-          <a href="novo-projeto.html">Gerar portfólio</a>
+        <div class="rodape-final">
+          <p>© 2026 PortHub · Grupo 3 · Projeto Final</p>
+          <p>Feito com <span aria-label="amor">♥</span> por estudantes</p>
         </div>
       </div>
-      <div class="rodape-final">
-        <p>© 2026 PortHub · Grupo 3 · Projeto Final</p>
-        <p>Feito com <span aria-label="amor">♥</span> por estudantes</p>
-      </div>
-    </div>
-  </footer>
+    </footer>
 
-  <script src="js/config.js"></script>
-  <script src="js/auth.js"></script>
-</body>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+  </body>
 </html>

@@ -1,132 +1,194 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Entrar | Portfólio Fácil</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;1,400&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="icon" href="./img/logo.png" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Entrar | Portfólio Fácil</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;1,400&family=Inter:wght@400;500;600&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link rel="icon" href="./img/logo.png">
-</head>
-
-<body class="pagina-login">
-  <!-- MENU: links à esquerda, logo no centro, usuário à direita.
+  <body class="pagina-login">
+    <!-- MENU: links à esquerda, logo no centro, usuário à direita.
        Para adicionar uma página, copie uma linha <a> -->
-  <header class="topo">
-    <nav id="menu-principal" aria-label="Navegação principal">
-      <a href="index.html">Início</a>
-      <a href="projetos.html">Meus projetos</a>
-      <a href="novo-projeto.html">Novo projeto</a>
-      <a href="portfolio.html">Meu portfólio</a>
-    </nav>
-    <button class="menu-toggle" type="button" aria-controls="menu-principal" aria-expanded="false" aria-label="Abrir menu">
-      <i class="fa-solid fa-bars" aria-hidden="true"></i>
-    </button>
-    <a href="index.html" class="logo"><img src="./img/logocomnome.png" alt="logo"></a>
-    <div id="area-usuario"></div>
-  </header>
+    <header class="topo">
+      <nav id="menu-principal" aria-label="Navegação principal">
+        <a href="index.html">Início</a>
+        <a href="projetos.html">Meus projetos</a>
+        <a href="novo-projeto.html">Novo projeto</a>
+        <a href="portfolio.html">Meu portfólio</a>
+      </nav>
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-controls="menu-principal"
+        aria-expanded="false"
+        aria-label="Abrir menu"
+      >
+        <i class="fa-solid fa-bars" aria-hidden="true"></i>
+      </button>
+      <a href="index.html" class="logo"><img src="./img/logocomnome.png" alt="logo" /></a>
+      <div id="area-usuario"></div>
+    </header>
 
-  <main>
-    <section class="auth login-auth">
-      <div class="login-conteudo">
-        <div class="login-identidade">
-          <span class="login-icone" aria-hidden="true"></span>
-          <h1>Entrar no PortHub</h1>
-        </div>
-        <div class="caixa-form login-cartao">
-          <div id="mensagem" class="mensagem"></div>
-          <form id="form-login">
-            <div class="campo campo-login">
-              <label for="email">E-mail</label>
-              <div class="campo-input">
-                <img src="./img/mdi-light--email.svg" alt="">
-                <input type="email" id="email" placeholder="Seu e-mail" required>
+    <main>
+      <section class="auth login-auth">
+        <div class="login-conteudo">
+          <div class="login-identidade">
+            <span class="login-icone" aria-hidden="true"></span>
+            <h1>Entrar no PortHub</h1>
+          </div>
+          <div class="caixa-form login-cartao">
+            <div id="mensagem" class="mensagem"></div>
+            <form id="form-login">
+              <div class="campo campo-login">
+                <label for="email">E-mail</label>
+                <div class="campo-input">
+                  <img src="./img/mdi-light--email.svg" alt="" />
+                  <input type="email" id="email" placeholder="Seu e-mail" required />
+                </div>
               </div>
-            </div>
-            <div class="campo campo-login">
-              <label for="senha">Senha</label>
-              <div class="campo-input">
-                <img src="./img/mdi-light--lock (1).svg" alt="">
-                <input type="password" id="senha" placeholder="Sua senha" required>
-                <button class="senha-visibilidade" id="alternar-senha" type="button" aria-label="Mostrar senha" aria-pressed="false" title="Mostrar senha">
-                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
-                </button>
+              <div class="campo campo-login">
+                <label for="senha">Senha</label>
+                <div class="campo-input">
+                  <img src="./img/mdi-light--lock (1).svg" alt="" />
+                  <input type="password" id="senha" placeholder="Sua senha" required />
+                  <button
+                    class="senha-visibilidade"
+                    id="alternar-senha"
+                    type="button"
+                    aria-label="Mostrar senha"
+                    aria-pressed="false"
+                    title="Mostrar senha"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  </button>
+                </div>
               </div>
+              <div class="login-opcoes">
+                <label><input type="checkbox" id="lembrar" /> <span>Lembrar de mim</span></label>
+              </div>
+              <div class="login-botoes">
+                <button class="botao" type="submit">Entrar</button>
+              </div>
+            </form>
+            <div class="login-cadastro">
+              <p>Ainda não tem conta?</p>
+              <a href="cadastro.html">Criar conta grátis</a>
             </div>
-            <div class="login-opcoes">
-              <label><input type="checkbox" id="lembrar"> <span>Lembrar de mim</span></label>
-            </div>
-            <div class="login-botoes">
-              <button class="botao" type="submit">Entrar</button>
-            </div>
-          </form>
-          <div class="login-cadastro">
-            <p>Ainda não tem conta?</p>
-            <a href="cadastro.html">Criar conta grátis</a>
           </div>
         </div>
-      </div>
-    </section>
-
-    <div class="recuperacao-fundo" id="recuperacao-senha" hidden>
-      <section class="recuperacao-cartao" role="dialog" aria-modal="true" aria-labelledby="recuperacao-titulo">
-        <button class="recuperacao-fechar" id="fechar-recuperacao" type="button" aria-label="Fechar">&times;</button>
-        <h2 id="recuperacao-titulo">Recuperar senha</h2>
-        <p id="recuperacao-instrucao">Informe o e-mail usado no cadastro para receber um código de verificação.</p>
-        <div id="mensagem-recuperacao" class="mensagem" role="status" aria-live="polite"></div>
-        <form id="form-recuperacao-email">
-          <label for="email-recuperacao">E-mail</label>
-          <input type="email" id="email-recuperacao" placeholder="seu@email.com" required>
-          <button class="botao" type="submit">Enviar código</button>
-        </form>
-        <form id="form-recuperacao-codigo" hidden>
-          <label for="codigo-recuperacao">Código recebido</label>
-          <input type="text" id="codigo-recuperacao" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="000000" required>
-          <label for="nova-senha">Nova senha</label>
-          <input type="password" id="nova-senha" minlength="6" autocomplete="new-password" placeholder="Mínimo de 6 caracteres" required>
-          <label for="confirmar-nova-senha">Confirme a nova senha</label>
-          <input type="password" id="confirmar-nova-senha" minlength="6" autocomplete="new-password" placeholder="Digite novamente" required>
-          <button class="botao" type="submit">Redefinir senha</button>
-        </form>
       </section>
-    </div>
 
-  </main>
-  <footer class="rodape-site">
-    <div class="rodape">
-      <div class="rodape-grade">
-        <div class="rodape-apresentacao">
-          <a class="rodape-marca" href="index.html" aria-label="PortHub — início"><img src="./img/logo.png" alt=""><span>Port<b>Hub</b></span></a>
-          <p>Organize seus projetos, construa seu portfólio e conecte-se a novas oportunidades.</p>
-          <div id="redes-sociais" class="redes-sociais rodape-redes" aria-label="Canais de comunicação"></div>
+      <div class="recuperacao-fundo" id="recuperacao-senha" hidden>
+        <section
+          class="recuperacao-cartao"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="recuperacao-titulo"
+        >
+          <button
+            class="recuperacao-fechar"
+            id="fechar-recuperacao"
+            type="button"
+            aria-label="Fechar"
+          >
+            &times;
+          </button>
+          <h2 id="recuperacao-titulo">Recuperar senha</h2>
+          <p id="recuperacao-instrucao">
+            Informe o e-mail usado no cadastro para receber um código de verificação.
+          </p>
+          <div id="mensagem-recuperacao" class="mensagem" role="status" aria-live="polite"></div>
+          <form id="form-recuperacao-email">
+            <label for="email-recuperacao">E-mail</label>
+            <input type="email" id="email-recuperacao" placeholder="seu@email.com" required />
+            <button class="botao" type="submit">Enviar código</button>
+          </form>
+          <form id="form-recuperacao-codigo" hidden>
+            <label for="codigo-recuperacao">Código recebido</label>
+            <input
+              type="text"
+              id="codigo-recuperacao"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              maxlength="6"
+              pattern="[0-9]{6}"
+              placeholder="000000"
+              required
+            />
+            <label for="nova-senha">Nova senha</label>
+            <input
+              type="password"
+              id="nova-senha"
+              minlength="6"
+              autocomplete="new-password"
+              placeholder="Mínimo de 6 caracteres"
+              required
+            />
+            <label for="confirmar-nova-senha">Confirme a nova senha</label>
+            <input
+              type="password"
+              id="confirmar-nova-senha"
+              minlength="6"
+              autocomplete="new-password"
+              placeholder="Digite novamente"
+              required
+            />
+            <button class="botao" type="submit">Redefinir senha</button>
+          </form>
+        </section>
+      </div>
+    </main>
+    <footer class="rodape-site">
+      <div class="rodape">
+        <div class="rodape-grade">
+          <div class="rodape-apresentacao">
+            <a class="rodape-marca" href="index.html" aria-label="PortHub — início"
+              ><img src="./img/logo.png" alt="" /><span>Port<b>Hub</b></span></a
+            >
+            <p>
+              Organize seus projetos, construa seu portfólio e conecte-se a novas oportunidades.
+            </p>
+            <div
+              id="redes-sociais"
+              class="redes-sociais rodape-redes"
+              aria-label="Canais de comunicação"
+            ></div>
+          </div>
+          <nav class="rodape-coluna" aria-label="Navegação no rodapé">
+            <h2>Navegação</h2>
+            <a href="index.html">Início</a>
+            <a href="index.html#como-funciona">Como funciona</a>
+            <a href="index.html#meu-espaco">Modelos</a>
+            <a href="index.html#sobre-nos">Sobre nós</a>
+          </nav>
+          <div class="rodape-coluna">
+            <h2>Comece</h2>
+            <a href="projetos.html#adicionar-projeto">Cadastrar projetos</a>
+            <a href="novo-projeto.html">Gerar portfólio</a>
+          </div>
         </div>
-        <nav class="rodape-coluna" aria-label="Navegação no rodapé">
-          <h2>Navegação</h2>
-          <a href="index.html">Início</a>
-          <a href="index.html#como-funciona">Como funciona</a>
-          <a href="index.html#meu-espaco">Modelos</a>
-          <a href="index.html#sobre-nos">Sobre nós</a>
-        </nav>
-        <div class="rodape-coluna">
-          <h2>Comece</h2>
-          <a href="projetos.html#adicionar-projeto">Cadastrar projetos</a>
-          <a href="novo-projeto.html">Gerar portfólio</a>
+        <div class="rodape-final">
+          <p>© 2026 PortHub · Grupo 3 · Projeto Final</p>
+          <p>Feito com <span aria-label="amor">♥</span> por estudantes</p>
         </div>
       </div>
-      <div class="rodape-final">
-        <p>© 2026 PortHub · Grupo 3 · Projeto Final</p>
-        <p>Feito com <span aria-label="amor">♥</span> por estudantes</p>
-      </div>
-    </div>
-  </footer>
+    </footer>
 
-  <script src="js/config.js"></script>
-  <script src="js/auth.js"></script>
-</body>
-
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+  </body>
 </html>

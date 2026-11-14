@@ -1,7 +1,6 @@
 // =========================================================
-// LOGIN E CADASTRO (funciona só no navegador, com localStorage)
-// Atenção: isso é para estudo! Em um site real, senhas nunca
-// ficam salvas no navegador.
+// Login e cadastro locais, com dados guardados no navegador.
+// Este modo serve para estudo; em um site publicado, as senhas devem ficar no servidor.
 // =========================================================
 
 const CHAVE_USUARIOS = CONFIG.chave + '_usuarios';
@@ -16,7 +15,7 @@ async function requisicaoAuth(caminho, dados) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify(dados)
+    body: JSON.stringify(dados),
   });
   const resultado = await resposta.json().catch(() => ({}));
   if (!resposta.ok) throw new Error(resultado.message || 'Não foi possível concluir a operação.');
@@ -24,33 +23,41 @@ async function requisicaoAuth(caminho, dados) {
 }
 
 function gerarCodigoRecuperacao() {
-  if (!window.crypto?.getRandomValues) throw new Error('Este navegador não oferece geração segura de códigos.');
+  if (!window.crypto?.getRandomValues)
+    throw new Error('Este navegador não oferece geração segura de códigos.');
   const valor = new Uint32Array(1);
   window.crypto.getRandomValues(valor);
   return String(100000 + (valor[0] % 900000));
 }
 
 async function enviarCodigoRecuperacao(email, codigo, validadeMinutos) {
-  const emailjs = CONFIG.emailjs || {};
-  if (!emailjs.serviceId || !emailjs.templateId || !emailjs.publicKey) {
+  const configuracaoEmail = CONFIG.emailjs || {};
+  if (
+    !configuracaoEmail.serviceId ||
+    !configuracaoEmail.templateId ||
+    !configuracaoEmail.publicKey
+  ) {
     throw new Error('O envio de e-mail ainda não foi configurado em js/config.js.');
   }
   const resposta = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      service_id: emailjs.serviceId,
-      template_id: emailjs.templateId,
-      user_id: emailjs.publicKey,
+      service_id: configuracaoEmail.serviceId,
+      template_id: configuracaoEmail.templateId,
+      user_id: configuracaoEmail.publicKey,
       template_params: {
         to_email: email,
         verification_code: codigo,
         app_name: 'PortHub',
-        expiration_minutes: validadeMinutos
-      }
-    })
+        expiration_minutes: validadeMinutos,
+      },
+    }),
   });
-  if (!resposta.ok) throw new Error('O serviço de e-mail não aceitou o envio. Confira o template e as configurações.');
+  if (!resposta.ok)
+    throw new Error(
+      'O serviço de e-mail não aceitou o envio. Confira o template e as configurações.',
+    );
 }
 
 function pegarUsuarios() {
@@ -62,10 +69,12 @@ async function cadastrarUsuario(nome, email, senha) {
     try {
       await requisicaoAuth('register', { nome, email, senha });
       return null;
-    } catch (erro) { return erro.message; }
+    } catch (erro) {
+      return erro.message;
+    }
   }
   const usuarios = pegarUsuarios();
-  const jaExiste = usuarios.find(u => u.email === email);
+  const jaExiste = usuarios.find((u) => u.email === email);
   if (jaExiste) return 'Esse e-mail já está cadastrado.';
   if (senha.length < 6) return 'A senha precisa ter pelo menos 6 caracteres.';
   usuarios.push({ nome, email, senha });
@@ -79,9 +88,11 @@ async function fazerLogin(email, senha) {
       const resultado = await requisicaoAuth('login', { email, senha });
       localStorage.setItem(CHAVE_SESSAO, JSON.stringify(resultado.user));
       return true;
-    } catch (erro) { return false; }
+    } catch (erro) {
+      return false;
+    }
   }
-  const usuario = pegarUsuarios().find(u => u.email === email && u.senha === senha);
+  const usuario = pegarUsuarios().find((u) => u.email === email && u.senha === senha);
   if (!usuario) return false;
   localStorage.setItem(CHAVE_SESSAO, JSON.stringify({ nome: usuario.nome, email: usuario.email }));
   return true;
@@ -92,10 +103,12 @@ async function trocarSenhaUsuario(email, novaSenha, codigo) {
     try {
       await requisicaoAuth('reset-password', { email, code: codigo, novaSenha });
       return true;
-    } catch (erro) { return false; }
+    } catch (erro) {
+      return false;
+    }
   }
   const usuarios = pegarUsuarios();
-  const usuario = usuarios.find(u => u.email === email);
+  const usuario = usuarios.find((u) => u.email === email);
   if (!usuario) return false;
   usuario.senha = novaSenha;
   localStorage.setItem(CHAVE_USUARIOS, JSON.stringify(usuarios));
@@ -108,13 +121,17 @@ function usuarioLogado() {
 
 async function sair() {
   if (AUTH_API_ATIVA) {
-    try { await requisicaoAuth('logout', {}); } catch (erro) { /* A sessão local também será removida. */ }
+    try {
+      await requisicaoAuth('logout', {});
+    } catch (erro) {
+      /* A sessão local também será removida. */
+    }
   }
   localStorage.removeItem(CHAVE_SESSAO);
   window.location.href = 'index.html';
 }
 
-// Coloque protegerPagina() nas páginas que só quem fez login pode ver
+// Use protegerPagina() nas páginas que exigem uma conta conectada.
 function protegerPagina() {
   if (!usuarioLogado()) {
     alert('Faça login para acessar esta página.');
@@ -122,7 +139,7 @@ function protegerPagina() {
   }
 }
 
-// Mostra "Olá, Fulano | Sair" ou "Entrar | Cadastrar" no menu
+// Mostra as opções adequadas no menu conforme a pessoa esteja conectada.
 function mostrarUsuarioNoMenu() {
   const area = document.getElementById('area-usuario');
   if (!area) return;
@@ -135,10 +152,10 @@ function mostrarUsuarioNoMenu() {
   }
 }
 
-// Marca no menu a página atual
+// Destaca no menu o link da página aberta.
 function marcarMenuAtivo() {
   const pagina = location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('nav a').forEach(link => {
+  document.querySelectorAll('nav a').forEach((link) => {
     if (link.getAttribute('href') === pagina) link.classList.add('ativo');
   });
 }
@@ -148,19 +165,49 @@ function mostrarRedesSociais() {
   if (!area) return;
   const redes = CONFIG.redesSociais || {};
   const icones = {
-    instagram: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle class="ponto" cx="18" cy="6" r="1"/></svg>',
-    tiktok: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3v11.1a4.4 4.4 0 1 1-3.5-4.3v3.7a.9.9 0 1 0-.9.9V3h4.4Zm0 0c.3 2.6 1.8 4 4 4.2v3.6c-1.5 0-2.9-.5-4-1.3V3Z"/></svg>',
-    whatsapp: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a9.8 9.8 0 0 0-8.5 14.7L2 22l5.5-1.4A10 10 0 1 0 12 2Zm0 17.8c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.9-3.1-.2-.3A7.8 7.8 0 1 1 12 19.8Zm4.3-5.8c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8.9-.1.2-.3.2-.5.1-1.4-.7-2.3-1.3-3.2-3-.2-.3.2-.3.6-1 .1-.2.1-.3 0-.5l-.8-1.8c-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.8.8-1.1 1.8-.8 2.9.4 1.2 1.2 2.3 2.1 3.1 1.4 1.3 2.5 1.8 4.1 2.3 1.1.3 2 .2 2.7-.2.8-.4 1.2-1.1 1.3-1.7.1-.2 0-.3-.2-.4Z"/></svg>'
+    instagram: `<svg viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle class="ponto" cx="18" cy="6" r="1" />
+    </svg>`,
+    tiktok: `<svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M15 3v11.1a4.4 4.4 0 1 1-3.5-4.3v3.7a.9.9 0 1 0-.9.9V3h4.4Zm0 0c.3 2.6 1.8 4 4 4.2v3.6c-1.5 0-2.9-.5-4-1.3V3Z" />
+    </svg>`,
+    whatsapp: `<svg viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        d="M12 2a9.8 9.8 0 0 0-8.5 14.7L2 22l5.5-1.4A10 10 0 1 0 12 2Zm0 17.8c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.9-3.1-.2-.3A7.8 7.8 0 1 1 12 19.8Zm4.3-5.8c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8.9-.1.2-.3.2-.5.1-1.4-.7-2.3-1.3-3.2-3-.2-.3.2-.3.6-1 .1-.2.1-.3 0-.5l-.8-1.8c-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.8.8-1.1 1.8-.8 2.9.4 1.2 1.2 2.3 2.1 3.1 1.4 1.3 2.5 1.8 4.1 2.3 1.1.3 2 .2 2.7-.2.8-.4 1.2-1.1 1.3-1.7.1-.2 0-.3-.2-.4Z"
+      />
+    </svg>`,
   };
   const dados = [
     { id: 'instagram', texto: 'Instagram', destino: redes.instagramUrl, icone: icones.instagram },
     { id: 'tiktok', texto: 'TikTok', destino: redes.tiktokUrl, icone: icones.tiktok },
-    { id: 'whatsapp', texto: 'WhatsApp', destino: redes.whatsappNumber ? `https://wa.me/${redes.whatsappNumber.replace(/\D/g, '')}` : '', icone: icones.whatsapp }
+    {
+      id: 'whatsapp',
+      texto: 'WhatsApp',
+      destino: redes.whatsappNumber
+        ? `https://wa.me/${redes.whatsappNumber.replace(/\D/g, '')}`
+        : '',
+      icone: icones.whatsapp,
+    },
   ];
-  area.innerHTML = dados.map(rede => rede.destino
-    ? `<a class="rede-social" href="${rede.destino}" target="_blank" rel="noopener noreferrer" aria-label="${rede.texto}">${rede.icone}<span>${rede.texto}</span></a>`
-    : `<span class="rede-social rede-social-vazia" aria-label="${rede.texto}: link ainda não configurado">${rede.icone}<span>${rede.texto}</span></span>`
-  ).join('');
+  area.innerHTML = dados
+    .map((rede) => {
+      const conteudo = `${rede.icone}<span>${rede.texto}</span>`;
+      return rede.destino
+        ? `<a
+            class="rede-social"
+            href="${rede.destino}"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="${rede.texto}"
+          >${conteudo}</a>`
+        : `<span
+            class="rede-social rede-social-vazia"
+            aria-label="${rede.texto}: link ainda não configurado"
+          >${conteudo}</span>`;
+    })
+    .join('');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -184,14 +231,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const mostrar = campoSenha.type === 'password';
       campoSenha.type = mostrar ? 'text' : 'password';
       botaoVisibilidadeSenha.setAttribute('aria-pressed', String(mostrar));
-      botaoVisibilidadeSenha.setAttribute('aria-label', mostrar ? 'Ocultar senha' : 'Mostrar senha');
+      botaoVisibilidadeSenha.setAttribute(
+        'aria-label',
+        mostrar ? 'Ocultar senha' : 'Mostrar senha',
+      );
       botaoVisibilidadeSenha.title = mostrar ? 'Ocultar senha' : 'Mostrar senha';
     });
   }
   // ----- Formulário de cadastro -----
   const formCadastro = document.getElementById('form-cadastro');
   if (formCadastro) {
-    formCadastro.addEventListener('submit', async evento => {
+    formCadastro.addEventListener('submit', async (evento) => {
       evento.preventDefault();
       const nome = document.getElementById('nome').value.trim();
       const email = document.getElementById('email').value.trim().toLowerCase();
@@ -219,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ----- Formulário de login -----
   const formLogin = document.getElementById('form-login');
   if (formLogin) {
-    formLogin.addEventListener('submit', async evento => {
+    formLogin.addEventListener('submit', async (evento) => {
       evento.preventDefault();
       const email = document.getElementById('email').value.trim().toLowerCase();
       const senha = document.getElementById('senha').value;
@@ -233,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Recuperação por código enviado com EmailJS.
+  // Envia o código de recuperação pelo serviço EmailJS.
   const modalRecuperacao = document.getElementById('recuperacao-senha');
   const formEmailRecuperacao = document.getElementById('form-recuperacao-email');
   const formCodigoRecuperacao = document.getElementById('form-recuperacao-codigo');
@@ -252,21 +302,26 @@ document.addEventListener('DOMContentLoaded', () => {
       formEmailRecuperacao.hidden = false;
       formCodigoRecuperacao.hidden = true;
       mostrarMensagem('');
-      document.getElementById('recuperacao-instrucao').textContent = 'Informe o e-mail usado no cadastro para receber um código de verificação.';
+      document.getElementById('recuperacao-instrucao').textContent =
+        'Informe o e-mail usado no cadastro para receber um código de verificação.';
     };
     const abrirRecuperacao = document.getElementById('abrir-recuperacao');
     if (abrirRecuperacao) {
-      abrirRecuperacao.addEventListener('click', evento => {
+      abrirRecuperacao.addEventListener('click', (evento) => {
         evento.preventDefault();
         modalRecuperacao.hidden = false;
         document.getElementById('email-recuperacao').focus();
       });
     }
     document.getElementById('fechar-recuperacao').addEventListener('click', fechar);
-    modalRecuperacao.addEventListener('click', evento => { if (evento.target === modalRecuperacao) fechar(); });
-    document.addEventListener('keydown', evento => { if (evento.key === 'Escape' && !modalRecuperacao.hidden) fechar(); });
+    modalRecuperacao.addEventListener('click', (evento) => {
+      if (evento.target === modalRecuperacao) fechar();
+    });
+    document.addEventListener('keydown', (evento) => {
+      if (evento.key === 'Escape' && !modalRecuperacao.hidden) fechar();
+    });
 
-    formEmailRecuperacao.addEventListener('submit', async evento => {
+    formEmailRecuperacao.addEventListener('submit', async (evento) => {
       evento.preventDefault();
       const email = document.getElementById('email-recuperacao').value.trim().toLowerCase();
       const botao = formEmailRecuperacao.querySelector('button[type="submit"]');
@@ -278,7 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
           await requisicaoAuth('forgot-password', { email });
           recuperacao = { email, modoApi: true };
         } else {
-          const usuario = pegarUsuarios().find(u => u.email === email);
+          const usuario = pegarUsuarios().find((u) => u.email === email);
           if (!usuario) {
             mostrarMensagem('Se esse e-mail estiver cadastrado, você receberá um código.');
             return;
@@ -292,7 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
             codigo,
             expiraEm: Date.now() + validadeMinutos * 60 * 1000,
             tentativas: 0,
-            maxTentativas: politicaRecuperacao.maxTentativas || 5
+            maxTentativas: politicaRecuperacao.maxTentativas || 5,
           };
         }
         formEmailRecuperacao.hidden = true;
@@ -303,14 +358,18 @@ document.addEventListener('DOMContentLoaded', () => {
         mostrarMensagem('Confira sua caixa de entrada e a pasta de spam.', 'sucesso');
         document.getElementById('codigo-recuperacao').focus();
       } catch (erro) {
-        mostrarMensagem(erro.message || 'Não foi possível enviar o código. Confira as configurações e tente novamente.', 'erro');
+        mostrarMensagem(
+          erro.message ||
+            'Não foi possível enviar o código. Confira as configurações e tente novamente.',
+          'erro',
+        );
       } finally {
         botao.disabled = false;
         botao.textContent = 'Enviar código';
       }
     });
 
-    formCodigoRecuperacao.addEventListener('submit', async evento => {
+    formCodigoRecuperacao.addEventListener('submit', async (evento) => {
       evento.preventDefault();
       const codigoDigitado = document.getElementById('codigo-recuperacao').value.trim();
       const novaSenha = document.getElementById('nova-senha').value;
@@ -321,18 +380,27 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (!recuperacao.modoApi && codigoDigitado !== recuperacao.codigo) {
         recuperacao.tentativas += 1;
-        if (recuperacao.tentativas >= (recuperacao.maxTentativas || CONFIG.recuperacaoSenha?.maxTentativas || 5)) {
+        if (
+          recuperacao.tentativas >=
+          (recuperacao.maxTentativas || CONFIG.recuperacaoSenha?.maxTentativas || 5)
+        ) {
           recuperacao = null;
-          mostrarMensagem('Limite de tentativas atingido. Feche e solicite um novo código.', 'erro');
+          mostrarMensagem(
+            'Limite de tentativas atingido. Feche e solicite um novo código.',
+            'erro',
+          );
         } else mostrarMensagem('Código inválido. Confira o e-mail e tente novamente.', 'erro');
         return;
       }
-      if (novaSenha.length < 6) return mostrarMensagem('A senha precisa ter pelo menos 6 caracteres.', 'erro');
+      if (novaSenha.length < 6)
+        return mostrarMensagem('A senha precisa ter pelo menos 6 caracteres.', 'erro');
       if (novaSenha !== confirmar) return mostrarMensagem('As senhas não são iguais.', 'erro');
-      if (!await trocarSenhaUsuario(recuperacao.email, novaSenha, codigoDigitado)) return mostrarMensagem('Código inválido ou não foi possível atualizar a senha.', 'erro');
+      if (!(await trocarSenhaUsuario(recuperacao.email, novaSenha, codigoDigitado)))
+        return mostrarMensagem('Código inválido ou não foi possível atualizar a senha.', 'erro');
       recuperacao = null;
       formCodigoRecuperacao.hidden = true;
-      document.getElementById('recuperacao-instrucao').textContent = 'Sua senha foi redefinida com sucesso.';
+      document.getElementById('recuperacao-instrucao').textContent =
+        'Sua senha foi redefinida com sucesso.';
       mostrarMensagem('Senha alterada! Agora você já pode entrar com a nova senha.', 'sucesso');
     });
   }

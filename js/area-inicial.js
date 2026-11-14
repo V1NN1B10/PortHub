@@ -10,7 +10,7 @@
 
   function atualizarModelos() {
     const atual = modeloAtual();
-    document.querySelectorAll('[data-modelo-card]').forEach(cartao => {
+    document.querySelectorAll('[data-modelo-card]').forEach((cartao) => {
       const selecionado = cartao.dataset.modeloCard === atual;
       cartao.classList.toggle('selecionado', selecionado);
       const botao = cartao.querySelector('[data-modelo]');
@@ -21,7 +21,7 @@
     });
   }
 
-  document.addEventListener('click', evento => {
+  document.addEventListener('click', (evento) => {
     const botaoModelo = evento.target.closest('[data-modelo]');
     if (!botaoModelo) return;
     const modelo = botaoModelo.dataset.modelo;
