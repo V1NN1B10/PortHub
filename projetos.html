@@ -34,19 +34,72 @@
           <h1>Meus projetos</h1>
           <p>Cadastre, edite e organize seus projetos por categoria.</p>
         </div>
-        <a class="botao" href="novo-projeto.html">+ Novo projeto</a>
+        <a class="botao" href="#adicionar-projeto">+ Cadastrar projeto</a>
       </div>
+      <section class="projetos-rapidos" id="adicionar-projeto">
+        <div class="projetos-rapidos-cabecalho">
+          <div><span class="projetos-rapidos-selo"><i></i> Cadastro rápido</span><h2>Adicione um projeto à sua vitrine</h2><p>Inclua as tecnologias, links e uma capa para apresentar seu trabalho.</p></div>
+          <a href="novo-projeto.html">Completar meu perfil <span aria-hidden="true">↗</span></a>
+        </div>
+        <form id="form-projeto-rapido" class="projeto-rapido-form">
+          <div class="projeto-rapido-layout">
+            <div class="projeto-rapido-campos">
+              <div class="campo"><label for="rapido-titulo">Nome do projeto</label><input id="rapido-titulo" data-campo-rapido="titulo" required placeholder="Ex.: Site da barbearia"></div>
+              <div class="campo"><label for="rapido-categoria">Categoria</label><select id="rapido-categoria" data-campo-rapido="categoria" required></select></div>
+              <div class="campo projeto-rapido-largo"><label for="rapido-tecnologias">Skills e tecnologias (separe por vírgula)</label><input id="rapido-tecnologias" data-campo-rapido="tecnologias" required placeholder="HTML, CSS, JavaScript"></div>
+              <div class="projeto-rapido-skills" data-skills-rapidas aria-live="polite"></div>
+              <div class="campo projeto-rapido-largo"><label for="rapido-descricao">O que o projeto faz?</label><textarea id="rapido-descricao" data-campo-rapido="descricao" required placeholder="Conte o objetivo, sua contribuição e o que você aprendeu."></textarea></div>
+              <div class="campo"><label for="rapido-repositorio">Repositório do GitHub</label><input id="rapido-repositorio" data-campo-rapido="repositorio" type="url" placeholder="https://github.com/... "></div>
+              <div class="campo"><label for="rapido-linkedin">Publicação ou perfil no LinkedIn</label><input id="rapido-linkedin" data-campo-rapido="linkedin" type="url" placeholder="https://linkedin.com/... "></div>
+            </div>
+            <div class="projeto-rapido-midia">
+              <div class="campo"><label for="rapido-imagem">Capa do projeto</label><input id="rapido-imagem" data-campo-rapido="imagem" placeholder="Cole o link da imagem"></div>
+              <input class="montar-input-arquivo" type="file" id="rapido-imagem-arquivo" accept="image/*" data-imagem-rapida>
+              <label class="montar-upload-imagem" for="rapido-imagem-arquivo"><span>＋</span><b>Enviar uma foto do projeto</b><small data-imagem-rapida-nome>JPG, PNG ou WebP · até 12 MB</small></label>
+              <figure class="projeto-rapido-capa" data-capa-rapida aria-label="Prévia da capa do projeto">
+                <img data-capa-rapida-imagem alt="Prévia da capa do projeto" hidden>
+                <div data-capa-rapida-placeholder><span>CAPA DO PROJETO</span><strong data-capa-rapida-titulo>Seu projeto</strong><i></i></div>
+              </figure>
+              <p>A capa é ajustada automaticamente para ficar leve no portfólio.</p>
+            </div>
+          </div>
+          <div class="projeto-rapido-rodape">
+            <div id="mensagem-projeto-rapido" data-mensagem-rapida class="mensagem" aria-live="polite"></div>
+            <button class="botao" type="submit">Adicionar projeto à lista <span aria-hidden="true">→</span></button>
+          </div>
+        </form>
+      </section>
       <!-- Os filtros e a lista são criados pelo js/app.js -->
       <div id="filtros"></div>
       <div id="lista" class="lista"></div>
     </div>
 
   </main>
-  <footer>
+  <footer class="rodape-site">
     <div class="rodape">
-      <p class="rodape-grande">Mostre o que<br>você <i>constrói.</i></p>
-      <div id="redes-sociais" class="redes-sociais" aria-label="Redes sociais PortHub"></div>
-      <p>Portfólio Fácil · Projeto Final · <span class="trocar">Grupo 3</span> · 2026</p>
+      <div class="rodape-grade">
+        <div class="rodape-apresentacao">
+          <a class="rodape-marca" href="index.html" aria-label="PortHub — início"><img src="./img/logo.png" alt=""><span>Port<b>Hub</b></span></a>
+          <p>Organize seus projetos, construa seu portfólio e conecte-se a novas oportunidades.</p>
+          <div id="redes-sociais" class="redes-sociais rodape-redes" aria-label="Canais de comunicação"></div>
+        </div>
+        <nav class="rodape-coluna" aria-label="Navegação no rodapé">
+          <h2>Navegação</h2>
+          <a href="index.html">Início</a>
+          <a href="index.html#como-funciona">Como funciona</a>
+          <a href="index.html#meu-espaco">Modelos</a>
+          <a href="index.html#sobre-nos">Sobre nós</a>
+        </nav>
+        <div class="rodape-coluna">
+          <h2>Comece</h2>
+          <a href="projetos.html#adicionar-projeto">Cadastrar projetos</a>
+          <a href="novo-projeto.html">Gerar portfólio</a>
+        </div>
+      </div>
+      <div class="rodape-final">
+        <p>© 2026 PortHub · Grupo 3 · Projeto Final</p>
+        <p>Feito com <span aria-label="amor">♥</span> por estudantes</p>
+      </div>
     </div>
   </footer>
 

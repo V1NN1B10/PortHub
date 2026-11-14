@@ -58,9 +58,10 @@ function acharCampo(id) {
   return CONFIG.campos.find(c => c.id === id);
 }
 
-function comprimirImagemPortfolio(arquivo) {
+function comprimirImagemPortfolio(arquivo, limitePersonalizado = 1400, qualidade = .82) {
   return new Promise((resolve, reject) => {
-    if (!arquivo.type.startsWith('image/')) {
+    const extensaoImagem = /\.(png|jpe?g|gif|webp|bmp|avif)$/i.test(arquivo.name || '');
+    if (!String(arquivo.type || '').toLowerCase().startsWith('image/') && !extensaoImagem) {
       reject(new Error('Escolha um arquivo de imagem.'));
       return;
     }
@@ -76,7 +77,7 @@ function comprimirImagemPortfolio(arquivo) {
       reject(new Error('Não foi possível abrir esta imagem.'));
     };
     imagem.onload = () => {
-      const limite = 1400;
+      const limite = limitePersonalizado;
       const escala = Math.min(1, limite / Math.max(imagem.width, imagem.height));
       const canvas = document.createElement('canvas');
       canvas.width = Math.max(1, Math.round(imagem.width * escala));
@@ -100,7 +101,7 @@ function comprimirImagemPortfolio(arquivo) {
         leitor.onload = () => resolve(leitor.result);
         leitor.onerror = () => reject(new Error('Não foi possível carregar esta imagem.'));
         leitor.readAsDataURL(blob);
-      }, 'image/jpeg', .82);
+      }, 'image/jpeg', qualidade);
     };
     imagem.src = url;
   });
@@ -205,6 +206,105 @@ function montarFormulario() {
   });
 }
 
+// Cadastro compacto disponível diretamente na página "Meus projetos".
+function montarFormularioProjetoRapido() {
+  const form = document.getElementById('form-projeto-rapido');
+  if (!form) return;
+
+  const campoCategoria = acharCampo('categoria');
+  const seletorCategoria = form.querySelector('[data-campo-rapido="categoria"]');
+  if (seletorCategoria && campoCategoria?.opcoes) {
+    seletorCategoria.innerHTML = `<option value="">Selecione uma categoria</option>${campoCategoria.opcoes.map(opcao => `<option value="${esc(opcao)}">${esc(opcao)}</option>`).join('')}`;
+  }
+
+  const campoTecnologias = form.querySelector('[data-campo-rapido="tecnologias"]');
+  const areaTecnologias = form.querySelector('[data-skills-rapidas]');
+  const campoTitulo = form.querySelector('[data-campo-rapido="titulo"]');
+  const campoImagem = form.querySelector(`[data-campo-rapido="${CONFIG.campoImagem}"]`);
+  const arquivoImagem = form.querySelector('[data-imagem-rapida]');
+  const imagemPreview = form.querySelector('[data-capa-rapida-imagem]');
+  const capaPlaceholder = form.querySelector('[data-capa-rapida-placeholder]');
+  const capaTitulo = form.querySelector('[data-capa-rapida-titulo]');
+  const mensagem = form.querySelector('[data-mensagem-rapida]');
+
+  function desenharSkills() {
+    if (!areaTecnologias) return;
+    const skills = String(campoTecnologias?.value || '').split(',').map(item => item.trim()).filter(Boolean);
+    areaTecnologias.innerHTML = skills.length
+      ? skills.map((skill, indice) => `<span class="tecnologia-chip tecnologia-cor-${indice % 3}">${esc(skill)}</span>`).join('')
+      : '<span class="skills-rapidas-dica">As skills aparecem como etiquetas coloridas.</span>';
+  }
+
+  function desenharCapa() {
+    if (!imagemPreview || !campoImagem) return;
+    const origem = String(campoImagem.value || '').trim();
+    const permitida = origem && !/^(javascript|vbscript):/i.test(origem) && !/^\/\//.test(origem)
+      && (!/^[a-z][a-z0-9+.-]*:/i.test(origem) || /^https?:\/\//i.test(origem) || /^data:image\/(png|jpeg|jpg|gif|webp);base64,/i.test(origem));
+    if (permitida) {
+      imagemPreview.src = origem;
+      imagemPreview.hidden = false;
+      if (capaPlaceholder) capaPlaceholder.hidden = true;
+      imagemPreview.onerror = () => {
+        imagemPreview.hidden = true;
+        if (capaPlaceholder) capaPlaceholder.hidden = false;
+      };
+    } else {
+      imagemPreview.removeAttribute('src');
+      imagemPreview.hidden = true;
+      if (capaPlaceholder) capaPlaceholder.hidden = false;
+    }
+    if (capaTitulo) capaTitulo.textContent = campoTitulo?.value.trim() || 'Seu projeto';
+  }
+
+  campoTecnologias?.addEventListener('input', desenharSkills);
+  campoTitulo?.addEventListener('input', desenharCapa);
+  campoImagem?.addEventListener('input', desenharCapa);
+  form.querySelector('[data-campo-rapido="categoria"]')?.addEventListener('change', desenharCapa);
+  desenharSkills();
+  desenharCapa();
+
+  arquivoImagem?.addEventListener('change', async () => {
+    const arquivo = arquivoImagem.files && arquivoImagem.files[0];
+    if (!arquivo) return;
+    const nome = form.querySelector('[data-imagem-rapida-nome]');
+    try {
+      if (nome) nome.textContent = 'Preparando imagem...';
+      campoImagem.value = await comprimirImagemPortfolio(arquivo);
+      campoImagem.dispatchEvent(new Event('input', { bubbles: true }));
+      if (nome) nome.textContent = `${arquivo.name} · pronta para a capa`;
+    } catch (erro) {
+      if (nome) nome.textContent = 'JPG, PNG ou WebP · até 12 MB';
+      if (mensagem) {
+        mensagem.className = 'mensagem erro';
+        mensagem.textContent = erro.message || 'Não foi possível usar esta imagem.';
+      }
+    } finally {
+      arquivoImagem.value = '';
+    }
+  });
+
+  form.addEventListener('submit', evento => {
+    evento.preventDefault();
+    const dados = {};
+    CONFIG.campos.forEach(campo => {
+      const entrada = form.querySelector(`[data-campo-rapido="${campo.id}"]`);
+      dados[campo.id] = entrada ? entrada.value.trim() : '';
+    });
+    if (CONFIG.campoStatus) dados[CONFIG.campoStatus] = CONFIG.statusOpcoes[0];
+    adicionarRegistro(dados);
+    montarLista();
+    form.reset();
+    if (mensagem) {
+      mensagem.className = 'mensagem sucesso';
+      mensagem.textContent = 'Projeto adicionado à sua lista.';
+    }
+    const nomeImagem = form.querySelector('[data-imagem-rapida-nome]');
+    if (nomeImagem) nomeImagem.textContent = 'JPG, PNG ou WebP · até 12 MB';
+    desenharSkills();
+    desenharCapa();
+  });
+}
+
 // ---------- Monta os filtros ----------
 function montarFiltros() {
   const area = document.getElementById('filtros');
@@ -265,7 +365,10 @@ function etiquetasDoCampo(r, id) {
   const campo = acharCampo(id);
   if (!r[id]) return '';
   const valores = campo && campo.separarPorVirgula ? r[id].split(',') : [r[id]];
-  return valores.map(v => `<span class="etiqueta">${esc(v.trim())}</span>`).join('');
+  return valores.map((v, indice) => {
+    const cor = id === 'tecnologias' ? ` tecnologia-cor-${indice % 3}` : '';
+    return `<span class="etiqueta${cor}">${esc(v.trim())}</span>`;
+  }).join('');
 }
 
 function imagemDoRegistro(r) {
@@ -337,22 +440,104 @@ function listaPorDia(lista) {
 }
 
 // ---------- Monta a lista ----------
+function cartaoPortfolioConcluido() {
+  let conclusao;
+  let perfil = {};
+  try {
+    conclusao = JSON.parse(localStorage.getItem(`${CONFIG.chave}_concluido`) || 'null');
+    perfil = JSON.parse(localStorage.getItem(`${CONFIG.chave}_perfil`) || '{}') || {};
+  } catch (erro) {
+    return null;
+  }
+  if (!conclusao || !conclusao.concluido) return null;
+
+  const modelos = { aurora: 'Aurora', lume: 'Lume', noite: 'Noite' };
+  const layouts = { profissional: 'Profissional', academico: 'Acadêmico', tech: 'Tech' };
+  const modelo = modelos[conclusao.modelo] || modelos.aurora;
+  const layout = layouts[conclusao.layout] || layouts.profissional;
+  const nome = String(perfil.nome || '').trim();
+  const card = document.createElement('article');
+  card.className = 'registro portfolio-projeto-finalizado';
+  card.id = 'portfolio-concluido';
+
+  const capa = document.createElement('div');
+  capa.className = 'portfolio-projeto-finalizado-capa';
+  const foto = String(perfil.foto || '').trim();
+  const fotoPermitida = /^https?:\/\//i.test(foto)
+    || /^data:image\/(png|jpeg|jpg|gif|webp);base64,/i.test(foto)
+    || (foto && !/^[a-z][a-z0-9+.-]*:/i.test(foto) && !/^\/\//.test(foto));
+  const avatar = () => {
+    const iniciais = nome.split(/\s+/).filter(Boolean).slice(0, 2).map(parte => parte[0]).join('').toUpperCase() || 'PH';
+    const bloco = document.createElement('span');
+    bloco.className = 'portfolio-projeto-finalizado-avatar';
+    bloco.textContent = iniciais;
+    return bloco;
+  };
+  if (fotoPermitida) {
+    const imagem = document.createElement('img');
+    imagem.src = foto;
+    imagem.alt = nome ? `Foto de ${nome}` : 'Foto do perfil';
+    imagem.addEventListener('error', () => imagem.replaceWith(avatar()), { once: true });
+    capa.appendChild(imagem);
+  } else {
+    capa.appendChild(avatar());
+  }
+
+  const conteudo = document.createElement('div');
+  conteudo.className = 'portfolio-projeto-finalizado-conteudo';
+  const selo = document.createElement('span');
+  selo.className = 'portfolio-projeto-finalizado-selo';
+  selo.textContent = '✓ Projeto concluído';
+  const titulo = document.createElement('h3');
+  titulo.textContent = nome ? `Portfólio de ${nome}` : 'Meu portfólio';
+  const resumo = document.createElement('p');
+  resumo.textContent = `${perfil.cargo || 'Perfil profissional'} · Formato ${layout} · Paleta ${modelo}`;
+  const data = document.createElement('small');
+  const instante = new Date(conclusao.finalizadoEm || '');
+  data.textContent = Number.isNaN(instante.getTime()) ? 'Salvo no seu PortHub' : `Finalizado em ${instante.toLocaleDateString('pt-BR')}`;
+  const acoes = document.createElement('div');
+  acoes.className = 'portfolio-projeto-finalizado-acoes';
+  acoes.innerHTML = '<a class="botao" href="portfolio.html">Ver portfólio</a><a class="botao botao-contorno" href="novo-projeto.html?etapa=3">Editar</a>';
+  const excluir = document.createElement('button');
+  excluir.type = 'button';
+  excluir.className = 'botao botao-perigo';
+  excluir.textContent = 'Excluir';
+  excluir.addEventListener('click', () => {
+    const confirmou = window.confirm('Excluir o portfólio salvo? O perfil e o modelo serão removidos, mas os projetos cadastrados serão mantidos.');
+    if (!confirmou) return;
+    ['_concluido', '_perfil', '_modelo', '_layout'].forEach(sufixo => localStorage.removeItem(`${CONFIG.chave}${sufixo}`));
+    window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+    montarLista();
+  });
+  acoes.appendChild(excluir);
+  conteudo.append(selo, titulo, resumo, data, acoes);
+  card.append(capa, conteudo);
+  return card;
+}
+
 function montarLista() {
   const area = document.getElementById('lista');
   if (!area) return;
   const lista = registrosFiltrados();
+  const portfolioConcluido = cartaoPortfolioConcluido();
 
   if (lista.length === 0) {
-    area.innerHTML = `<div class="vazio">Nada por aqui ainda. <a href="${CONFIG.paginaNovo}">Cadastre o primeiro!</a></div>`;
-    return;
-  }
-  if (CONFIG.modoLista === 'tabela') area.innerHTML = listaEmTabela(lista);
+    area.innerHTML = portfolioConcluido ? '' : `<div class="vazio">Nada por aqui ainda. <a href="${CONFIG.paginaNovo}">Cadastre o primeiro!</a></div>`;
+  } else if (CONFIG.modoLista === 'tabela') area.innerHTML = listaEmTabela(lista);
   else if (CONFIG.modoLista === 'dias') area.innerHTML = listaPorDia(lista);
   else area.innerHTML = lista.map(cardRegistro).join('');
+
+  if (portfolioConcluido) {
+    area.prepend(portfolioConcluido);
+    if (window.location.hash === '#portfolio-concluido') {
+      requestAnimationFrame(() => portfolioConcluido.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    }
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   montarFormulario();
+  montarFormularioProjetoRapido();
   montarFiltros();
   montarLista();
 });

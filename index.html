@@ -54,6 +54,20 @@
       <div>HTML ✦ CSS ✦ JavaScript ✦ Figma ✦ Python ✦ React ✦ Banco de dados ✦ UX ✦ HTML ✦ CSS ✦ JavaScript ✦ Figma ✦ Python ✦ React ✦ Banco de dados ✦ UX ✦</div>
     </div>
 
+    <section class="secao oferece-area" aria-labelledby="oferece-titulo">
+      <div class="oferece-cabecalho">
+        <p class="como-etiqueta"><span></span> O que o PortHub oferece</p>
+        <h2 id="oferece-titulo">Tudo para mostrar seu melhor<br>trabalho</h2>
+        <p>Uma plataforma pensada para estudantes organizarem projetos e se conectarem a novas oportunidades.</p>
+      </div>
+      <div class="oferece-grade">
+        <article class="oferece-card"><span class="oferece-icone icone-roxo">▣</span><h3>Projetos organizados</h3><p>Cadastre, edite e exclua projetos em um só lugar, com tecnologias e descrição.</p></article>
+        <article class="oferece-card"><span class="oferece-icone icone-azul">▽</span><h3>Filtro por categoria</h3><p>Front-end, back-end, UX/UI, dados... mostre exatamente o que importa a cada vaga.</p></article>
+        <article class="oferece-card"><span class="oferece-icone icone-turquesa">▣</span><h3>Portfólio bonito</h3><p>Modelos modernos e responsivos que valorizam o seu trabalho em qualquer tela.</p></article>
+        <article class="oferece-card"><span class="oferece-icone icone-violeta">⌘</span><h3>Novas conexões</h3><p>Compartilhe com recrutadores, professores e a comunidade e abra portas.</p></article>
+      </div>
+    </section>
+
     <section class="secao area-portfolio" id="meu-espaco">
       <div class="area-portfolio-cabecalho">
         <div>
@@ -103,36 +117,62 @@
           </nav>
           <div class="montar-painel" data-painel="1">
             <form class="montar-perfil-form">
-              <div class="montar-perfil-grade">
-                <div class="campo"><label for="inicio-nome">Nome completo</label><input id="inicio-nome" data-perfil="nome" placeholder="Seu nome"></div>
-                <div class="campo"><label for="inicio-github">GitHub</label><input id="inicio-github" data-perfil="github" placeholder="https://github.com/seuusuario"></div>
-                <div class="campo"><label for="inicio-cargo">Título profissional</label><input id="inicio-cargo" data-perfil="cargo" placeholder="Estudante de tecnologia"></div>
-                <div class="campo"><label for="inicio-linkedin">LinkedIn</label><input id="inicio-linkedin" data-perfil="linkedin" placeholder="https://linkedin.com/in/seuusuario"></div>
-                <div class="campo"><label for="inicio-bio">Sobre você</label><textarea id="inicio-bio" data-perfil="bio" placeholder="Conte um pouco sobre você e o que gosta de criar."></textarea></div>
-                <div class="campo"><label for="inicio-contato">E-mail de contato</label><input id="inicio-contato" data-perfil="contato" type="email" placeholder="voce@email.com"><button class="botao montar-avancar" type="submit">Continuar para projetos →</button></div>
-              </div>
-              <div class="campo montar-skills"><label for="inicio-skills">Hard skills (separe por vírgula)</label><input id="inicio-skills" data-perfil="hardSkills" placeholder="HTML, CSS, JavaScript"></div>
-              <div class="montar-perfil-adicional">
-                <p class="montar-perfil-adicional-titulo">Deixe seu perfil mais completo</p>
+              <section class="montar-perfil-secao">
+                <div class="montar-perfil-secao-topo"><span>01</span><div><h3>Apresentação</h3><p>Conte quem você é e como podem falar com você.</p></div></div>
                 <div class="montar-perfil-grade">
+                  <div class="campo"><label for="inicio-nome">Nome completo</label><input id="inicio-nome" data-perfil="nome" placeholder="Seu nome"></div>
+                  <div class="campo"><label for="inicio-cargo">Título ou área de atuação</label><input id="inicio-cargo" data-perfil="cargo" placeholder="Estudante de tecnologia"></div>
+                  <div class="campo"><label for="inicio-contato">E-mail de contato</label><input id="inicio-contato" data-perfil="contato" type="email" placeholder="voce@email.com"></div>
                   <div class="campo"><label for="inicio-localizacao">Cidade ou região</label><input id="inicio-localizacao" data-perfil="localizacao" placeholder="Ex.: São Paulo, SP"></div>
-                  <div class="campo"><label for="inicio-website">Site pessoal</label><input id="inicio-website" data-perfil="website" placeholder="https://seusite.com"></div>
-                  <div class="campo"><label for="inicio-foto">Foto de perfil (link)</label><input id="inicio-foto" data-perfil="foto" placeholder="https://.../minha-foto.jpg"></div>
-                  <div class="campo"><label for="inicio-soft-skills">Soft skills (separe por vírgula)</label><input id="inicio-soft-skills" data-perfil="softSkills" placeholder="Comunicação, colaboração"></div>
-                  <div class="campo montar-campo-largo"><label for="inicio-objetivo">O que você busca na sua próxima oportunidade?</label><textarea id="inicio-objetivo" data-perfil="objetivo" placeholder="Ex.: estágio em desenvolvimento front-end, projetos de UX ou oportunidades para aprender com uma equipe."></textarea></div>
+                  <div class="campo montar-campo-largo"><label for="inicio-bio">Sobre você</label><textarea id="inicio-bio" data-perfil="bio" placeholder="Conte um pouco sobre sua trajetória, seus interesses e o que gosta de criar."></textarea></div>
                 </div>
-              </div>
+              </section>
+              <section class="montar-perfil-secao">
+                <div class="montar-perfil-secao-topo"><span>02</span><div><h3>Links profissionais</h3><p>Adicione perfis e páginas que queira compartilhar.</p></div></div>
+                <div class="montar-perfil-grade">
+                  <div class="campo"><label for="inicio-github">GitHub</label><input id="inicio-github" data-perfil="github" placeholder="https://github.com/seuusuario"></div>
+                  <div class="campo"><label for="inicio-linkedin">LinkedIn</label><input id="inicio-linkedin" data-perfil="linkedin" placeholder="https://linkedin.com/in/seuusuario"></div>
+                  <div class="campo"><label for="inicio-website">Site pessoal</label><input id="inicio-website" data-perfil="website" placeholder="https://seusite.com"></div>
+                </div>
+              </section>
+              <section class="montar-perfil-secao">
+                <div class="montar-perfil-secao-topo"><span>03</span><div><h3>Habilidades</h3><p>Separe cada habilidade por vírgula.</p></div></div>
+                <div class="montar-perfil-grade">
+                  <div class="campo"><label for="inicio-skills">Hard skills</label><input id="inicio-skills" data-perfil="hardSkills" placeholder="HTML, CSS, JavaScript"></div>
+                  <div class="campo"><label for="inicio-soft-skills">Soft skills</label><input id="inicio-soft-skills" data-perfil="softSkills" placeholder="Comunicação, colaboração"></div>
+                </div>
+              </section>
+              <section class="montar-perfil-secao">
+                <div class="montar-perfil-secao-topo"><span>04</span><div><h3>Formação e objetivo</h3><p>Complete seu perfil para os formatos acadêmico e profissional.</p></div></div>
+                <div class="montar-perfil-grade">
+                  <div class="campo"><label for="inicio-formacao">Curso ou área de formação</label><input id="inicio-formacao" data-perfil="formacao" placeholder="Ex.: Análise e Desenvolvimento de Sistemas"></div>
+                  <div class="campo"><label for="inicio-instituicao">Instituição de ensino</label><input id="inicio-instituicao" data-perfil="instituicao" placeholder="Universidade ou curso técnico"></div>
+                  <div class="campo montar-foto-campo"><label for="inicio-foto-arquivo">Foto de perfil</label><input type="hidden" id="inicio-foto" data-perfil="foto"><input class="perfil-arquivo-input" type="file" id="inicio-foto-arquivo" accept="image/*,.jpg,.jpeg,.png,.webp,.gif" data-perfil-foto-upload><small data-perfil-foto-nome>Selecione uma imagem nos arquivos · até 12 MB</small><div class="perfil-foto-preview" data-perfil-foto-area hidden><img data-perfil-foto-preview alt="Prévia da foto de perfil" hidden><button type="button" data-remover-perfil-foto>Remover foto</button></div><small class="perfil-foto-feedback" data-perfil-foto-feedback aria-live="polite"></small></div>
+                  <div class="campo montar-campo-largo"><label for="inicio-objetivo">Objetivo ou oportunidade que busca</label><textarea id="inicio-objetivo" data-perfil="objetivo" placeholder="Ex.: estágio em desenvolvimento front-end ou projetos de UX."></textarea></div>
+                </div>
+              </section>
+              <div class="montar-perfil-enviar"><p>Você pode editar essas informações depois.</p><button class="botao montar-avancar" type="submit">Continuar para projetos →</button></div>
             </form>
           </div>
           <div class="montar-painel" data-painel="2" hidden>
-            <div class="montar-projetos-topo"><div><h3>Seus projetos</h3><p>Os projetos cadastrados aparecem aqui.</p></div><a class="botao" href="novo-projeto.html?etapa=2">+ Adicionar projeto</a></div>
+            <div class="montar-projetos-topo"><div><h3>Seus projetos</h3><p>Cadastre e organize seus trabalhos em Meus projetos.</p></div><a class="botao" href="projetos.html#adicionar-projeto">+ Ir para Meus projetos</a></div>
             <div class="montar-lista-projetos" data-lista-projetos></div>
             <button class="botao montar-avancar" type="button" data-ir-etapa="3">Continuar para modelo →</button>
           </div>
           <div class="montar-painel" data-painel="3" hidden>
-            <div class="montar-modelo-resumo"><span class="montar-modelo-icone">✦</span><div><p>Seu modelo atual</p><h3 data-modelo-atual>Aurora</h3></div></div>
-            <div class="montar-passo-acoes"><a class="botao botao-contorno" href="portfolio.html">Abrir visualização completa</a><a class="botao" href="novo-projeto.html?etapa=2">Adicionar outro projeto</a></div>
-            <p class="montar-ajuda">Troque o modelo na prévia ao lado. Seu perfil e seus projetos continuam salvos.</p>
+            <div class="montar-modelo-resumo"><span class="montar-modelo-icone">✦</span><div><p>Formato e paleta escolhidos</p><h3 data-layout-atual>Perfil profissional</h3><span class="montar-modelo-paleta">Cores: <b data-modelo-atual>Aurora</b></span></div></div>
+            <div class="montar-layout-opcoes" role="group" aria-label="Escolha o formato do portfólio">
+              <button type="button" class="montar-layout-opcao" data-layout-portfolio="profissional" aria-pressed="true"><span class="montar-layout-mini layout-mini-profissional"><i></i><i></i><i></i><b></b></span><strong>Profissional</strong><small>Perfil e projetos em destaque para oportunidades de trabalho.</small></button>
+              <button type="button" class="montar-layout-opcao" data-layout-portfolio="academico" aria-pressed="false"><span class="montar-layout-mini layout-mini-academico"><i></i><i></i><i></i><b></b></span><strong>Acadêmico</strong><small>Formação, trajetória e trabalhos organizados em estilo editorial.</small></button>
+              <button type="button" class="montar-layout-opcao" data-layout-portfolio="tech" aria-pressed="false"><span class="montar-layout-mini layout-mini-tech"><i></i><i></i><i></i><b></b></span><strong>Tech</strong><small>Visual técnico com tecnologias e projetos em primeiro plano.</small></button>
+            </div>
+            <div class="montar-painel-paleta"><h4>Escolha a paleta de cores</h4><div class="montar-escolha-modelo" role="group" aria-label="Escolha a paleta de cores">
+              <button type="button" data-modelo="aurora" data-escolher-modelo="aurora" aria-pressed="true"><i class="swatch-aurora"></i><span>Aurora</span></button>
+              <button type="button" data-modelo="lume" data-escolher-modelo="lume" aria-pressed="false"><i class="swatch-lume"></i><span>Lume</span></button>
+              <button type="button" data-modelo="noite" data-escolher-modelo="noite" aria-pressed="false"><i class="swatch-noite"></i><span>Noite</span></button>
+            </div></div>
+            <div class="montar-passo-acoes"><button class="botao montar-finalizar" type="button" data-finalizar-portfolio>Finalizar e guardar em Meus projetos →</button><a class="botao botao-contorno" href="novo-projeto.html?etapa=2">Adicionar outro projeto</a></div>
+            <p class="montar-ajuda">Escolha o formato e a paleta acima. A prévia acompanha cada mudança, e seus dados continuam salvos.</p>
           </div>
         </div>
       <aside class="montar-preview-aside" aria-label="Prévia ao vivo do portfólio">
@@ -144,7 +184,7 @@
           <button type="button" data-modelo="lume" data-escolher-modelo="lume" aria-pressed="false"><i class="swatch-lume"></i><span>Lume</span></button>
           <button type="button" data-modelo="noite" data-escolher-modelo="noite" aria-pressed="false"><i class="swatch-noite"></i><span>Noite</span></button>
         </div>
-        <article class="portfolio montar-preview-site modelo-aurora" data-preview-portfolio>
+        <article class="portfolio montar-preview-site modelo-aurora layout-profissional" data-preview-portfolio>
           <header class="portfolio-cabecalho">
             <div class="portfolio-foto-wrap"><img class="imagem foto-perfil" data-preview-foto alt="Foto de perfil" hidden><div class="montar-preview-avatar" data-preview-iniciais>SN</div></div>
             <div class="montar-preview-identidade"><p class="sobre" data-preview-cargo>Seu título profissional</p><h1 data-preview-nome>Seu Nome</h1><p class="portfolio-localizacao" data-preview-localizacao>Adicione sua cidade ou região</p><p data-preview-bio>Uma apresentação curta sobre você, suas ideias e o que gosta de construir.</p><p class="contato" data-preview-contato>voce@email.com</p><div class="portfolio-redes" data-preview-redes></div></div>
@@ -152,6 +192,7 @@
           <section class="portfolio-objetivo" data-preview-objetivo-bloco><span>PRÓXIMO PASSO</span><p data-preview-objetivo>Conte que tipo de oportunidade você está buscando.</p></section>
           <section class="portfolio-hard-skills"><h2>Hard skills</h2><div data-preview-hard-skills><span class="etiqueta">Suas tecnologias</span></div></section>
           <section class="portfolio-soft-skills" data-preview-soft-bloco><h2>Também sou bom em</h2><div data-preview-soft-skills></div></section>
+          <section class="portfolio-formacao" data-preview-formacao-bloco><span>FORMAÇÃO</span><h2 data-preview-formacao>Seu curso ou área de formação</h2><p data-preview-instituicao>Sua instituição de ensino</p></section>
           <div class="portfolio-numeros" data-preview-numeros></div>
           <div class="montar-preview-titulo-projetos"><h2>Projetos</h2><span data-preview-projeto-count>Adicione seu primeiro</span></div>
           <div class="montar-preview-filtros" data-preview-filtros></div>
@@ -160,14 +201,9 @@
       </aside>
       </section>
 
-      <div class="projetos-cliente-cabecalho">
-        <div><span>02 / Seus trabalhos</span><h3>Projetos prontos</h3></div>
-        <a href="novo-projeto.html">Adicionar projeto +</a>
-      </div>
-      <div class="projetos-cliente-grade" id="projetos-cliente" aria-live="polite"></div>
     </section>
 
-    <section class="secao secao-tinta como-funciona">
+    <section class="secao secao-tinta como-funciona" id="como-funciona">
       <div class="como-cabecalho">
         <p class="como-etiqueta"><span></span> Como funciona</p>
         <h2>Do primeiro projeto ao<br>portfólio pronto</h2>
@@ -198,7 +234,7 @@
 
 
     <!-- EQUIPE: passe o mouse no nome para ver a foto -->
-    <section class="secao">
+    <section class="secao" id="sobre-nos">
       <div class="titulo-secao">
         <h2>Feito por</h2>
         <p class="trocar">Por trás deste projeto existe uma equipe de pessoas dedicadas, que uniram ideias, criatividade e tecnologia para transformar este trabalho em realidade.</p>
@@ -258,11 +294,31 @@
     </section>
 
   </main>
-  <footer>
+  <footer class="rodape-site">
     <div class="rodape">
-      <p class="rodape-grande">Mostre o que<br>você <i>constrói.</i></p>
-      <div id="redes-sociais" class="redes-sociais" aria-label="Redes sociais PortHub"></div>
-      <p>Portfólio Fácil · Projeto Final · <span class="trocar">Grupo 3</span> · 2026</p>
+      <div class="rodape-grade">
+        <div class="rodape-apresentacao">
+          <a class="rodape-marca" href="index.html" aria-label="PortHub — início"><img src="./img/logo.png" alt=""><span>Port<b>Hub</b></span></a>
+          <p>Organize seus projetos, construa seu portfólio e conecte-se a novas oportunidades.</p>
+          <div id="redes-sociais" class="redes-sociais rodape-redes" aria-label="Canais de comunicação"></div>
+        </div>
+        <nav class="rodape-coluna" aria-label="Navegação no rodapé">
+          <h2>Navegação</h2>
+          <a href="index.html">Início</a>
+          <a href="index.html#como-funciona">Como funciona</a>
+          <a href="index.html#meu-espaco">Modelos</a>
+          <a href="index.html#sobre-nos">Sobre nós</a>
+        </nav>
+        <div class="rodape-coluna">
+          <h2>Comece</h2>
+          <a href="projetos.html#adicionar-projeto">Cadastrar projetos</a>
+          <a href="novo-projeto.html">Gerar portfólio</a>
+        </div>
+      </div>
+      <div class="rodape-final">
+        <p>© 2026 PortHub · Grupo 3 · Projeto Final</p>
+        <p>Feito com <span aria-label="amor">♥</span> por estudantes</p>
+      </div>
     </div>
   </footer>
 

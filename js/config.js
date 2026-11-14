@@ -55,7 +55,7 @@ const CONFIG = {
     },
     {
       "id": "tecnologias",
-      "rotulo": "Tecnologias (separe por vírgula)",
+      "rotulo": "Tecnologias e skills usadas (separe por vírgula)",
       "tipo": "text",
       "dica": "Ex.: HTML, CSS, JavaScript",
       "obrigatorio": true,
@@ -81,6 +81,12 @@ const CONFIG = {
       "dica": "https://github.com/..."
     },
     {
+      "id": "linkedin",
+      "rotulo": "Publicação ou perfil no LinkedIn",
+      "tipo": "url",
+      "dica": "https://linkedin.com/..."
+    },
+    {
       "id": "demo",
       "rotulo": "Link do projeto online",
       "tipo": "url",
@@ -95,6 +101,7 @@ const CONFIG = {
   "camposDetalhe": [
     "descricao",
     "repositorio",
+    "linkedin",
     "demo"
   ],
   "campoDestaque": null,

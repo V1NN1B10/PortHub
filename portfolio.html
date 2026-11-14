@@ -37,9 +37,16 @@
         <option value="lume">Modelo Lume</option>
         <option value="noite">Modelo Noite</option>
       </select>
+      <label class="sr-only" for="layout-portfolio">Formato do portfólio</label>
+      <select id="layout-portfolio" aria-label="Escolher formato do portfólio">
+        <option value="profissional">Perfil profissional</option>
+        <option value="academico">Perfil acadêmico</option>
+        <option value="tech">Portfólio tech</option>
+      </select>
       <button class="botao botao-contorno botao-pequeno" id="editar-perfil">Editar perfil</button>
       <button class="botao botao-contorno botao-pequeno" id="baixar-portfolio-html" type="button">Baixar HTML</button>
       <button class="botao botao-pequeno" onclick="imprimirPortfolioCompleto()">Salvar em PDF / Imprimir</button>
+      <button class="botao botao-pequeno botao-finalizar-portfolio" id="finalizar-portfolio" data-finalizar-portfolio type="button" aria-label="Finalizar e ir para Meus projetos" title="Finalizar e ir para Meus projetos">Finalizar →</button>
     </div>
 
     <!-- Formulário do perfil (aparece ao clicar em "Editar perfil") -->
@@ -53,7 +60,9 @@
       <div class="campo"><label for="p-localizacao">Cidade ou região</label><input id="p-localizacao" placeholder="Ex.: São Paulo, SP"></div>
       <div class="campo"><label for="p-website">Site pessoal</label><input id="p-website" placeholder="https://seusite.com"></div>
       <div class="campo"><label for="p-objetivo">O que você busca na sua próxima oportunidade?</label><textarea id="p-objetivo"></textarea></div>
-      <div class="campo"><label for="p-foto">Foto de perfil (URL ou caminho)</label><input id="p-foto"></div>
+      <div class="campo"><label for="p-formacao">Curso ou área de formação</label><input id="p-formacao" placeholder="Ex.: Análise e Desenvolvimento de Sistemas"></div>
+      <div class="campo"><label for="p-instituicao">Instituição de ensino</label><input id="p-instituicao" placeholder="Ex.: Universidade ou curso técnico"></div>
+      <div class="campo perfil-foto-edicao"><label for="p-foto-arquivo">Foto de perfil</label><input type="hidden" id="p-foto"><input class="perfil-arquivo-input" type="file" id="p-foto-arquivo" accept="image/*,.jpg,.jpeg,.png,.webp,.gif"><small id="p-foto-nome">Selecione uma imagem nos arquivos · até 12 MB</small><div class="perfil-foto-preview" id="p-foto-area" hidden><img id="p-foto-preview" alt="Prévia da foto de perfil" hidden><button type="button" id="p-remover-foto">Remover foto</button></div><small class="perfil-foto-feedback" id="p-foto-feedback" aria-live="polite"></small></div>
       <div class="campo"><label for="p-github">GitHub</label><input id="p-github" placeholder="https://github.com/seuusuario"></div>
       <div class="campo"><label for="p-linkedin">LinkedIn</label><input id="p-linkedin" placeholder="https://linkedin.com/in/seuusuario"></div>
       <button class="botao" type="submit">Salvar perfil</button>
@@ -84,6 +93,11 @@
         <span>PRÓXIMO PASSO</span>
         <p id="pf-objetivo"></p>
       </section>
+      <section class="portfolio-formacao" id="pf-formacao-bloco" hidden>
+        <span>FORMAÇÃO</span>
+        <h2 id="pf-formacao"></h2>
+        <p id="pf-instituicao"></p>
+      </section>
       <section class="portfolio-soft-skills" id="pf-soft-bloco" hidden>
         <h2>Soft skills</h2>
         <div id="pf-soft-skills"></div>
@@ -93,13 +107,37 @@
       <div class="chips-filtro" id="pf-filtros"></div>
       <div class="portfolio-grade" id="pf-projetos"></div>
     </article>
+    <section class="portfolio-finalizacao" aria-label="Finalizar portfólio">
+      <div><span>Pronto para compartilhar</span><h2>Seu portfólio está montado</h2><p>Guarde a conclusão em Meus projetos e volte para editar quando quiser.</p></div>
+      <button class="botao botao-finalizar-portfolio" data-finalizar-portfolio type="button">Finalizar e guardar em Meus projetos →</button>
+    </section>
 
   </main>
-  <footer>
+  <footer class="rodape-site">
     <div class="rodape">
-      <p class="rodape-grande">Mostre o que<br>você <i>constrói.</i></p>
-      <div id="redes-sociais" class="redes-sociais" aria-label="Redes sociais PortHub"></div>
-      <p>Portfólio Fácil · Projeto Final · <span class="trocar">Grupo 3</span> · 2026</p>
+      <div class="rodape-grade">
+        <div class="rodape-apresentacao">
+          <a class="rodape-marca" href="index.html" aria-label="PortHub — início"><img src="./img/logo.png" alt=""><span>Port<b>Hub</b></span></a>
+          <p>Organize seus projetos, construa seu portfólio e conecte-se a novas oportunidades.</p>
+          <div id="redes-sociais" class="redes-sociais rodape-redes" aria-label="Canais de comunicação"></div>
+        </div>
+        <nav class="rodape-coluna" aria-label="Navegação no rodapé">
+          <h2>Navegação</h2>
+          <a href="index.html">Início</a>
+          <a href="index.html#como-funciona">Como funciona</a>
+          <a href="index.html#meu-espaco">Modelos</a>
+          <a href="index.html#sobre-nos">Sobre nós</a>
+        </nav>
+        <div class="rodape-coluna">
+          <h2>Comece</h2>
+          <a href="projetos.html#adicionar-projeto">Cadastrar projetos</a>
+          <a href="novo-projeto.html">Gerar portfólio</a>
+        </div>
+      </div>
+      <div class="rodape-final">
+        <p>© 2026 PortHub · Grupo 3 · Projeto Final</p>
+        <p>Feito com <span aria-label="amor">♥</span> por estudantes</p>
+      </div>
     </div>
   </footer>
 

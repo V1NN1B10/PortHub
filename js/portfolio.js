@@ -1,6 +1,8 @@
 // Gera a página do portfólio a partir dos projetos cadastrados
 const CHAVE_PERFIL = CONFIG.chave + '_perfil';
 const CHAVE_MODELO = CONFIG.chave + '_modelo';
+const CHAVE_LAYOUT = CONFIG.chave + '_layout';
+const CHAVE_CONCLUSAO = CONFIG.chave + '_concluido';
 let categoriaAtiva = '';
 
 function aplicarModeloEscolhido() {
@@ -13,6 +15,18 @@ function aplicarModeloEscolhido() {
   }
   const seletor = document.getElementById('modelo-portfolio');
   if (seletor) seletor.value = valido;
+}
+
+function aplicarLayoutEscolhido() {
+  const layoutGuardado = localStorage.getItem(CHAVE_LAYOUT);
+  const layout = ['profissional', 'academico', 'tech'].includes(layoutGuardado) ? layoutGuardado : 'profissional';
+  const portfolio = document.querySelector('.portfolio');
+  if (portfolio) {
+    ['profissional', 'academico', 'tech'].forEach(nome => portfolio.classList.remove(`layout-${nome}`));
+    portfolio.classList.add(`layout-${layout}`);
+  }
+  const seletor = document.getElementById('layout-portfolio');
+  if (seletor) seletor.value = layout;
 }
 
 function pegarPerfil() {
@@ -30,6 +44,8 @@ function pegarPerfil() {
     website: '',
     localizacao: '',
     objetivo: '',
+    formacao: '',
+    instituicao: '',
   };
 }
 
@@ -37,6 +53,78 @@ function normalizarUrlPerfil(url) {
   const valor = String(url || '').trim();
   if (!valor || /^https?:\/\//i.test(valor) || /^[a-z][a-z0-9+.-]*:/i.test(valor)) return valor;
   return /^[\w.-]+\.[a-z]{2,}(?::\d+)?(?:[/?#].*)?$/i.test(valor) ? `https://${valor}` : valor;
+}
+
+function atualizarFotoDoFormulario(valor, nomeArquivo) {
+  const preview = document.getElementById('p-foto-preview');
+  const area = document.getElementById('p-foto-area');
+  const nome = document.getElementById('p-foto-nome');
+  const remover = document.getElementById('p-remover-foto');
+  const foto = String(valor || '').trim();
+  const permitida = foto && !/^\s*(javascript|vbscript):/i.test(foto) && !/^\/\//.test(foto)
+    && (!/^[a-z][a-z0-9+.-]*:/i.test(foto) || /^https?:\/\//i.test(foto) || /^data:image\/(png|jpeg|jpg|gif|webp);base64,/i.test(foto));
+  if (permitida) {
+    preview.src = foto;
+    preview.hidden = false;
+    area.hidden = false;
+    nome.textContent = nomeArquivo || 'Foto atual · clique para trocar';
+    remover.disabled = false;
+  } else {
+    preview.removeAttribute('src');
+    preview.hidden = true;
+    area.hidden = true;
+    nome.textContent = 'JPG, PNG ou WebP · até 12 MB';
+    remover.disabled = true;
+  }
+}
+
+function prepararFotoDoPerfil(arquivo) {
+  if (typeof comprimirImagemPortfolio === 'function') return comprimirImagemPortfolio(arquivo, 800, .76);
+  return new Promise((resolve, reject) => {
+    const extensaoImagem = /\.(png|jpe?g|gif|webp|bmp|avif)$/i.test(arquivo.name || '');
+    if (!String(arquivo.type || '').toLowerCase().startsWith('image/') && !extensaoImagem) {
+      reject(new Error('Escolha um arquivo de imagem.'));
+      return;
+    }
+    if (arquivo.size > 12 * 1024 * 1024) {
+      reject(new Error('A imagem precisa ter menos de 12 MB.'));
+      return;
+    }
+
+    const origem = URL.createObjectURL(arquivo);
+    const imagem = new Image();
+    imagem.onerror = () => {
+      URL.revokeObjectURL(origem);
+      reject(new Error('Não foi possível abrir esta imagem.'));
+    };
+    imagem.onload = () => {
+      const escala = Math.min(1, 800 / Math.max(imagem.width, imagem.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(imagem.width * escala));
+      canvas.height = Math.max(1, Math.round(imagem.height * escala));
+      const contexto = canvas.getContext('2d');
+      if (!contexto) {
+        URL.revokeObjectURL(origem);
+        reject(new Error('Este navegador não conseguiu preparar a imagem.'));
+        return;
+      }
+      contexto.fillStyle = '#fff';
+      contexto.fillRect(0, 0, canvas.width, canvas.height);
+      contexto.drawImage(imagem, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(origem);
+      canvas.toBlob(blob => {
+        if (!blob) {
+          reject(new Error('Não foi possível preparar esta imagem.'));
+          return;
+        }
+        const leitor = new FileReader();
+        leitor.onload = () => resolve(leitor.result);
+        leitor.onerror = () => reject(new Error('Não foi possível carregar esta imagem.'));
+        leitor.readAsDataURL(blob);
+      }, 'image/jpeg', .76);
+    };
+    imagem.src = origem;
+  });
 }
 
 function montarPerfil() {
@@ -52,6 +140,12 @@ function montarPerfil() {
   const objetivoBloco = document.getElementById('pf-objetivo-bloco');
   objetivo.textContent = p.objetivo || '';
   objetivoBloco.hidden = !p.objetivo;
+  const formacao = document.getElementById('pf-formacao');
+  const instituicao = document.getElementById('pf-instituicao');
+  const formacaoBloco = document.getElementById('pf-formacao-bloco');
+  formacao.textContent = p.formacao || '';
+  instituicao.textContent = p.instituicao || '';
+  formacaoBloco.hidden = !p.formacao && !p.instituicao;
   const foto = document.getElementById('pf-foto');
   const fotoVazia = document.getElementById('pf-foto-vazio');
   const iniciais = String(p.nome || 'Seu Nome').trim().split(/\s+/).filter(Boolean).slice(0, 2).map(parte => parte[0]).join('').toUpperCase() || 'SN';
@@ -68,11 +162,11 @@ function montarPerfil() {
   }
   const habilidades = String(p.hardSkills || '').split(',').map(item => item.trim()).filter(Boolean);
   document.getElementById('pf-hard-skills').innerHTML = habilidades.length
-    ? habilidades.map(item => `<span class="etiqueta">${esc(item)}</span>`).join('')
+    ? habilidades.map((item, indice) => `<span class="etiqueta tecnologia-cor-${indice % 3}">${esc(item)}</span>`).join('')
     : '<span class="portfolio-sem-skills">Adicione suas habilidades ao editar o perfil.</span>';
   const softSkills = String(p.softSkills || '').split(',').map(item => item.trim()).filter(Boolean);
   document.getElementById('pf-soft-skills').innerHTML = softSkills
-    .map(item => `<span class="etiqueta">${esc(item)}</span>`).join('');
+    .map((item, indice) => `<span class="etiqueta tecnologia-cor-${indice % 3}">${esc(item)}</span>`).join('');
   document.getElementById('pf-soft-bloco').hidden = softSkills.length === 0;
   const redes = [
     { nome: 'GitHub', url: normalizarUrlPerfil(p.github) },
@@ -151,9 +245,10 @@ function montarProjetos() {
         <p class="sobre">${esc(p.categoria)}</p>
         <h2>${esc(p.titulo)}</h2>
         <p>${esc(p.descricao)}</p>
-        <div>${etiquetasDoCampo(p, 'tecnologias')}</div>
+        <div class="projeto-tecnologias">${etiquetasDoCampo(p, 'tecnologias')}</div>
         <div class="projeto-links">
           ${linkSeguro(p.repositorio) ? `<a href="${esc(p.repositorio)}" target="_blank" rel="noopener">Código ↗</a>` : ''}
+          ${linkSeguro(p.linkedin) ? `<a href="${esc(p.linkedin)}" target="_blank" rel="noopener">LinkedIn ↗</a>` : ''}
           ${linkSeguro(p.demo) ? `<a href="${esc(p.demo)}" target="_blank" rel="noopener">Ver online ↗</a>` : ''}
         </div>
       </div>
@@ -183,6 +278,7 @@ function montarProjetos() {
 
 document.addEventListener('DOMContentLoaded', () => {
   aplicarModeloEscolhido();
+  aplicarLayoutEscolhido();
   montarPerfil();
   montarProjetos();
 
@@ -190,6 +286,23 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem(CHAVE_MODELO, evento.target.value);
     aplicarModeloEscolhido();
   });
+  document.getElementById('layout-portfolio')?.addEventListener('change', evento => {
+    localStorage.setItem(CHAVE_LAYOUT, evento.target.value);
+    aplicarLayoutEscolhido();
+  });
+  document.querySelectorAll('[data-finalizar-portfolio]').forEach(botao => botao.addEventListener('click', () => {
+    if (form && !form.hidden) {
+      if (typeof form.requestSubmit === 'function') form.requestSubmit();
+      else form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    }
+    localStorage.setItem(CHAVE_CONCLUSAO, JSON.stringify({
+      concluido: true,
+      finalizadoEm: new Date().toISOString(),
+      modelo: localStorage.getItem(CHAVE_MODELO) || 'aurora',
+      layout: localStorage.getItem(CHAVE_LAYOUT) || 'profissional',
+    }));
+    window.location.href = 'projetos.html#portfolio-concluido';
+  }));
 
   const form = document.getElementById('form-perfil');
   document.getElementById('editar-perfil').addEventListener('click', () => {
@@ -203,10 +316,42 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('p-localizacao').value = p.localizacao || '';
     document.getElementById('p-website').value = p.website || '';
     document.getElementById('p-objetivo').value = p.objetivo || '';
+    document.getElementById('p-formacao').value = p.formacao || '';
+    document.getElementById('p-instituicao').value = p.instituicao || '';
     document.getElementById('p-foto').value = p.foto || '';
+    document.getElementById('p-foto-arquivo').value = '';
+    atualizarFotoDoFormulario(p.foto);
     document.getElementById('p-github').value = p.github || '';
     document.getElementById('p-linkedin').value = p.linkedin || '';
     form.hidden = !form.hidden;
+  });
+  const arquivoFotoPerfil = document.getElementById('p-foto-arquivo');
+  arquivoFotoPerfil.addEventListener('change', async () => {
+    const arquivo = arquivoFotoPerfil.files && arquivoFotoPerfil.files[0];
+    if (!arquivo) return;
+    const mensagemFoto = document.getElementById('p-foto-feedback');
+    const nomeFoto = document.getElementById('p-foto-nome');
+    try {
+      nomeFoto.textContent = 'Preparando sua foto...';
+      mensagemFoto.textContent = '';
+      const foto = await prepararFotoDoPerfil(arquivo);
+      document.getElementById('p-foto').value = foto;
+      atualizarFotoDoFormulario(foto, arquivo.name);
+      mensagemFoto.textContent = 'Foto adicionada ao seu perfil.';
+    } catch (erro) {
+      atualizarFotoDoFormulario(document.getElementById('p-foto').value);
+      mensagemFoto.textContent = erro.name === 'QuotaExceededError'
+        ? 'O armazenamento está cheio. Remova uma imagem de projeto e tente novamente.'
+        : erro.message || 'Não foi possível adicionar esta foto.';
+    } finally {
+      arquivoFotoPerfil.value = '';
+    }
+  });
+  document.getElementById('p-remover-foto').addEventListener('click', () => {
+    document.getElementById('p-foto').value = '';
+    arquivoFotoPerfil.value = '';
+    atualizarFotoDoFormulario('');
+    document.getElementById('p-foto-feedback').textContent = 'Foto removida. Clique em Salvar perfil para confirmar.';
   });
   form.addEventListener('submit', e => {
     e.preventDefault();
@@ -220,6 +365,8 @@ document.addEventListener('DOMContentLoaded', () => {
       localizacao: document.getElementById('p-localizacao').value,
       website: document.getElementById('p-website').value,
       objetivo: document.getElementById('p-objetivo').value,
+      formacao: document.getElementById('p-formacao').value,
+      instituicao: document.getElementById('p-instituicao').value,
       foto: document.getElementById('p-foto').value,
       github: document.getElementById('p-github').value,
       linkedin: document.getElementById('p-linkedin').value,
