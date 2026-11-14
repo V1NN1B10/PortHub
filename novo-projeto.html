@@ -28,16 +28,47 @@
   </header>
 
   <main>
-    <div class="pagina-form">
-      <div class="caixa-form">
-        <h1>Novo projeto</h1>
-        <p>Conte o que você construiu e com quais tecnologias.</p>
-        <div id="mensagem" class="mensagem"></div>
-        <!-- Os campos são criados pelo js/app.js usando a lista em js/config.js -->
-        <form id="form-registro"></form>
+    <section class="montar-wizard montar-wizard-pagina" data-montar-wizard data-contexto="novo-projeto">
+      <div class="montar-intro">
+        <p class="como-etiqueta"><span></span> Monte agora</p>
+        <h1>Crie seu portfólio em 3 etapas</h1>
+        <p>Comece pelo seu perfil, adicione projetos e visualize o resultado.</p>
       </div>
-    </div>
-
+      <div class="montar-cartao">
+        <nav class="montar-etapas" aria-label="Etapas para montar o portfólio">
+          <button type="button" data-etapa="1" aria-current="step"><span>1</span> Seu perfil</button>
+          <button type="button" data-etapa="2"><span>2</span> Projetos</button>
+          <button type="button" data-etapa="3"><span>3</span> Modelo e visualização</button>
+        </nav>
+        <div class="montar-painel" data-painel="1">
+          <form class="montar-perfil-form">
+            <div class="montar-perfil-grade">
+              <div class="campo"><label for="novo-nome">Nome completo</label><input id="novo-nome" data-perfil="nome" placeholder="Seu nome"></div>
+              <div class="campo"><label for="novo-github">GitHub</label><input id="novo-github" data-perfil="github" placeholder="github.com/seuusuario"></div>
+              <div class="campo"><label for="novo-cargo">Título profissional</label><input id="novo-cargo" data-perfil="cargo" placeholder="Estudante de tecnologia"></div>
+              <div class="campo"><label for="novo-linkedin">LinkedIn</label><input id="novo-linkedin" data-perfil="linkedin" placeholder="linkedin.com/in/seuusuario"></div>
+              <div class="campo"><label for="novo-bio">Sobre você</label><textarea id="novo-bio" data-perfil="bio" placeholder="Conte um pouco sobre você e o que gosta de criar."></textarea></div>
+              <div class="campo"><label for="novo-contato">E-mail de contato</label><input id="novo-contato" data-perfil="contato" type="email" placeholder="voce@email.com"><button class="botao montar-avancar" type="submit">Continuar para projetos →</button></div>
+            </div>
+            <div class="campo montar-skills"><label for="novo-skills">Hard skills (separe por vírgula)</label><input id="novo-skills" data-perfil="hardSkills" placeholder="HTML, CSS, JavaScript"></div>
+          </form>
+        </div>
+        <div class="montar-painel" data-painel="2" hidden>
+          <div class="montar-projetos-topo"><div><h2>Novo projeto</h2><p>Conte o que você construiu e com quais tecnologias.</p></div><a class="botao botao-contorno" href="projetos.html">Ver todos os projetos</a></div>
+          <div id="mensagem" class="mensagem"></div>
+          <!-- O formulário e seus campos continuam sendo montados por js/app.js. -->
+          <form id="form-registro" data-wizard-form="true"></form>
+          <div class="montar-projetos-topo montar-lista-titulo"><div><h3>Projetos cadastrados</h3><p>Edite ou remova seus projetos quando quiser.</p></div></div>
+          <div class="montar-lista-projetos" data-lista-projetos></div>
+          <button class="botao montar-avancar" type="button" data-ir-etapa="3">Continuar para modelo →</button>
+        </div>
+        <div class="montar-painel" data-painel="3" hidden>
+          <div class="montar-modelo-resumo"><span class="montar-modelo-icone">✦</span><div><p>Seu modelo atual</p><h2 data-modelo-atual>Aurora</h2></div></div>
+          <div class="montar-passo-acoes"><a class="botao botao-contorno" href="index.html#modelos">Trocar modelo</a><a class="botao" href="portfolio.html">Visualizar meu portfólio →</a></div>
+          <p class="montar-ajuda">Na visualização, você pode editar seu perfil e salvar o portfólio em PDF.</p>
+        </div>
+      </div>
+    </section>
   </main>
   <footer>
     <div class="rodape">
@@ -50,6 +81,7 @@
   <script src="js/config.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/wizard-portfolio.js"></script>
   <!-- Só quem fez login pode ver esta página -->
   <script>protegerPagina();</script>
 </body>

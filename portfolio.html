@@ -32,7 +32,8 @@
     <div class="ferramentas">
       <span>Esta é a visualização do seu portfólio.</span>
       <button class="botao botao-contorno botao-pequeno" id="editar-perfil">Editar perfil</button>
-      <button class="botao botao-pequeno" onclick="window.print()">Salvar em PDF / Imprimir</button>
+      <button class="botao botao-contorno botao-pequeno" id="baixar-portfolio-html" type="button">Baixar HTML</button>
+      <button class="botao botao-pequeno" onclick="imprimirPortfolioCompleto()">Salvar em PDF / Imprimir</button>
     </div>
 
     <!-- Formulário do perfil (aparece ao clicar em "Editar perfil") -->
@@ -41,21 +42,33 @@
       <div class="campo"><label for="p-cargo">Você é...</label><input id="p-cargo" placeholder="Ex.: Desenvolvedor Front-end em formação"></div>
       <div class="campo"><label for="p-bio">Sobre você</label><textarea id="p-bio"></textarea></div>
       <div class="campo"><label for="p-contato">Contato (e-mail, LinkedIn ou GitHub)</label><input id="p-contato"></div>
+      <div class="campo"><label for="p-hard-skills">Hard skills (separe por vírgula)</label><input id="p-hard-skills"></div>
+      <div class="campo"><label for="p-foto">Foto de perfil (URL ou caminho)</label><input id="p-foto"></div>
+      <div class="campo"><label for="p-github">GitHub</label><input id="p-github" type="url"></div>
+      <div class="campo"><label for="p-linkedin">LinkedIn</label><input id="p-linkedin" type="url"></div>
       <button class="botao" type="submit">Salvar perfil</button>
     </form>
 
     <!-- O PORTFÓLIO GERADO (js/portfolio.js) -->
     <article class="portfolio">
       <header class="portfolio-cabecalho">
-        <div class="espaco-imagem foto-perfil">📷 Sua foto</div>
+        <div class="portfolio-foto-wrap">
+          <img class="imagem foto-perfil" id="pf-foto" alt="Foto de perfil" hidden>
+          <div class="espaco-imagem foto-perfil" id="pf-foto-vazio">📷 Sua foto</div>
+        </div>
         <div>
           <p class="sobre" id="pf-cargo"></p>
           <h1 id="pf-nome"></h1>
           <p id="pf-bio"></p>
           <p class="contato" id="pf-contato"></p>
+          <div class="portfolio-redes" id="pf-redes"></div>
         </div>
       </header>
 
+      <section class="portfolio-hard-skills">
+        <h2>Hard skills</h2>
+        <div id="pf-hard-skills"></div>
+      </section>
       <div class="portfolio-numeros" id="pf-numeros"></div>
       <div class="chips-filtro" id="pf-filtros"></div>
       <div class="portfolio-grade" id="pf-projetos"></div>

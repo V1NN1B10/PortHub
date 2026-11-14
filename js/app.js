@@ -87,8 +87,8 @@ function montarFormulario() {
   const emEdicao = pegarRegistros().find(r => r.id === idEditar);
   if (emEdicao) {
     CONFIG.campos.forEach(c => (document.getElementById(c.id).value = emEdicao[c.id] || ''));
-    const titulo = document.querySelector('.caixa-form h1');
-    if (titulo) titulo.textContent = 'Editar';
+    const titulo = document.querySelector('.caixa-form h1, .montar-projetos-topo h2');
+    if (titulo) titulo.textContent = 'Editar projeto';
   }
 
   form.addEventListener('submit', evento => {
@@ -108,6 +108,14 @@ function montarFormulario() {
     msg.className = 'mensagem sucesso';
     msg.textContent = emEdicao ? 'Alterações salvas!' : 'Registro salvo com sucesso!';
     form.reset();
+    if (form.dataset.wizardForm === 'true') {
+      if (emEdicao) {
+        window.location.href = `${CONFIG.paginaNovo}?etapa=2`;
+      } else {
+        window.dispatchEvent(new CustomEvent('porthub:projeto-salvo'));
+      }
+      return;
+    }
     setTimeout(() => (window.location.href = CONFIG.paginaLista), 1000);
   });
 }

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 380" role="img" aria-label="Prévia de portfólio Aurora">
+  <defs><linearGradient id="hero" x1="0" x2="1"><stop stop-color="#7026ff"/><stop offset="1" stop-color="#087dff"/></linearGradient><linearGradient id="tile" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b994ff"/><stop offset="1" stop-color="#48b9ff"/></linearGradient></defs>
+  <rect width="640" height="380" rx="26" fill="#f5f0e8"/>
+  <rect x="18" y="18" width="604" height="344" rx="19" fill="#fffdfa"/>
+  <rect x="18" y="18" width="604" height="184" rx="19" fill="url(#hero)"/>
+  <rect x="18" y="174" width="604" height="28" fill="url(#hero)"/>
+  <circle cx="58" cy="53" r="12" fill="#fff" opacity=".95"/><rect x="83" y="45" width="118" height="15" rx="7" fill="#fff" opacity=".88"/>
+  <rect x="445" y="46" width="40" height="8" rx="4" fill="#fff" opacity=".72"/><rect x="497" y="46" width="42" height="8" rx="4" fill="#fff" opacity=".72"/><rect x="552" y="40" width="51" height="22" rx="11" fill="#fff"/>
+  <circle cx="118" cy="130" r="42" fill="#fff" opacity=".95"/><rect x="179" y="103" width="207" height="18" rx="9" fill="#fff"/><rect x="179" y="133" width="160" height="10" rx="5" fill="#fff" opacity=".75"/><rect x="179" y="151" width="108" height="10" rx="5" fill="#fff" opacity=".62"/>
+  <rect x="42" y="224" width="256" height="117" rx="13" fill="url(#tile)"/><rect x="315" y="224" width="132" height="117" rx="13" fill="#eee9f9"/><rect x="464" y="224" width="132" height="117" rx="13" fill="#e5f2ff"/>
+  <rect x="58" y="302" width="111" height="9" rx="4" fill="#fff" opacity=".9"/><rect x="58" y="319" width="78" height="7" rx="3" fill="#fff" opacity=".72"/>
+  <rect x="329" y="310" width="76" height="8" rx="4" fill="#3b3154" opacity=".68"/><rect x="478" y="310" width="76" height="8" rx="4" fill="#3b3154" opacity=".68"/>
+</svg>

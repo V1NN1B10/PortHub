@@ -54,29 +54,111 @@
       <div>HTML ✦ CSS ✦ JavaScript ✦ Figma ✦ Python ✦ React ✦ Banco de dados ✦ UX ✦ HTML ✦ CSS ✦ JavaScript ✦ Figma ✦ Python ✦ React ✦ Banco de dados ✦ UX ✦</div>
     </div>
 
-    <!-- VITRINE EM MOSAICO (bento): coloque prints de projetos reais da turma -->
-    <section class="secao">
-      <div class="titulo-secao">
-        <h2>Uma vitrine<br>para o seu trabalho</h2>
-        <p>Cada projeto vira um card com imagem, tecnologias, descrição e links.</p>
+    <section class="secao area-portfolio" id="meu-espaco">
+      <div class="area-portfolio-cabecalho">
+        <div>
+          <p class="como-etiqueta"><span></span> Modelos e projetos</p>
+          <h2>Seu portfólio, do seu jeito</h2>
+          <p>Escolha um visual, organize seus projetos e abra seu portfólio para compartilhar.</p>
+        </div>
+        <div class="area-portfolio-acoes">
+          <a class="botao" href="novo-projeto.html">+ Novo projeto</a>
+          <a class="botao botao-contorno" href="portfolio.html">Visualizar portfólio →</a>
+        </div>
       </div>
-      <div class="mosaico">
-        <div class="peca peca-grande"><div class="espaco-imagem ">📷 Print de um projeto<small>img/projeto1.jpg</small></div><span>Site · HTML, CSS</span></div>
-        <div class="peca"><div class="espaco-imagem ">📷 Print<small>img/projeto2.jpg</small></div><span>App · JavaScript</span></div>
-        <div class="peca"><div class="espaco-imagem ">📷 Print<small>img/projeto3.jpg</small></div><span>Design · Figma</span></div>
-        <div class="peca peca-larga"><div class="espaco-imagem ">📷 Print<small>img/projeto4.jpg</small></div><span>Dados · Python</span></div>
+
+      <div class="modelos-cabecalho">
+        <div><span>01 / Visual</span><h3>Escolha o estilo do seu portfólio</h3></div>
+        <p>Todos os modelos são responsivos e podem ser trocados quando quiser.</p>
       </div>
+      <div class="modelos-grade" id="modelos">
+        <article class="modelo-card" data-modelo-card="aurora">
+          <img class="modelo-preview" src="./img/preview-portfolio-aurora.svg" alt="Prévia em imagem de um portfólio no modelo Aurora">
+          <h4>Aurora</h4><p>Cabeçalho em degradê roxo e azul, com projetos em cards.</p>
+          <button class="botao modelo-escolher" type="button" data-modelo="aurora">Usar este modelo</button>
+        </article>
+        <article class="modelo-card" data-modelo-card="lume">
+          <img class="modelo-preview" src="./img/preview-portfolio-lume.svg" alt="Prévia em imagem de um portfólio no modelo Lume">
+          <h4>Lume</h4><p>Minimalista e editorial, em lista. Para um visual limpo.</p>
+          <button class="botao modelo-escolher" type="button" data-modelo="lume">Usar este modelo</button>
+        </article>
+        <article class="modelo-card" data-modelo-card="noite">
+          <img class="modelo-preview" src="./img/preview-portfolio-noite.svg" alt="Prévia em imagem de um portfólio no modelo Noite">
+          <h4>Noite</h4><p>Tema escuro com projeto em destaque. Ótimo para devs, games e dados.</p>
+          <button class="botao modelo-escolher" type="button" data-modelo="noite">Usar este modelo</button>
+        </article>
+      </div>
+
+      <section class="montar-wizard" data-montar-wizard data-contexto="inicio">
+        <div class="montar-intro">
+          <p class="como-etiqueta"><span></span> Monte agora</p>
+          <h2>Crie seu portfólio em 3 etapas</h2>
+          <p>Comece pelos exemplos, edite do seu jeito e visualize o resultado na hora.</p>
+        </div>
+        <div class="montar-cartao">
+          <nav class="montar-etapas" aria-label="Etapas para montar o portfólio">
+            <button type="button" data-etapa="1" aria-current="step"><span>1</span> Seu perfil</button>
+            <button type="button" data-etapa="2"><span>2</span> Projetos</button>
+            <button type="button" data-etapa="3"><span>3</span> Modelo e visualização</button>
+          </nav>
+          <div class="montar-painel" data-painel="1">
+            <form class="montar-perfil-form">
+              <div class="montar-perfil-grade">
+                <div class="campo"><label for="inicio-nome">Nome completo</label><input id="inicio-nome" data-perfil="nome" placeholder="Seu nome"></div>
+                <div class="campo"><label for="inicio-github">GitHub</label><input id="inicio-github" data-perfil="github" placeholder="github.com/seuusuario"></div>
+                <div class="campo"><label for="inicio-cargo">Título profissional</label><input id="inicio-cargo" data-perfil="cargo" placeholder="Estudante de tecnologia"></div>
+                <div class="campo"><label for="inicio-linkedin">LinkedIn</label><input id="inicio-linkedin" data-perfil="linkedin" placeholder="linkedin.com/in/seuusuario"></div>
+                <div class="campo"><label for="inicio-bio">Sobre você</label><textarea id="inicio-bio" data-perfil="bio" placeholder="Conte um pouco sobre você e o que gosta de criar."></textarea></div>
+                <div class="campo"><label for="inicio-contato">E-mail de contato</label><input id="inicio-contato" data-perfil="contato" type="email" placeholder="voce@email.com"><button class="botao montar-avancar" type="submit">Continuar para projetos →</button></div>
+              </div>
+              <div class="campo montar-skills"><label for="inicio-skills">Hard skills (separe por vírgula)</label><input id="inicio-skills" data-perfil="hardSkills" placeholder="HTML, CSS, JavaScript"></div>
+            </form>
+          </div>
+          <div class="montar-painel" data-painel="2" hidden>
+            <div class="montar-projetos-topo"><div><h3>Seus projetos</h3><p>Os projetos cadastrados aparecem aqui.</p></div><a class="botao" href="novo-projeto.html?etapa=2">+ Adicionar projeto</a></div>
+            <div class="montar-lista-projetos" data-lista-projetos></div>
+            <button class="botao montar-avancar" type="button" data-ir-etapa="3">Continuar para modelo →</button>
+          </div>
+          <div class="montar-painel" data-painel="3" hidden>
+            <div class="montar-modelo-resumo"><span class="montar-modelo-icone">✦</span><div><p>Seu modelo atual</p><h3 data-modelo-atual>Aurora</h3></div></div>
+            <div class="montar-passo-acoes"><a class="botao botao-contorno" href="index.html#modelos">Trocar modelo</a><a class="botao" href="portfolio.html">Visualizar meu portfólio →</a></div>
+            <p class="montar-ajuda">Na visualização, você pode editar seu perfil e salvar o portfólio em PDF.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="projetos-cliente-cabecalho">
+        <div><span>02 / Seus trabalhos</span><h3>Projetos prontos</h3></div>
+        <a href="novo-projeto.html">Adicionar projeto +</a>
+      </div>
+      <div class="projetos-cliente-grade" id="projetos-cliente" aria-live="polite"></div>
     </section>
 
-    <!-- PASSOS: números grandes -->
-    <section class="secao secao-tinta">
-      <div class="titulo-secao">
-        <h2>Três passos.<br><i>Nenhuma</i> complicação.</h2>
+    <section class="secao secao-tinta como-funciona">
+      <div class="como-cabecalho">
+        <p class="como-etiqueta"><span></span> Como funciona</p>
+        <h2>Do primeiro projeto ao<br>portfólio pronto</h2>
+        <p class="como-subtitulo">Três passos simples, sem precisar escrever uma linha de código.</p>
       </div>
-      <div class="passos">
-        <div><span>1</span><h3>Cadastre</h3><p>Nome do projeto, categoria, tecnologias, descrição e links do GitHub e do site.</p></div>
-        <div><span>2</span><h3>Organize</h3><p>Edite, exclua e filtre por categoria sempre que quiser.</p></div>
-        <div><span>3</span><h3>Gere</h3><p>Clique em "Meu portfólio" e pronto: uma página para mostrar ou salvar em PDF.</p></div>
+      <div class="como-cartoes">
+        <article class="como-cartao">
+          <span class="como-numero">01</span>
+          <h3>Cadastre seus projetos</h3>
+          <p>Adicione título, categoria, tecnologias usadas e uma boa descrição para cada projeto.</p>
+          <ul><li>Edite ou exclua quando quiser</li><li>Marque os projetos em destaque</li><li>Inclua links do repositório ou demo</li></ul>
+        </article>
+        <article class="como-cartao">
+          <span class="como-numero">02</span>
+          <h3>Escolha um modelo</h3>
+          <p>Selecione entre estilos bonitos e responsivos que se adaptam ao seu perfil profissional.</p>
+          <ul><li>Aurora, Lume ou Noite</li><li>Troque quando quiser</li><li>Funciona no celular e no PC</li></ul>
+        </article>
+        <article class="como-cartao">
+          <span class="como-numero">03</span>
+          <h3>Visualize e compartilhe</h3>
+          <p>Gere a visualização do portfólio em tela cheia e copie o HTML para publicar onde preferir.</p>
+          <ul><li>Filtro por categoria incluído</li><li>Pronto em segundos</li><li>Sem cadastro obrigatório</li></ul>
+        </article>
       </div>
     </section>
 
@@ -128,6 +210,18 @@
             <img src="#" alt="Foto de perfil">
           </div>
         </li>
+        <li>
+          <span class="trocar">Dev</span><b>Iago</b>
+          <div class="espaco-imagem foto-hover">
+            <img src="#" alt="Foto de Iago">
+          </div>
+        </li>
+        <li>
+          <span class="trocar">Dev</span><b>Kauan</b>
+          <div class="espaco-imagem foto-hover">
+            <img src="#" alt="Foto de Kauan">
+          </div>
+        </li>
     </section>
 
   </main>
@@ -141,5 +235,7 @@
 
   <script src="js/config.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/area-inicial.js"></script>
+  <script src="js/wizard-portfolio.js"></script>
 </body>
 </html>
