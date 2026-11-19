@@ -32,9 +32,8 @@
   margin: 0;
   padding: 0;
 }
-html {
-  scroll-behavior: smooth;
-}
+
+
 body {
   font-family: var(--fonte);
   background: var(--fundo);
@@ -155,9 +154,7 @@ h3 {
   min-height: 600px;
   background: var(--superficie);
   padding: 40px;
-  border-radius: var(--raio);
   align-items: center;
-  border-radius: 20px;
   justify-self: end;
 }
 
@@ -383,7 +380,7 @@ textarea {
 /* Rodapé */
 footer {
   padding: 34px 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 /* =========================================================
@@ -471,7 +468,7 @@ i {
   align-items: center;
   gap: 3%;
   min-height: 555px;
-  padding: 42px 6.3% 28px;
+  padding: 0px 6% 29px;
   overflow: hidden;
   background:
     radial-gradient(ellipse at 92% 22%, rgba(170, 93, 255, 0.19), transparent 31%),
@@ -1594,8 +1591,7 @@ a.rede-social:hover {
   border-style: dashed;
 }
 .pagina-login footer {
-  padding-top: 26px;
-  padding-bottom: 22px;
+  padding: 2px;
 }
 .pagina-login footer .rodape-grande {
   margin-bottom: 12px;
@@ -1852,7 +1848,7 @@ a.rede-social:hover {
   padding: 32px;
   justify-self: auto;
   border: 0;
-  border-radius: 58px;
+  border-radius: 2%;
   background: #fff;
   box-shadow: 0 18px 32px rgba(30, 24, 55, 0.2);
 }
@@ -1875,7 +1871,7 @@ a.rede-social:hover {
   height: 44px;
   padding: 0 12px;
   border: 1px solid #ddd9e8;
-  border-radius: 22px;
+  border-radius: 4px;
 }
 .pagina-login .login-cartao .campo-input img {
   width: 14px;
@@ -1890,7 +1886,6 @@ a.rede-social:hover {
   height: 34px;
   padding: 0;
   border: 0;
-  border-radius: 50%;
   background: transparent;
   color: #77727f;
   cursor: pointer;
@@ -1945,7 +1940,7 @@ a.rede-social:hover {
   height: 13px;
   margin: 0;
   padding: 0;
-  accent-color: #16b5a5;
+  accent-color: var(--neutro);
 }
 .pagina-login .login-cartao .botao {
   display: flex;
@@ -2039,7 +2034,7 @@ a.rede-social:hover {
   width: 100%;
   padding: 11px 13px;
   border: 1px solid #ddd9e8;
-  border-radius: 12px;
+  
   color: #363142;
   font: 400 0.9rem var(--fonte);
 }
@@ -5763,10 +5758,15 @@ footer {
 /* Rodapé compacto com navegação e canais de comunicação */
 .rodape-site {
   width: 100%;
-  padding: 30px 4% 16px;
+  padding: 30px 16px;
   color: #dce4f5;
   background: linear-gradient(112deg, #101a35 0%, #151e3f 68%, #123448 100%);
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  gap: 30rem;
 }
+
 .rodape-site .rodape {
   width: min(1120px, 100%);
 }
@@ -5860,6 +5860,12 @@ footer {
 }
 .rodape-final span {
   color: #9b6dff;
+  text-decoration-line: underline;
+}
+
+.rodape-final p {
+  gap: 10px;
+  font-size: 10px;
 }
 
 @media (max-width: 680px) {
