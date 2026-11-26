@@ -97,6 +97,19 @@
             oportunidades.
           </p>
         </div>
+        <video
+          class="oferece-video"
+          width="1280"
+          height="720"
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          aria-label="Animação de apresentação do PortHub"
+        >
+          <source src="videos/porthub.mp4" type="video/mp4" />
+          <a href="videos/porthub.mp4">Abrir vídeo do PortHub</a>
+        </video>
         <div class="oferece-grade">
           <article class="oferece-card">
             <span class="oferece-icone icone-roxo">▣</span>
@@ -135,47 +148,71 @@
 
         <div class="modelos-cabecalho">
           <div>
-            <h3>Escolha o estilo do seu portfólio</h3>
+            <h3 id="modelos-titulo">Escolha o estilo do seu portfólio</h3>
           </div>
           <p>Todos os modelos são responsivos e podem ser trocados quando quiser.</p>
         </div>
-        <div class="modelos-grade" id="modelos">
-          <article class="modelo-card" data-modelo-card="aurora">
-            <img
-              class="modelo-preview"
-              src="./img/aurora.png"
-              alt="Prévia em imagem de um portfólio no modelo Aurora"
-            />
-            <h4>Aurora</h4>
-            <p>Cabeçalho em degradê roxo e azul, com projetos em cards.</p>
-            <button class="botao modelo-escolher" type="button" data-modelo="aurora">
-              Usar este modelo
-            </button>
-          </article>
-          <article class="modelo-card" data-modelo-card="lume">
-            <img
-              class="modelo-preview"
-              src="./img/lume.png"
-              alt="Prévia em imagem de um portfólio no modelo Lume"
-            />
-            <h4>Lume</h4>
-            <p>Minimalista e editorial, em lista. Para um visual limpo.</p>
-            <button class="botao modelo-escolher" type="button" data-modelo="lume">
-              Usar este modelo
-            </button>
-          </article>
-          <article class="modelo-card" data-modelo-card="noite">
-            <img
-              class="modelo-preview"
-              src="./img/noite.png"
-              alt="Prévia em imagem de um portfólio no modelo Noite"
-            />
-            <h4>Noite</h4>
-            <p>Tema escuro com projeto em destaque. Ótimo para devs, games e dados.</p>
-            <button class="botao modelo-escolher" type="button" data-modelo="noite">
-              Usar este modelo
-            </button>
-          </article>
+        <div
+          class="modelos-carrossel"
+          data-modelos-carrossel
+          role="region"
+          aria-labelledby="modelos-titulo"
+        >
+          <div class="modelos-grade" id="modelos">
+            <article class="modelo-card" data-modelo-card="aurora">
+              <img
+                class="modelo-preview"
+                src="./img/aurora.png"
+                alt="Prévia em imagem de um portfólio no modelo Aurora"
+              />
+              <h4>Aurora</h4>
+              <p>Cabeçalho em degradê roxo e azul, com projetos em cards.</p>
+              <button class="botao modelo-escolher" type="button" data-modelo="aurora">
+                Usar este modelo
+              </button>
+            </article>
+            <article class="modelo-card" data-modelo-card="lume">
+              <img
+                class="modelo-preview"
+                src="./img/lume.png"
+                alt="Prévia em imagem de um portfólio no modelo Lume"
+              />
+              <h4>Lume</h4>
+              <p>Minimalista e editorial, em lista. Para um visual limpo.</p>
+              <button class="botao modelo-escolher" type="button" data-modelo="lume">
+                Usar este modelo
+              </button>
+            </article>
+            <article class="modelo-card" data-modelo-card="noite">
+              <img
+                class="modelo-preview"
+                src="./img/noite.png"
+                alt="Prévia em imagem de um portfólio no modelo Noite"
+              />
+              <h4>Noite</h4>
+              <p>Tema escuro com projeto em destaque. Ótimo para devs, games e dados.</p>
+              <button class="botao modelo-escolher" type="button" data-modelo="noite">
+                Usar este modelo
+              </button>
+            </article>
+          </div>
+          <button
+            class="modelos-seta modelos-seta-anterior"
+            type="button"
+            aria-label="Modelo anterior"
+            aria-controls="modelos"
+            data-modelos-anterior
+            hidden
+          ></button>
+          <button
+            class="modelos-seta modelos-seta-proxima"
+            type="button"
+            aria-label="Próximo modelo"
+            aria-controls="modelos"
+            data-modelos-proximo
+            hidden
+          ></button>
+          <p class="sr-only" role="status" data-modelos-status></p>
         </div>
 
         <section class="montar-wizard" data-montar-wizard data-contexto="inicio">

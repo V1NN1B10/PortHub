@@ -1592,17 +1592,6 @@ a.rede-social:hover {
   color: #a7a1b3;
   border-style: dashed;
 }
-.pagina-login footer {
-  padding: 2px;
-}
-.pagina-login footer .rodape-grande {
-  margin-bottom: 12px;
-  font-size: clamp(1.7rem, 4vw, 2.4rem);
-}
-.pagina-login footer .redes-sociais {
-  margin: 12px 0;
-}
-
 /* Na hora de imprimir/salvar PDF, só o portfólio aparece */
 @media print {
   .topo,
@@ -1759,37 +1748,37 @@ a.rede-social:hover {
 .pagina-login {
   background: #f4f5f9;
   color: #29243a;
+  min-height: 100svh;
+  isolation: isolate;
 }
 .pagina-login .topo {
   display: none;
 }
 .pagina-login main {
-  min-height: 100vh;
-  min-height: 100svh;
   display: flex;
 }
 .pagina-login .login-auth {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
   flex: 1;
-  min-height: 100vh;
+  min-height: 0;
   padding: 48px 20px;
-  background: #f4f5f9;
+  background: transparent;
   border: 0;
 }
 .pagina-login .login-auth::before {
-  position: fixed;
+  position: absolute;
   z-index: -1;
   inset: 0 0 auto;
   height: 67vh;
+  height: 67svh;
   pointer-events: none;
   content: '';
   background: linear-gradient(125deg, #7400f5 0%, #4b1495 47%, #211937 100%);
   clip-path: polygon(0 0, 100% 0, 100% 25%, 0 100%);
 }
-.pagina-login .login-auth::after {
-  position: absolute;
+.pagina-login::after {
+  position: fixed;
   z-index: -1;
   right: -105px;
   bottom: -250px;
@@ -1962,6 +1951,12 @@ a.rede-social:hover {
   margin-bottom: 5px;
   color: #77727f;
 }
+.pagina-login .login-cartao:has(> .mensagem.erro) .login-cadastro {
+  margin-top: 8px;
+}
+.pagina-login .login-cartao:has(> .mensagem.erro) .login-cadastro > p {
+  display: none;
+}
 .pagina-login .login-cadastro a {
   display: inline-block;
   padding: 2px 14px;
@@ -2056,17 +2051,13 @@ a.rede-social:hover {
     padding: 26px 22px;
     border-radius: 42px;
   }
-  .pagina-login .login-auth::after {
-    right: -220px;
-    bottom: -270px;
-  }
 }
 
 /* Cadastro usa a mesma identidade da tela de login */
 #logo-cadastro {
   margin: 20px;
   z-index: 1;  
-  width: 30vh;
+  width: min(30vh, 190px);
   position: fixed;
   right: 0px;
   top: 0px;
@@ -2075,13 +2066,13 @@ a.rede-social:hover {
 .pagina-cadastro {
   background: #f4f5f9;
   color: #29243a;
+  min-height: 100svh;
 }
 .pagina-cadastro .topo,
 .pagina-cadastro footer {
   display: none;
 }
 .pagina-cadastro main {
-  min-height: 100vh;
   display: flex;
 }
 .pagina-cadastro .login-auth {
@@ -2089,28 +2080,30 @@ a.rede-social:hover {
   isolation: isolate;
   overflow: hidden;
   flex: 1;
-  min-height: 100vh;
+  min-height: 0;
   padding: 42px 20px;
   background: #f4f5f9;
   border: 0;
 }
-.pagina-cadastro .login-auth::before {
+.pagina-cadastro .login-auth::before,
+.pagina-cadastro .login-auth::after {
   position: absolute;
   z-index: -1;
-  inset: 0 0 auto;
-  height: 70%;
+  pointer-events: none;
   content: '';
+}
+.pagina-cadastro .login-auth::before {
+  inset: 0 0 auto;
+  height: 70vh;
+  height: 70svh;
   background: linear-gradient(125deg, #7400f5 0%, #4b1495 47%, #211937 100%);
   clip-path: polygon(0 0, 100% 0, 100% 25%, 0 100%);
 }
 .pagina-cadastro .login-auth::after {
-  position: absolute;
-  z-index: -1;
   right: -105px;
   bottom: -250px;
   width: 455px;
   height: 455px;
-  content: '';
   border-radius: 50%;
   background: #16b5a5;
 }
@@ -2227,9 +2220,6 @@ a.rede-social:hover {
   transform: translateY(1px);
 }
 @media (max-width: 480px) {
-  .pagina-cadastro .login-auth {
-    padding: 30px 18px;
-  }
   .pagina-cadastro .cadastro-cartao {
     padding: 24px 22px;
     border-radius: 34px;
@@ -2248,27 +2238,11 @@ a.rede-social:hover {
 }
 
 /* Ajustes finais de alinhamento e responsividade para as telas de acesso */
-.pagina-login .login-auth,
-.pagina-cadastro .login-auth {
-  overflow: visible;
-  min-height: 100vh;
-  min-height: 100svh;
-}
-.pagina-login .login-auth {
-  overflow: hidden;
-  min-height: 100vh;
-  min-height: 100svh;
-}
 .pagina-cadastro .login-auth {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(28px, 5vh, 52px) 18px;
-}
-.pagina-cadastro .login-auth::before,
-.pagina-cadastro .login-auth::after {
-  position: fixed;
-  pointer-events: none;
+  padding: clamp(16px, 4svh, 42px) 18px;
 }
 .pagina-cadastro .login-conteudo {
   width: min(100%, 460px);
@@ -2329,6 +2303,17 @@ a.rede-social:hover {
   text-align: center;
   font-size: 0.88rem;
 }
+.pagina-cadastro .cadastro-cartao:has(> .mensagem:is(.erro, .sucesso)) > .cadastro-intro {
+  display: none;
+}
+.pagina-login .login-cartao > .mensagem,
+.pagina-cadastro .cadastro-cartao > .mensagem {
+  margin-bottom: 6px;
+  padding: 4px 10px;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
 .pagina-cadastro #form-cadastro {
   display: flex;
   flex-direction: column;
@@ -2382,10 +2367,6 @@ a.rede-social:hover {
 .pagina-cadastro .login-cadastro a {
   min-height: 34px;
   padding: 4px 18px;
-}
-.pagina-login .login-auth::before,
-.pagina-login .login-auth::after {
-  pointer-events: none;
 }
 .pagina-login .login-cartao .campo-input {
   transition:
@@ -2454,7 +2435,7 @@ a.rede-social:hover {
     padding: 26px 22px;
     border-radius: 38px;
   }
-  .pagina-login .login-auth::after,
+  .pagina-login::after,
   .pagina-cadastro .login-auth::after {
     right: -190px;
     bottom: -230px;
@@ -2485,6 +2466,86 @@ a.rede-social:hover {
     min-height: 40px;
     padding: 6px 11px;
     font-size: 0.76rem;
+  }
+}
+
+@media (max-width: 600px) {
+  #logo-cadastro {
+    width: min(35vw, 160px);
+    margin: 12px;
+  }
+}
+
+@media (max-height: 740px) {
+  .pagina-login .login-auth,
+  .pagina-cadastro .login-auth {
+    padding-block: 16px;
+  }
+  .pagina-login .login-cartao,
+  .pagina-cadastro .cadastro-cartao {
+    padding-block: 18px;
+  }
+  .pagina-cadastro .login-identidade {
+    margin-bottom: 12px;
+  }
+  .pagina-cadastro .login-identidade h1 {
+    margin-top: 7px;
+  }
+  .pagina-cadastro .cadastro-intro {
+    margin-bottom: 10px;
+  }
+  .pagina-cadastro #form-cadastro {
+    gap: 8px;
+  }
+  .pagina-cadastro .cadastro-campo {
+    gap: 4px;
+  }
+  .pagina-cadastro .cadastro-campo input {
+    height: 44px;
+  }
+  .pagina-cadastro .login-cadastro {
+    margin-top: 10px;
+  }
+  .pagina-cadastro .login-cadastro p {
+    margin-bottom: 3px;
+  }
+}
+
+@media (max-height: 600px) {
+  .pagina-login .login-auth,
+  .pagina-cadastro .login-auth {
+    padding-block: 12px;
+  }
+  .pagina-login .login-identidade {
+    margin-bottom: 12px;
+  }
+  .pagina-login .login-identidade h1 {
+    margin-top: 8px;
+  }
+  .pagina-login .login-cartao,
+  .pagina-cadastro .cadastro-cartao {
+    padding-block: 14px;
+  }
+  .pagina-cadastro .login-identidade {
+    margin-bottom: 8px;
+  }
+  .pagina-cadastro .login-icone {
+    flex-basis: 50px;
+    width: 50px;
+    height: 50px;
+  }
+  .pagina-cadastro .login-icone::before {
+    top: 9px;
+    left: 15px;
+  }
+  .pagina-cadastro .login-icone::after {
+    bottom: 7px;
+    left: 11px;
+    width: 24px;
+    height: 14px;
+  }
+  .pagina-cadastro #form-cadastro {
+    gap: 6px;
   }
 }
 
@@ -4621,6 +4682,27 @@ a.rede-social:hover {
   font-size: 0.85rem;
   line-height: 1.55;
 }
+.oferece-video {
+  display: block;
+  width: min(100%, 720px);
+  height: auto;
+  margin: 0 auto 30px;
+  filter: brightness(1.05);
+  mix-blend-mode: multiply;
+  mask-image:
+    linear-gradient(to right, transparent, #000 5%, #000 95%, transparent),
+    linear-gradient(to bottom, transparent, #000 6%, #000 94%, transparent);
+  mask-composite: intersect;
+  transition: opacity 0.3s ease-in-out;
+}
+.oferece-video-reiniciando {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .oferece-video {
+    transition: none;
+  }
+}
 .oferece-grade {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -5590,6 +5672,101 @@ body {
   box-shadow: 0 22px 42px rgba(42, 36, 73, 0.17);
 }
 
+.modelos-carrossel.carrossel-ativo {
+  --largura-modelo: min(26rem, calc(100% - 5.5rem));
+  position: relative;
+  max-width: 1120px;
+  margin: 0 auto 58px;
+}
+.carrossel-ativo .modelos-grade {
+  grid-template-columns: var(--largura-modelo);
+  justify-content: center;
+  gap: 0;
+  margin: 0;
+  padding: 9px 0 26px;
+  overflow: clip;
+  perspective: 900px;
+}
+.carrossel-ativo .modelo-card {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  transition: transform 0.35s ease-out, opacity 0.35s ease-out, filter 0.35s ease-out;
+}
+.carrossel-ativo .modelo-card > p {
+  flex: 1;
+}
+.carrossel-ativo .modelo-card[data-posicao='atual'] {
+  z-index: 1;
+  transform: translateZ(0);
+}
+.carrossel-ativo .modelo-card[data-posicao='anterior'],
+.carrossel-ativo .modelo-card[data-posicao='proximo'] {
+  pointer-events: none;
+  opacity: 0.62;
+  filter: blur(1px);
+}
+.carrossel-ativo .modelo-card[data-posicao='anterior'] {
+  transform: translateX(-38%) translateZ(-135px) rotateY(21deg) scale(0.92);
+}
+.carrossel-ativo .modelo-card[data-posicao='proximo'] {
+  transform: translateX(38%) translateZ(-135px) rotateY(-21deg) scale(0.92);
+}
+.modelos-seta:not([hidden]) {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  transform: translateY(-50%);
+  border: 1px solid #5b21be;
+  border-radius: 50%;
+  background: #fff;
+  color: #5421a5;
+  cursor: pointer;
+}
+.modelos-seta:hover {
+  background: #f0e7ff;
+}
+.modelos-seta:focus-visible {
+  outline: 3px solid #5b21be;
+  outline-offset: 2px;
+}
+.modelos-seta-anterior {
+  left: max(0px, calc(50% - var(--largura-modelo) / 2 - 60px));
+}
+.modelos-seta-proxima {
+  right: max(0px, calc(50% - var(--largura-modelo) / 2 - 60px));
+}
+.modelos-seta::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  transform: translateX(-2px) rotate(45deg);
+}
+.modelos-seta-anterior::before {
+  transform: translateX(2px) rotate(-135deg);
+}
+
+@media (max-width: 600px) {
+  .modelos-carrossel.carrossel-ativo {
+    margin-bottom: 42px;
+  }
+  .carrossel-ativo .modelo-preview {
+    height: clamp(105px, 30vw, 168px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .carrossel-ativo .modelo-card {
+    transition: none;
+  }
+}
+
 .montar-cartao {
   border-color: rgba(100, 38, 242, 0.14);
   background: linear-gradient(145deg, #fffdfa 0%, #faf7ff 72%, #f1fbfa 100%);
@@ -5895,6 +6072,42 @@ footer {
   .rodape-apresentacao {
     grid-column: auto;
   }
+}
+
+.pagina-login .rodape-site {
+  flex: none;
+  padding-block: 8px 12px;
+  padding-inline: max(12px, 4vw) max(84px, 4vw);
+  background: transparent;
+  color: #29243a;
+}
+.pagina-login .rodape-site .rodape {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 20px;
+}
+.pagina-login .rodape-site .rede-social {
+  border-color: rgba(41, 36, 58, 0.26);
+  background: rgba(255, 255, 255, 0.48);
+  color: inherit;
+  font-size: 0.75rem;
+  opacity: 1;
+}
+.pagina-login .rodape-site a.rede-social:hover {
+  border-color: #46226e;
+  background: rgba(255, 255, 255, 0.78);
+}
+.pagina-login .rodape-final {
+  padding-top: 0;
+  color: inherit;
+}
+.pagina-login .rodape-final p {
+  font-size: 0.75rem;
+}
+.pagina-login .rodape-final span {
+  color: #46226e;
 }
 
 /* Ajusta o portfólio completo para caber em uma página ao salvar em PDF. */
