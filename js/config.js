@@ -17,10 +17,12 @@ const CONFIG = {
     validadeMinutos: 15,
     maxTentativas: 5,
   },
-  // "local" usa os dados do navegador; "api" ativa a integração descrita em docs/API-FUTURA.md.
+  // Configure o modo de autenticação conforme docs/API-FUTURA.md.
   auth: {
     mode: 'local',
     apiBaseUrl: '',
+    supabaseUrl: '',
+    supabasePublishableKey: '',
   },
   redesSociais: {
     instagramUrl: '',

@@ -5,9 +5,64 @@
 
 const CHAVE_USUARIOS = CONFIG.chave + '_usuarios';
 const CHAVE_SESSAO = CONFIG.chave + '_sessao';
-const AUTH_API_ATIVA = CONFIG.auth?.mode === 'api';
+const AUTH_SUPABASE_ATIVA = CONFIG.auth?.mode === 'supabase';
+const AUTH_API_ATIVA = AUTH_SUPABASE_ATIVA || CONFIG.auth?.mode === 'api';
+const CHAVE_TOKEN_AUTH = CONFIG.chave + '_token_auth';
+
+async function requisicaoSupabase(caminho, metodo, dados, token) {
+  const { supabaseUrl, supabasePublishableKey } = CONFIG.auth;
+  if (!supabaseUrl || !supabasePublishableKey) {
+    throw new Error('A autenticação compartilhada ainda precisa ser configurada.');
+  }
+  const url = new URL(supabaseUrl);
+  if (url.protocol !== 'https:') throw new Error('A URL do Supabase precisa usar HTTPS.');
+  const headers = { apikey: supabasePublishableKey, 'Content-Type': 'application/json' };
+  if (token) headers.Authorization = 'Bearer ' + token;
+  const resposta = await fetch(new URL('/auth/v1/' + caminho, url), {
+    method: metodo,
+    headers,
+    body: dados && JSON.stringify(dados),
+  });
+  const resultado = await resposta.json().catch(() => ({}));
+  if (!resposta.ok) {
+    throw new Error(resultado.msg || resultado.message || 'Não foi possível concluir a operação.');
+  }
+  return resultado;
+}
+
+async function autenticarNoSupabase(caminho, dados) {
+  const { email, senha, nome, code, novaSenha } = dados;
+  switch (caminho) {
+    case 'register':
+      return requisicaoSupabase('signup', 'POST', { email, password: senha, data: { nome } });
+    case 'login': {
+      const { user, access_token: token } = await requisicaoSupabase('token?grant_type=password', 'POST', { email, password: senha });
+      sessionStorage.setItem(CHAVE_TOKEN_AUTH, token);
+      return { user: { id: user.id, email: user.email, nome: user.user_metadata?.nome || user.email } };
+    }
+    case 'logout': {
+      const token = sessionStorage.getItem(CHAVE_TOKEN_AUTH);
+      sessionStorage.removeItem(CHAVE_TOKEN_AUTH);
+      if (token) await requisicaoSupabase('logout?scope=local', 'POST', undefined, token);
+      return;
+    }
+    case 'forgot-password':
+      return requisicaoSupabase('recover', 'POST', { email });
+    case 'reset-password': {
+      const { access_token: token } = await requisicaoSupabase('verify', 'POST', { email, token: code, type: 'recovery' });
+      if (!token) throw new Error('Não foi possível validar o código de recuperação.');
+      try {
+        await requisicaoSupabase('user', 'PUT', { password: novaSenha }, token);
+      } finally {
+        await requisicaoSupabase('logout?scope=local', 'POST', undefined, token).catch(() => {});
+      }
+      return;
+    }
+  }
+}
 
 async function requisicaoAuth(caminho, dados) {
+  if (AUTH_SUPABASE_ATIVA) return autenticarNoSupabase(caminho, dados);
   const baseConfigurada = CONFIG.auth?.apiBaseUrl;
   if (!baseConfigurada) throw new Error('Configure a URL da API em js/config.js.');
   const base = baseConfigurada.replace(/\/$/, '');
@@ -148,8 +203,8 @@ function mostrarUsuarioNoMenu() {
   if (!area) return;
   const usuario = usuarioLogado();
   if (usuario) {
-    area.innerHTML = `<span>Olá, ${usuario.nome.split(' ')[0]}!</span>
-      <button class="botao botao-pequeno botao-claro" onclick="sair()">Sair</button>`;
+    area.innerHTML = '<span></span><button class="botao botao-pequeno botao-claro" onclick="sair()">Sair</button>';
+    area.querySelector('span').textContent = `Olá, ${usuario.nome.split(' ')[0]}!`;
   } else {
     area.innerHTML = `<a class="botao botao-pequeno botao-claro" href="login.html">Entrar</a>`;
   }
@@ -270,7 +325,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       msg.className = 'mensagem sucesso';
-      msg.textContent = 'Cadastro feito! Indo para o login...';
+      msg.textContent = AUTH_SUPABASE_ATIVA
+        ? 'Cadastro feito! Confira seu e-mail para confirmar a conta antes de entrar.'
+        : 'Cadastro feito! Indo para o login...';
       setTimeout(() => (window.location.href = 'login.html'), 1200);
     });
   }

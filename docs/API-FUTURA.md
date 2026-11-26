@@ -4,6 +4,13 @@ O projeto continua iniciando em modo local para o portfólio. Quando houver uma 
 
 ## Rotas de autenticação esperadas
 
+Como alternativa à API própria, o PortHub também aceita Supabase Auth:
+
+1. Crie um projeto Supabase e mantenha a confirmação de e-mail habilitada. Em Authentication, configure a URL do PortHub como Site URL.
+2. Configure um remetente SMTP no Supabase para enviar mensagens aos usuários. No modelo de redefinição de senha, inclua `{{ .Token }}` para que o e-mail entregue o código de seis dígitos usado na tela do PortHub.
+3. Em `js/config.js`, preencha `auth.supabaseUrl` e `auth.supabasePublishableKey` com a URL HTTPS e a chave publicável do projeto. Depois, altere `auth.mode` para `supabase`.
+4. Publique o site, crie uma conta de teste, confirme o e-mail e teste a recuperação em outro navegador. As contas locais precisam ser cadastradas e confirmadas no serviço compartilhado. Os projetos e perfis locais continuam armazenados no navegador.
+
 Todas as respostas devem ser JSON. A sessão deve ser criada em cookie `HttpOnly`, `Secure` e `SameSite`; o cliente atualmente mantém um resumo do usuário para exibição da interface.
 
 | Método | Rota | Corpo esperado | Responsabilidade |
