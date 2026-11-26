@@ -580,7 +580,7 @@
     });
   }
 
-  function irParaEtapa(numero) {
+  function irParaEtapa(numero, reposicionar = false) {
     const etapa = String(numero);
     botoesEtapa.forEach((botao) => {
       const ativo = botao.dataset.etapa === etapa;
@@ -597,6 +597,11 @@
       atualizarLayout();
     }
     atualizarPrevia();
+    if (reposicionar) {
+      const botaoAtivo = botoesEtapa.find((botao) => botao.dataset.etapa === etapa);
+      botaoAtivo?.focus({ preventScroll: true });
+      botaoAtivo?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    }
   }
 
   const perfilForm = wizard.querySelector('.montar-perfil-form');
@@ -604,14 +609,14 @@
     perfilForm.addEventListener('submit', (evento) => {
       evento.preventDefault();
       salvarPerfil();
-      irParaEtapa(2);
+      irParaEtapa(2, true);
     });
   }
 
   botoesEtapa.forEach((botao) =>
     botao.addEventListener('click', () => {
       if (botao.dataset.etapa !== '1') salvarPerfil();
-      irParaEtapa(botao.dataset.etapa);
+      irParaEtapa(botao.dataset.etapa, true);
     }),
   );
 
@@ -704,7 +709,7 @@
   });
 
   wizard.querySelectorAll('[data-ir-etapa]').forEach((botao) => {
-    botao.addEventListener('click', () => irParaEtapa(botao.dataset.irEtapa));
+    botao.addEventListener('click', () => irParaEtapa(botao.dataset.irEtapa, true));
   });
 
   wizard.addEventListener('click', (evento) => {

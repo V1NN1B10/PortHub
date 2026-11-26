@@ -217,11 +217,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuBotao = document.querySelector('.menu-toggle');
   const cabecalho = document.querySelector('.topo');
   if (menuBotao && cabecalho) {
+    const mostrarMenu = (aberto) => {
+      menuBotao.setAttribute('aria-expanded', String(aberto));
+      menuBotao.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
+      cabecalho.classList.toggle('menu-aberto', aberto);
+    };
     menuBotao.addEventListener('click', () => {
-      const aberto = menuBotao.getAttribute('aria-expanded') === 'true';
-      menuBotao.setAttribute('aria-expanded', String(!aberto));
-      menuBotao.setAttribute('aria-label', aberto ? 'Abrir menu' : 'Fechar menu');
-      cabecalho.classList.toggle('menu-aberto', !aberto);
+      mostrarMenu(menuBotao.getAttribute('aria-expanded') !== 'true');
+    });
+    cabecalho.addEventListener('keydown', (evento) => {
+      if (evento.key !== 'Escape' || menuBotao.getAttribute('aria-expanded') !== 'true') return;
+      mostrarMenu(false);
+      if (menuBotao.getClientRects().length) menuBotao.focus();
     });
   }
   const campoSenha = document.getElementById('senha');
