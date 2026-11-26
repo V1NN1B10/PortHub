@@ -2082,15 +2082,22 @@ a.rede-social:hover {
   margin: 0 auto;
   padding: 8px 20px;
 }
-.pagina-login .recuperacao-fundo:not([hidden]) {
-  position: fixed;
-  z-index: 10;
+.pagina-login .recuperacao-fundo[open] {
   inset: 0;
   display: grid;
-  place-items: center;
+  place-items: safe center;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  border: 0;
   overflow-y: auto;
   overscroll-behavior-y: contain;
   padding: 20px clamp(12px, 4vw, 20px);
+  background: transparent;
+}
+.pagina-login .recuperacao-fundo::backdrop {
   background: rgba(25, 20, 40, 0.62);
 }
 .pagina-login .recuperacao-cartao {

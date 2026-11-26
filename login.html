@@ -95,12 +95,9 @@
         </div>
       </section>
 
-      <div class="recuperacao-fundo" id="recuperacao-senha" hidden>
+      <dialog class="recuperacao-fundo" id="recuperacao-senha" aria-labelledby="recuperacao-titulo">
         <section
           class="recuperacao-cartao"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="recuperacao-titulo"
         >
           <button
             class="recuperacao-fechar"
@@ -117,7 +114,7 @@
           <div id="mensagem-recuperacao" class="mensagem" role="status" aria-live="polite"></div>
           <form id="form-recuperacao-email">
             <label for="email-recuperacao">E-mail</label>
-            <input type="email" id="email-recuperacao" placeholder="seu@email.com" required />
+            <input type="email" id="email-recuperacao" autocomplete="email" placeholder="seu@email.com" required />
             <button class="botao" type="submit">Enviar código</button>
           </form>
           <form id="form-recuperacao-codigo" hidden>
@@ -153,7 +150,7 @@
             <button class="botao" type="submit">Redefinir senha</button>
           </form>
         </section>
-      </div>
+      </dialog>
     </main>
     <footer class="rodape-site">
       <div class="rodape">

@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
       msgRecuperacao.textContent = texto;
     };
     const fechar = () => {
-      modalRecuperacao.hidden = true;
+      modalRecuperacao.close();
       recuperacao = null;
       formEmailRecuperacao.reset();
       formCodigoRecuperacao.reset();
@@ -319,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (abrirRecuperacao) {
       abrirRecuperacao.addEventListener('click', (evento) => {
         evento.preventDefault();
-        modalRecuperacao.hidden = false;
+        modalRecuperacao.showModal();
         document.getElementById('email-recuperacao').focus();
       });
     }
@@ -327,8 +327,9 @@ document.addEventListener('DOMContentLoaded', () => {
     modalRecuperacao.addEventListener('click', (evento) => {
       if (evento.target === modalRecuperacao) fechar();
     });
-    document.addEventListener('keydown', (evento) => {
-      if (evento.key === 'Escape' && !modalRecuperacao.hidden) fechar();
+    modalRecuperacao.addEventListener('cancel', (evento) => {
+      evento.preventDefault();
+      fechar();
     });
 
     formEmailRecuperacao.addEventListener('submit', async (evento) => {
@@ -345,7 +346,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           const usuario = pegarUsuarios().find((u) => u.email === email);
           if (!usuario) {
-            mostrarMensagem('Se esse e-mail estiver cadastrado, você receberá um código.');
+            mostrarMensagem(
+              'Neste modo, o cadastro fica no navegador em que foi criado. Abra o PortHub nesse mesmo navegador para recuperar a senha.',
+              'erro',
+            );
             return;
           }
           const politicaRecuperacao = CONFIG.recuperacaoSenha || {};
