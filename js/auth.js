@@ -214,7 +214,6 @@ function mostrarRedesSociais() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  mostrarUsuarioNoMenu();
   marcarMenuAtivo();
   mostrarRedesSociais();
   const menuBotao = document.querySelector('.menu-toggle');
@@ -299,13 +298,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const formCodigoRecuperacao = document.getElementById('form-recuperacao-codigo');
   if (modalRecuperacao && formEmailRecuperacao && formCodigoRecuperacao) {
     const msgRecuperacao = document.getElementById('mensagem-recuperacao');
+    const abrirRecuperacao = document.getElementById('abrir-recuperacao');
+    const modalNativo = typeof modalRecuperacao.showModal === 'function';
     let recuperacao = null;
     const mostrarMensagem = (texto, tipo = '') => {
       msgRecuperacao.className = `mensagem ${tipo}`.trim();
       msgRecuperacao.textContent = texto;
     };
     const fechar = () => {
-      modalRecuperacao.close();
+      if (modalNativo) modalRecuperacao.close();
+      else modalRecuperacao.removeAttribute('open');
+      abrirRecuperacao?.focus();
       recuperacao = null;
       formEmailRecuperacao.reset();
       formCodigoRecuperacao.reset();
@@ -315,11 +318,14 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('recuperacao-instrucao').textContent =
         'Informe o e-mail usado no cadastro para receber um código de verificação.';
     };
-    const abrirRecuperacao = document.getElementById('abrir-recuperacao');
     if (abrirRecuperacao) {
       abrirRecuperacao.addEventListener('click', (evento) => {
         evento.preventDefault();
-        modalRecuperacao.showModal();
+        if (modalNativo) modalRecuperacao.showModal();
+        else {
+          modalRecuperacao.classList.add('recuperacao-fundo-compat');
+          modalRecuperacao.setAttribute('open', '');
+        }
         document.getElementById('email-recuperacao').focus();
       });
     }
@@ -419,4 +425,5 @@ document.addEventListener('DOMContentLoaded', () => {
       mostrarMensagem('Senha alterada! Agora você já pode entrar com a nova senha.', 'sucesso');
     });
   }
+  mostrarUsuarioNoMenu();
 });

@@ -2020,6 +2020,7 @@ a.rede-social:hover {
   justify-content: space-between;
 }
 .pagina-login #abrir-recuperacao {
+  min-height: 44px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -2082,7 +2083,11 @@ a.rede-social:hover {
   margin: 0 auto;
   padding: 8px 20px;
 }
+.pagina-login .recuperacao-fundo:not([open]) {
+  display: none;
+}
 .pagina-login .recuperacao-fundo[open] {
+  position: fixed;
   inset: 0;
   display: grid;
   place-items: safe center;
@@ -2096,6 +2101,10 @@ a.rede-social:hover {
   overscroll-behavior-y: contain;
   padding: 20px clamp(12px, 4vw, 20px);
   background: transparent;
+}
+.pagina-login .recuperacao-fundo-compat[open] {
+  z-index: 10001;
+  background: rgba(25, 20, 40, 0.62);
 }
 .pagina-login .recuperacao-fundo::backdrop {
   background: rgba(25, 20, 40, 0.62);
