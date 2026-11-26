@@ -4847,20 +4847,14 @@ a.rede-social:hover {
   width: min(100%, 720px);
   height: auto;
   margin: 0 auto 30px;
-  filter: brightness(1.05);
-  mix-blend-mode: multiply;
-  mask-image:
-    linear-gradient(to right, transparent, #000 5%, #000 95%, transparent),
-    linear-gradient(to bottom, transparent, #000 6%, #000 94%, transparent);
-  mask-composite: intersect;
-  transition: opacity 0.3s ease-in-out;
+  border-radius: 16px;
 }
-.oferece-video-reiniciando {
-  opacity: 0;
-}
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: no-preference) {
   .oferece-video {
-    transition: none;
+    transition: opacity 0.3s ease-in-out;
+  }
+  .oferece-video-reiniciando {
+    opacity: 0.65;
   }
 }
 .oferece-grade {

@@ -4,16 +4,24 @@
   if (!animacao) return;
 
   const movimentoReduzido = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function restaurarOpacidade() {
+    animacao.classList.remove('oferece-video-reiniciando');
+  }
+
   function atualizarAnimacao() {
     animacao.autoplay = !movimentoReduzido.matches;
     if (movimentoReduzido.matches) {
       animacao.pause();
-      animacao.classList.remove('oferece-video-reiniciando');
+      restaurarOpacidade();
     } else {
-      animacao.play().catch(() => {});
+      animacao.play().catch(restaurarOpacidade);
     }
   }
 
+  animacao.addEventListener('pause', restaurarOpacidade);
+  animacao.addEventListener('waiting', restaurarOpacidade);
+  animacao.addEventListener('error', restaurarOpacidade);
   animacao.addEventListener('timeupdate', () => {
     const restante = animacao.duration - animacao.currentTime;
     animacao.classList.toggle('oferece-video-reiniciando', !animacao.paused && restante < 0.6);
