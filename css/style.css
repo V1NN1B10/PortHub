@@ -4674,7 +4674,6 @@ a.rede-social:hover {
   text-align: right;
   overflow-wrap: anywhere;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
 }
 .projeto-rapido-capa [data-capa-rapida-placeholder] > i {
   position: absolute;
