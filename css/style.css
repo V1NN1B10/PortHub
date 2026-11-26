@@ -4842,20 +4842,22 @@ a.rede-social:hover {
   font-size: 0.85rem;
   line-height: 1.55;
 }
+.oferece-animacao {
+  --transicao-borda: clamp(8px, 2vw, 16px);
+  --mascara-horizontal: linear-gradient(to right, transparent, black var(--transicao-borda), black calc(100% - var(--transicao-borda)), transparent);
+  --mascara-vertical: linear-gradient(to bottom, transparent, black var(--transicao-borda), black calc(100% - var(--transicao-borda)), transparent);
+  width: min(100%, 720px);
+  margin: 0 auto 30px;
+  -webkit-mask-image: var(--mascara-horizontal);
+  mask-image: var(--mascara-horizontal);
+}
 .oferece-video {
   display: block;
-  width: min(100%, 720px);
+  width: 100%;
   height: auto;
-  margin: 0 auto 30px;
-  border-radius: 16px;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .oferece-video {
-    transition: opacity 0.3s ease-in-out;
-  }
-  .oferece-video-reiniciando {
-    opacity: 0.65;
-  }
+  -webkit-mask-image: var(--mascara-vertical);
+  mask-image: var(--mascara-vertical);
+  pointer-events: none;
 }
 .oferece-grade {
   display: grid;

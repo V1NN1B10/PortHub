@@ -4,29 +4,25 @@
   if (!animacao) return;
 
   const movimentoReduzido = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-  function restaurarOpacidade() {
-    animacao.classList.remove('oferece-video-reiniciando');
-  }
+  const visibilidadeMinima = 0.5;
+  let visivel = false;
 
   function atualizarAnimacao() {
-    animacao.autoplay = !movimentoReduzido.matches;
-    if (movimentoReduzido.matches) {
+    if (!visivel || movimentoReduzido.matches) {
       animacao.pause();
-      restaurarOpacidade();
-    } else {
-      animacao.play().catch(restaurarOpacidade);
+      animacao.currentTime = 0;
+      return;
     }
+
+    animacao.play().catch(() => {});
   }
 
-  animacao.addEventListener('pause', restaurarOpacidade);
-  animacao.addEventListener('waiting', restaurarOpacidade);
-  animacao.addEventListener('error', restaurarOpacidade);
-  animacao.addEventListener('timeupdate', () => {
-    const restante = animacao.duration - animacao.currentTime;
-    animacao.classList.toggle('oferece-video-reiniciando', !animacao.paused && restante < 0.6);
-  });
-  atualizarAnimacao();
+  const observador = new IntersectionObserver(([entrada]) => {
+    visivel = entrada.isIntersecting && entrada.intersectionRatio >= visibilidadeMinima;
+    atualizarAnimacao();
+  }, { threshold: visibilidadeMinima });
+
+  observador.observe(animacao);
   movimentoReduzido.addEventListener('change', atualizarAnimacao);
 })();
 
