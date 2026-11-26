@@ -30,14 +30,14 @@ function gerarCodigoRecuperacao() {
   return String(100000 + (valor[0] % 900000));
 }
 
-async function enviarCodigoRecuperacao(email, codigo, validadeMinutos) {
+async function enviarCodigoRecuperacao(email, codigo, expiraEm) {
   const configuracaoEmail = CONFIG.emailjs || {};
   if (
     !configuracaoEmail.serviceId ||
     !configuracaoEmail.templateId ||
     !configuracaoEmail.publicKey
   ) {
-    throw new Error('O envio de e-mail ainda não foi configurado em js/config.js.');
+    throw new Error('A recuperação por e-mail está indisponível enquanto o envio não for configurado.');
   }
   const resposta = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
     method: 'POST',
@@ -48,9 +48,12 @@ async function enviarCodigoRecuperacao(email, codigo, validadeMinutos) {
       user_id: configuracaoEmail.publicKey,
       template_params: {
         to_email: email,
-        verification_code: codigo,
-        app_name: 'PortHub',
-        expiration_minutes: validadeMinutos,
+        passcode: codigo,
+        time: new Intl.DateTimeFormat('pt-BR', {
+          dateStyle: 'short',
+          timeStyle: 'long',
+          timeZone: 'America/Sao_Paulo',
+        }).format(expiraEm),
       },
     }),
   });
@@ -346,13 +349,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
           }
           const politicaRecuperacao = CONFIG.recuperacaoSenha || {};
-          const validadeMinutos = politicaRecuperacao.validadeMinutos || 10;
+          const validadeMinutos = politicaRecuperacao.validadeMinutos || 15;
           codigo = gerarCodigoRecuperacao();
-          await enviarCodigoRecuperacao(email, codigo, validadeMinutos);
+          const expiraEm = Date.now() + validadeMinutos * 60 * 1000;
+          await enviarCodigoRecuperacao(email, codigo, expiraEm);
           recuperacao = {
             email,
             codigo,
-            expiraEm: Date.now() + validadeMinutos * 60 * 1000,
+            expiraEm,
             tentativas: 0,
             maxTentativas: politicaRecuperacao.maxTentativas || 5,
           };
@@ -361,7 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formCodigoRecuperacao.hidden = false;
         document.getElementById('recuperacao-instrucao').textContent = AUTH_API_ATIVA
           ? 'Se o e-mail estiver cadastrado, enviaremos um código. Digite-o abaixo para continuar.'
-          : `Enviamos um código de 6 dígitos. Ele expira em ${CONFIG.recuperacaoSenha?.validadeMinutos || 10} minutos.`;
+          : `Enviamos um código de 6 dígitos. Ele expira em ${CONFIG.recuperacaoSenha?.validadeMinutos || 15} minutos.`;
         mostrarMensagem('Confira sua caixa de entrada e a pasta de spam.', 'sucesso');
         document.getElementById('codigo-recuperacao').focus();
       } catch (erro) {

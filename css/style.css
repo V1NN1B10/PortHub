@@ -1940,7 +1940,11 @@ a.rede-social:hover {
   position: relative;
   margin-bottom: 15px;
 }
-.pagina-login .campo-login > label {
+.pagina-cadastro .campo-login {
+  position: relative;
+  margin: 0;
+}
+:is(.pagina-login, .pagina-cadastro) .campo-login > label {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -1948,17 +1952,23 @@ a.rede-social:hover {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
 }
-.pagina-login .login-cartao .campo-input {
+:is(.pagina-login, .pagina-cadastro) .login-cartao .campo-input {
   height: 44px;
   padding: 0 12px;
   border: 1px solid #ddd9e8;
   border-radius: 4px;
 }
-.pagina-login .login-cartao .campo-input img {
+:is(.pagina-login, .pagina-cadastro) .login-cartao .campo-input img {
   width: 14px;
   height: 14px;
 }
-.pagina-login .login-cartao .campo-input .senha-visibilidade {
+.pagina-cadastro .campo-input > .fa-user {
+  flex: 0 0 14px;
+  color: #77727f;
+  font-size: 14px;
+  text-align: center;
+}
+:is(.pagina-login, .pagina-cadastro) .login-cartao .campo-input .senha-visibilidade {
   display: inline-flex;
   flex: 0 0 30px;
   align-items: center;
@@ -1971,10 +1981,10 @@ a.rede-social:hover {
   color: #77727f;
   cursor: pointer;
 }
-.pagina-login .login-cartao .campo-input .senha-visibilidade:hover {
+:is(.pagina-login, .pagina-cadastro) .login-cartao .campo-input .senha-visibilidade:hover {
   color: #7100ef;
 }
-.pagina-login .login-cartao .campo-input .senha-visibilidade svg {
+:is(.pagina-login, .pagina-cadastro) .login-cartao .campo-input .senha-visibilidade svg {
   width: 17px;
   height: 17px;
   fill: none;
@@ -1983,14 +1993,14 @@ a.rede-social:hover {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-.pagina-login .login-cartao .campo-input input {
+:is(.pagina-login, .pagina-cadastro) .login-cartao .campo-input input {
   min-width: 0;
   padding: 8px 8px;
   color: #363142;
   background: transparent;
   font: 400 0.78rem var(--fonte);
 }
-.pagina-login .login-cartao .campo-input input::placeholder {
+:is(.pagina-login, .pagina-cadastro) .login-cartao .campo-input input::placeholder {
   color: #77727f;
 }
 .pagina-login .login-opcoes {
@@ -2009,11 +2019,15 @@ a.rede-social:hover {
   align-items: center;
   justify-content: space-between;
 }
-.pagina-login .login-opcoes a {
+.pagina-login #abrir-recuperacao {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
   color: #7100ef;
-  text-decoration: none;
+  cursor: pointer;
 }
-.pagina-login .login-opcoes a:hover {
+.pagina-login #abrir-recuperacao:hover {
   text-decoration: underline;
 }
 .pagina-login .login-opcoes input {
@@ -2068,11 +2082,7 @@ a.rede-social:hover {
   margin: 0 auto;
   padding: 8px 20px;
 }
-.pagina-login .recuperacao-fundo[hidden],
-.pagina-login form[hidden] {
-  display: none;
-}
-.pagina-login .recuperacao-fundo {
+.pagina-login .recuperacao-fundo:not([hidden]) {
   position: fixed;
   z-index: 10;
   inset: 0;
@@ -2114,7 +2124,7 @@ a.rede-social:hover {
   font-size: 1.8rem;
   cursor: pointer;
 }
-.pagina-login .recuperacao-cartao form {
+.pagina-login .recuperacao-cartao form:not([hidden]) {
   display: grid;
   gap: 9px;
   margin-top: 18px;
@@ -2233,37 +2243,20 @@ a.rede-social:hover {
 .pagina-cadastro .cadastro-cartao form {
   width: 100%;
 }
-.pagina-cadastro .cadastro-campo {
-  margin-bottom: 11px;
-  gap: 5px;
+.pagina-cadastro .cadastro-privacidade {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  cursor: pointer;
 }
-.pagina-cadastro .cadastro-campo label {
-  color: #4e4959;
-  font-size: 0.76rem;
-  font-weight: 500;
-}
-.pagina-cadastro .cadastro-campo input {
-  width: 100%;
-  min-width: 0;
-  padding: 10px 13px;
-  border: 1px solid #ddd9e8;
-  border-radius: 2%;
-  outline: none;
-  color: #363142;
-  background: #fff;
-  font: 400 0.82rem var(--fonte);
-  transition:
-    border-color 0.18s ease,
-    box-shadow 0.18s ease,
-    background 0.18s ease;
-}
-.pagina-cadastro .cadastro-campo input::placeholder {
-  color: #9994a1;
-}
-.pagina-cadastro .cadastro-campo input:focus {
-  border-color: #7a22e8;
-  background: #fdfbff;
-  box-shadow: 0 0 0 3px rgba(122, 34, 232, 0.12);
+.pagina-cadastro .cadastro-privacidade input {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  margin: 0.15rem 0 0;
+  cursor: inherit;
 }
 .pagina-cadastro .cadastro-cartao .botao {
   display: flex;
@@ -2301,7 +2294,7 @@ a.rede-social:hover {
   color: #fff;
   background: #16a998;
 }
-.pagina-login .login-cartao .campo-input:focus-within {
+:is(.pagina-login, .pagina-cadastro) .login-cartao .campo-input:focus-within {
   border-color: #7a22e8;
   box-shadow: 0 0 0 3px rgba(122, 34, 232, 0.12);
 }
@@ -2389,7 +2382,6 @@ a.rede-social:hover {
   height: auto;
   min-height: 0;
   padding: clamp(22px, 5vw, 34px);
-  border-radius: clamp(28px, 8vw, 42px);
   box-shadow: 0 18px 32px rgba(30, 24, 55, 0.2);
 }
 .pagina-cadastro .cadastro-intro {
@@ -2414,33 +2406,6 @@ a.rede-social:hover {
   flex-direction: column;
   gap: 13px;
 }
-.pagina-cadastro .cadastro-campo {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin: 0;
-}
-.pagina-cadastro .cadastro-campo label {
-  color: #4e4959;
-  font-size: 0.8rem;
-  line-height: 1.3;
-  font-weight: 600;
-}
-.pagina-cadastro .cadastro-campo input {
-  display: block;
-  width: 100%;
-  height: 46px;
-  min-height: 44px;
-  padding: 0 14px;
-  border: 1px solid #ddd9e8;
-  outline: none;
-  color: #363142;
-  background: #fff;
-  transition:
-    border-color 0.18s ease,
-    box-shadow 0.18s ease,
-    background 0.18s ease;
-}
 .pagina-cadastro .cadastro-cartao .botao {
   width: 100%;
   min-height: 46px;
@@ -2461,12 +2426,12 @@ a.rede-social:hover {
   min-height: 34px;
   padding: 4px 18px;
 }
-.pagina-login .login-cartao .campo-input {
+:is(.pagina-login, .pagina-cadastro) .login-cartao .campo-input {
   transition:
     border-color 0.18s ease,
     box-shadow 0.18s ease;
 }
-.pagina-login .login-cartao .campo-input:focus-within {
+:is(.pagina-login, .pagina-cadastro) .login-cartao .campo-input:focus-within {
   border-color: #7a22e8;
   box-shadow: 0 0 0 3px rgba(122, 34, 232, 0.12);
 }
@@ -2521,7 +2486,7 @@ a.rede-social:hover {
   .pagina-login .login-icone {
     transform: scale(0.9);
   }
-  .pagina-login .login-cartao {
+  :is(.pagina-login, .pagina-cadastro) .login-cartao {
     padding: 26px 22px;
     border-radius: 38px;
   }
@@ -2567,10 +2532,10 @@ a.rede-social:hover {
 }
 
 @media (max-width: 600px), (pointer: coarse) {
-  .pagina-login .login-cartao .campo-input input {
+  :is(.pagina-login, .pagina-cadastro) .login-cartao .campo-input input {
     font-size: 1rem;
   }
-  .pagina-login .login-cartao .campo-input .senha-visibilidade {
+  :is(.pagina-login, .pagina-cadastro) .login-cartao .campo-input .senha-visibilidade {
     flex-basis: 44px;
     width: 44px;
     height: 42px;
@@ -2597,12 +2562,6 @@ a.rede-social:hover {
   }
   .pagina-cadastro #form-cadastro {
     gap: 8px;
-  }
-  .pagina-cadastro .cadastro-campo {
-    gap: 4px;
-  }
-  .pagina-cadastro .cadastro-campo input {
-    height: 44px;
   }
   .pagina-cadastro .login-cadastro {
     margin-top: 10px;

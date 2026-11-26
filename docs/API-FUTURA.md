@@ -42,7 +42,7 @@ O servidor deve derivar o dono (`user_id`) da sessão autenticada, nunca aceitar
 ## Configurar e-mail e redes
 
 - No painel do EmailJS, conecte um serviço de e-mail e crie um template para recuperação de senha.
-- No destinatário do template, use `{{to_email}}`. No assunto, use algo como `Código de recuperação do {{app_name}}`; no corpo, inclua `{{verification_code}}` e informe que o código expira em `{{expiration_minutes}}` minutos.
+- No destinatário do template, use `{{to_email}}`. No assunto, use `Código de recuperação do PortHub`. No corpo, inclua `{{passcode}}` e `{{time}}`, que recebem o código e o horário de expiração em São Paulo.
 - Copie o Service ID do serviço, o Template ID do template e a Public Key da conta para `CONFIG.emailjs.serviceId`, `templateId` e `publicKey` em `js/config.js`. O navegador envia esses valores à API REST oficial do EmailJS junto com `template_params`.
 - Configure no EmailJS a lista de origens/domínios permitidos para aceitar apenas o domínio de publicação e o endereço de desenvolvimento que você usa. Não coloque a Private Key no JavaScript.
 - `CONFIG.recuperacaoSenha.validadeMinutos` e `maxTentativas` controlam a validade e o limite de erros no modo local. No modo API, a API deve impor os mesmos limites no servidor.

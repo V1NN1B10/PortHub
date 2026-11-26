@@ -7,14 +7,14 @@
 const CONFIG = {
   chave: 'portfolioFacil',
   // O EmailJS exige esses identificadores e os nomes dos campos configurados no modelo de e-mail.
-  // Mantenha os nomes literais do serviço: to_email, verification_code, app_name e expiration_minutes.
+  // Mantenha os nomes das variáveis do modelo: to_email, passcode e time.
   emailjs: {
-    serviceId: '',
-    templateId: '',
-    publicKey: '',
+    serviceId: 'service_ijy9pof',
+    templateId: 'template_7kn1p4u',
+    publicKey: '5Yx-F-YAB8bylK_Xj',
   },
   recuperacaoSenha: {
-    validadeMinutos: 10,
+    validadeMinutos: 15,
     maxTentativas: 5,
   },
   // "local" usa os dados do navegador; "api" ativa a integração descrita em docs/API-FUTURA.md.

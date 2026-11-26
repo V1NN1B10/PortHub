@@ -52,33 +52,44 @@
             <p class="cadastro-intro">É rapidinho e gratuito.</p>
             <div id="mensagem" class="mensagem"></div>
             <form id="form-cadastro">
-              <div class="campo cadastro-campo">
-                <label for="nome">Nome completo</label
-                ><input type="text" id="nome" placeholder="Seu nome completo" required />
+              <div class="campo campo-login">
+                <label for="nome">Nome completo</label>
+                <div class="campo-input">
+                  <i class="fa-regular fa-user" aria-hidden="true"></i>
+                  <input type="text" id="nome" autocomplete="name" placeholder="Seu nome completo" required />
+                </div>
               </div>
-              <div class="campo cadastro-campo">
-                <label for="email">E-mail</label
-                ><input type="email" id="email" placeholder="Seu e-mail" required />
+              <div class="campo campo-login">
+                <label for="email">E-mail</label>
+                <div class="campo-input">
+                  <img src="./img/mdi-light--email.svg" alt="" />
+                  <input type="email" id="email" autocomplete="email" placeholder="Seu e-mail" required />
+                </div>
               </div>
-              <div class="campo cadastro-campo">
-                <label for="senha">Senha</label
-                ><input
-                  type="password"
-                  id="senha"
-                  minlength="6"
-                  placeholder="Mínimo de 6 caracteres"
-                  required
-                />
+              <div class="campo campo-login">
+                <label for="senha">Senha</label>
+                <div class="campo-input">
+                  <img src="./img/mdi-light--lock (1).svg" alt="" />
+                  <input type="password" id="senha" autocomplete="new-password" minlength="6" placeholder="Senha (mínimo de 6 caracteres)" required />
+                  <button class="senha-visibilidade" id="alternar-senha" type="button" aria-label="Mostrar senha" aria-pressed="false" title="Mostrar senha">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  </button>
+                </div>
               </div>
-              <div class="campo cadastro-campo">
-                <label for="confirmar">Confirmar senha</label
-                ><input
-                  type="password"
-                  id="confirmar"
-                  placeholder="Digite a senha novamente"
-                  required
-                />
+              <div class="campo campo-login">
+                <label for="confirmar">Confirmar senha</label>
+                <div class="campo-input">
+                  <img src="./img/mdi-light--lock (1).svg" alt="" />
+                  <input type="password" id="confirmar" autocomplete="new-password" placeholder="Confirme sua senha" required />
+                </div>
               </div>
+              <label class="cadastro-privacidade" for="ciencia-privacidade">
+                <input type="checkbox" id="ciencia-privacidade" required />
+                <span>Li e estou ciente da Política de Privacidade.</span>
+              </label>
               <button class="botao" type="submit">Criar conta grátis</button>
             </form>
             <div class="login-cadastro">
