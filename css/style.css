@@ -442,7 +442,7 @@ i {
   display: none;
 }
 .logo img {
-  height: 55px;
+  height: 48px;
   width: auto;
   display: block;
 }
@@ -647,60 +647,6 @@ i {
   background: linear-gradient(145deg, #7027f7, #5018e9);
   font-size: 1.4rem;
 }
-.hero-cartao {
-  position: absolute;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border-radius: 16px;
-  background: #fffdfa;
-  box-shadow: 0 14px 36px rgba(35, 28, 65, 0.11);
-  color: #17223d;
-  white-space: nowrap;
-}
-.hero-cartao > span {
-  display: grid;
-  place-items: center;
-  flex: 0 0 30px;
-  width: 30px;
-  height: 30px;
-  border-radius: 9px;
-  background: #087dff;
-  color: white;
-  font-size: 1rem;
-}
-.hero-cartao div {
-  display: grid;
-  gap: 1px;
-}
-.hero-cartao b {
-  font-size: 0.78rem;
-}
-.hero-cartao small {
-  color: #68758e;
-  font-size: 0.68rem;
-}
-.hero-cartao-pessoal {
-  top: 5%;
-  right: 0;
-}
-.hero-cartao-tarefas {
-  bottom: 12%;
-  left: 0;
-}
-.hero-cartao-tarefas > span {
-  background: #00c4ba;
-  color: #10213c;
-}
-.hero-cartao-destaque {
-  right: 3%;
-  bottom: 1%;
-}
-.hero-cartao-destaque > span {
-  background: #6c24ff;
-}
 
 @media (max-width: 1024px) {
   .hero h1 {
@@ -730,9 +676,6 @@ i {
   .hero-dados strong {
     font-size: 1.1rem;
   }
-  .hero-cartao {
-    padding: 8px 10px;
-  }
 }
 @media (max-width: 600px) {
   .hero .hero-descricao {
@@ -751,23 +694,8 @@ i {
   .hero-dados strong {
     font-size: 1rem;
   }
-  .hero-cartao-destaque {
-    right: 0;
-  }
 }
 @media (max-width: 400px) {
-  .hero-cartao {
-    gap: 6px;
-    padding: 6px 8px;
-  }
-  .hero-cartao > span {
-    flex-basis: 24px;
-    width: 24px;
-    height: 24px;
-  }
-  .hero-cartao-tarefas {
-    bottom: 3.75rem;
-  }
   .hero-no {
     font-size: 0.85rem;
   }
@@ -787,13 +715,11 @@ i {
 .letreiro div {
   display: flex;
   width: max-content;
-  min-width: 200%;
   animation: andar 25s linear infinite;
 }
 .letreiro span {
-  flex: 1 0 auto;
-  padding-inline: 0.5em;
-  text-align: center;
+  flex: 0 0 auto;
+  padding-right: 0.25em;
 }
 @keyframes andar {
   to {

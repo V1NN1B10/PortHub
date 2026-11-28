@@ -341,7 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const senha = document.getElementById('senha').value;
       const msg = document.getElementById('mensagem');
       if (await fazerLogin(email, senha)) {
-        window.location.href = CONFIG.paginaAposLogin;
+        window.location.href = 'index.html';
       } else {
         msg.className = 'mensagem erro';
         msg.textContent = 'E-mail ou senha incorretos.';
